@@ -70,7 +70,15 @@ const caseStudiesCollection = defineCollection({
   })
 });
 
+const adrCollection = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string().optional()
+  })
+});
+
 export const collections = {
   engine: engineCollection,
-  caseStudies: caseStudiesCollection
+  caseStudies: caseStudiesCollection,
+  adr: adrCollection
 };

@@ -11,6 +11,14 @@ interface Props {
 }
 
 const { decisions } = Astro.props;
+
+function toAdrHref(path: string): string | null {
+  const match = path.match(/^src\/content\/adr\/(.+)\.md$/);
+  if (!match) {
+    return null;
+  }
+  return `/adr/${match[1]}`;
+}
 ---
 
 <section aria-label="Decision log">
@@ -21,6 +29,12 @@ const { decisions } = Astro.props;
         <li>
           <strong>{decision.id}</strong> ({decision.status}) - {decision.summary}{" "}
           <code>{decision.sourcePath}</code>
+          {toAdrHref(decision.sourcePath) && (
+            <>
+              {" "}
+              - <a href={toAdrHref(decision.sourcePath) ?? "#"}>Read full ADR</a>
+            </>
+          )}
         </li>
       ))
     }

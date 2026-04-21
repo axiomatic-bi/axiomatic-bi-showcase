@@ -12,6 +12,14 @@ interface Props {
 }
 
 const { title = "Evidence", items } = Astro.props;
+
+function toAdrHref(path: string): string | null {
+  const match = path.match(/^src\/content\/adr\/(.+)\.md$/);
+  if (!match) {
+    return null;
+  }
+  return `/adr/${match[1]}`;
+}
 ---
 
 <aside aria-label={title}>
@@ -22,7 +30,12 @@ const { title = "Evidence", items } = Astro.props;
         <li>
           <strong>{item.label}</strong>{" "}
           {item.type && <span>({item.type}) </span>}
-          <code>{item.path}</code>
+          <code>{item.path}</code>{" "}
+          {toAdrHref(item.path) && (
+            <>
+              - <a href={toAdrHref(item.path) ?? "#"}>Open ADR</a>
+            </>
+          )}
           {item.note && <> - {item.note}</>}
         </li>
       ))

@@ -1,0 +1,39 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+
+export async function getStaticPaths() {
+  const adrs = await getCollection("adr");
+  return adrs.map((entry) => ({
+    params: { slug: entry.slug }
+  }));
+}
+
+const slug = Astro.params.slug;
+if (!slug) {
+  throw new Error("Missing ADR slug.");
+}
+
+const adrEntry = await getEntry("adr", slug);
+if (!adrEntry) {
+  throw new Error(`ADR entry not found: ${slug}`);
+}
+
+const { Content } = await render(adrEntry);
+const heading = adrEntry.body.split("\n").find((line) => line.startsWith("# ")) ?? `ADR ${slug}`;
+const title = heading.replace(/^#\s+/, "").trim();
+---
+
+<BaseLayout title={title} description={`Architecture decision record: ${title}`}>
+  <PageHeader
+    eyebrow="ADR"
+    title={title}
+    lede="Full architecture decision record from repository content."
+  />
+  <p><a href="/engine">Back to Engine Overview</a></p>
+  <article>
+    <Content />
+  </article>
+</BaseLayout>
