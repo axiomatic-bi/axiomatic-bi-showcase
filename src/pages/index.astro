@@ -2,74 +2,102 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import EvidenceCallout from "../components/EvidenceCallout.astro";
-import ReproSteps from "../components/ReproSteps.astro";
 ---
 
 <BaseLayout
-  title="Axiomatic BI Showcase"
-  description="A static technical portfolio for Axiomatic Engine and analytics case studies."
+  title="Data Pipeline Delivery"
+  description="Client-focused data pipeline delivery with automation, ownership, and trustworthy modelling outcomes."
 >
   <PageHeader
     eyebrow="Home"
-    title="Axiomatic BI Showcase"
-    lede="Evidence-backed walkthroughs of engine architecture and analytics case studies."
+    title="Build a trustworthy data pipeline your team actually owns"
+    lede="I design and implement automated, source-agnostic pipelines with clean reporting models, then hand over code and operations so your team stays in control."
   />
 
   <section>
-    <h2>Overview</h2>
+    <h2>Start with a discovery call</h2>
     <p>
-      This site documents how Axiomatic Engine orchestrates ingestion and transformation while keeping
-      domain logic in project-level code. The focus is practical data engineering: explicit contracts,
-      reproducible runs, and honest trade-off reporting.
+      If you are planning a new analytics stack or trying to stabilise an existing one, I can scope a
+      practical delivery plan with clear milestones, ownership boundaries, and implementation trade-offs.
     </p>
+    <p><a href="/about#contact">Book a discovery call</a></p>
   </section>
 
   <section>
-    <h2>Featured Work</h2>
+    <h2>What clients typically need solved</h2>
     <ul>
-      <li><a href="/engine">Engine Overview</a></li>
-      <li><a href="/case-studies/fake-store">Fake Store Case Study</a></li>
+      <li>Manual, brittle pipeline runs replaced with reliable automation through GitHub Actions.</li>
+      <li>Inconsistent source data turned into trustworthy, repeatable analytical models.</li>
+      <li>Delivery with zero lock-in: your organisation owns the codebase and operating model.</li>
     </ul>
   </section>
 
   <section>
-    <h2>Evidence-First Approach</h2>
+    <h2>Delivery outcomes</h2>
     <p>
-      Each claim links to source artefacts under <code>context_docs/</code>, with implementation
-      behaviour and decisions traced to architecture notes, ADRs, and runnable scripts.
+      I implement end-to-end ingestion and transformation with explicit orchestration boundaries, then
+      model clean star schemas so reporting tools can be used immediately without extra reshaping work.
+    </p>
+    <ul>
+      <li>Star schemas designed for Power BI, Python, Tableau, R, or other downstream tooling.</li>
+      <li>Warehouse and source agnostic implementation, with DuckDB and MotherDuck as standard recommendation.</li>
+      <li>Documentation and handover that supports long-term client ownership.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Cross-source insights, not single-source dashboards</h2>
+    <p>
+      Pipeline design can combine multiple operational systems into one analytical model. A representative
+      example is joining commerce and marketing data (for example Shopify plus Google Ads) to understand
+      revenue, acquisition efficiency, and product performance in one trusted view.
+    </p>
+  </section>
+
+  <section>
+    <h2>Technical proof</h2>
+    <p>
+      Claims on this site are linked to implementation artefacts, architecture notes, and full
+      architecture decision records.
     </p>
     <EvidenceCallout
       items={[
         {
-          label: "Engine Architecture",
+          label: "Engine architecture and implementation scope",
           path: "context_docs/axiomatic_engine/architecture.md",
           type: "code",
-          note: "Primary architecture source."
+          note: "Runtime boundaries and implemented capability."
         },
         {
-          label: "Fake Store Pipeline",
+          label: "Reference case study with reproducibility notes",
           path: "context_docs/project_fake_store/README.md",
           type: "code",
-          note: "Case study scope and runtime contract."
+          note: "End-to-end medallion pipeline example."
+        },
+        {
+          label: "Full architecture decision records",
+          path: "src/content/adr/001-warehouse-adapter-hierarchy.md",
+          type: "code",
+          note: "All ADRs are browsable in the UI."
         }
       ]}
     />
-  </section>
-
-  <section>
-    <h2>What You Can Reproduce</h2>
-    <ReproSteps
-      steps={["npm install", "npm run dev", "npm run build", "npm run preview"]}
-      assumptions={["Node.js and npm are installed locally."]}
-    />
-  </section>
-
-  <section>
-    <h2>Next Pages</h2>
     <p>
-      Start with <a href="/engine">Engine Overview</a> for architecture and design boundaries, then
-      move to <a href="/case-studies/fake-store">Fake Store Case Study</a> for an end-to-end example
-      with reproducibility notes.
+      Explore <a href="/engine">Engine Overview</a> and <a href="/case-studies/fake-store">Fake Store Case Study</a>.
     </p>
+  </section>
+
+  <section>
+    <h2>Coming soon</h2>
+    <p>
+      MCP server support and an optional semantic API layer are planned to improve AI-assisted analysis
+      consistency while retaining governed model logic.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ready to scope your pipeline?</h2>
+    <p>Book a discovery call to discuss sources, target warehouse, delivery timeline, and ownership model.</p>
+    <p><a href="/about#contact">Book a discovery call</a></p>
   </section>
 </BaseLayout>
