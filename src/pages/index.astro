@@ -2,6 +2,16 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import EvidenceCallout from "../components/EvidenceCallout.astro";
+import ClientPainPoints from "../components/ClientPainPoints";
+import {
+  ArrowRight,
+  BriefcaseBusiness,
+  CheckCircle2,
+  Lightbulb,
+  Microscope,
+  Sparkles,
+  Target
+} from "lucide-react";
 ---
 
 <BaseLayout
@@ -16,25 +26,34 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
   />
 
   <section>
-    <h2>Start with a discovery call</h2>
+    <h2 class="section-heading">
+      <span class="section-heading-icon" aria-hidden="true"><BriefcaseBusiness size={18} strokeWidth={2} /></span>
+      Start with a discovery call
+    </h2>
     <p>
       If you are planning a new analytics stack or trying to stabilise an existing one, I can scope a
       commercial delivery plan with clear milestones, ownership boundaries, and measurable technical outcomes.
     </p>
-    <p><a class="button button-primary" href="/about#contact">Book a discovery call</a></p>
+    <p>
+      <a class="button button-primary" href="/about#contact">
+        Book a discovery call <ArrowRight size={16} strokeWidth={2} />
+      </a>
+    </p>
   </section>
 
   <section>
-    <h2>What clients typically need solved</h2>
-    <ul>
-      <li>Manual, brittle pipeline runs replaced with reliable automation through GitHub Actions.</li>
-      <li>Inconsistent source data turned into trustworthy, repeatable analytical models.</li>
-      <li>Delivery with zero lock-in: your organisation owns the codebase and operating model.</li>
-    </ul>
+    <h2 class="section-heading">
+      <span class="section-heading-icon" aria-hidden="true"><Target size={18} strokeWidth={2} /></span>
+      What clients typically need solved
+    </h2>
+    <ClientPainPoints />
   </section>
 
   <section>
-    <h2>Delivery outcomes</h2>
+    <h2 class="section-heading">
+      <span class="section-heading-icon" aria-hidden="true"><CheckCircle2 size={18} strokeWidth={2} /></span>
+      Delivery outcomes
+    </h2>
     <p>
       I implement end-to-end ingestion and transformation with explicit orchestration boundaries, then
       model clean star schemas so reporting tools can be used immediately without extra reshaping work.
@@ -47,22 +66,28 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
   </section>
 
   <section>
-    <h2>Cross-source insights, not single-source dashboards</h2>
+    <h2 class="section-heading">
+      <span class="section-heading-icon" aria-hidden="true"><Lightbulb size={18} strokeWidth={2} /></span>
+      Cross-source insights, not single-source dashboards
+    </h2>
     <p>
       Pipeline design can combine multiple operational systems into one analytical model. A representative
       example is joining commerce and marketing data (for example Shopify plus Google Ads) to understand
       revenue, acquisition efficiency, and product performance in one trusted view.
     </p>
     <div class="mermaid">{`flowchart LR
-  shopifySource[ShopifyData] --> unifiedModel[UnifiedStarSchema]
-  googleAdsSource[GoogleAdsData] --> unifiedModel
-  productSource[ProductAndCatalogueData] --> unifiedModel
-  unifiedModel --> biTools[PowerBI_Tableau_Python_R]
-  unifiedModel --> aiAssistant[AIAndMCPConsumption]`}</div>
+  shopifySource["Shopify sales data"] --> unifiedModel["Unified reporting model"]
+  googleAdsSource["Google Ads performance data"] --> unifiedModel
+  productSource["Product and catalogue data"] --> unifiedModel
+  unifiedModel --> biTools["BI tools and dashboards"]
+  unifiedModel --> aiAssistant["AI-assisted analysis"]`}</div>
   </section>
 
   <section>
-    <h2>Technical proof</h2>
+    <h2 class="section-heading">
+      <span class="section-heading-icon" aria-hidden="true"><Microscope size={18} strokeWidth={2} /></span>
+      Technical proof
+    </h2>
     <p>
       Claims on this site are linked to implementation artefacts, architecture notes, and full
       architecture decision records.
@@ -96,7 +121,10 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
   </section>
 
   <section>
-    <h2>Coming soon</h2>
+    <h2 class="section-heading">
+      <span class="section-heading-icon" aria-hidden="true"><Sparkles size={18} strokeWidth={2} /></span>
+      Coming soon
+    </h2>
     <p>
       MCP server support and an optional semantic API layer are planned to improve AI-assisted analysis
       consistency while retaining governed model logic.
@@ -104,8 +132,15 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
   </section>
 
   <section>
-    <h2>Ready to scope your pipeline?</h2>
+    <h2 class="section-heading">
+      <span class="section-heading-icon" aria-hidden="true"><BriefcaseBusiness size={18} strokeWidth={2} /></span>
+      Ready to scope your pipeline?
+    </h2>
     <p>Book a discovery call to discuss sources, target warehouse, delivery timeline, and ownership model.</p>
-    <p><a class="button button-primary" href="/about#contact">Book a discovery call</a></p>
+    <p>
+      <a class="button button-primary" href="/about#contact">
+        Book a discovery call <ArrowRight size={16} strokeWidth={2} />
+      </a>
+    </p>
   </section>
 </BaseLayout>
