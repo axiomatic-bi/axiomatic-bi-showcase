@@ -1,0 +1,21 @@
+---
+description: Ensure portfolio claims are backed by demonstrable evidence
+alwaysApply: true
+---
+
+# Portfolio Proof Standards
+
+## Claims Must Be Verifiable
+- Every technical claim should be supported by:
+  - code path references,
+  - query result summaries,
+  - test outcomes,
+  - or architecture artefacts.
+
+## Metrics And Outcomes
+- Prefer measurable outcomes (for example: model counts, test pass counts, rerun behaviour, execution timings).
+- Avoid vague statements such as "highly scalable" without context.
+
+## Honest Scope
+- Call out what is production-ready vs demonstration-only.
+- Document known gaps and future improvements.

@@ -1,0 +1,19 @@
+---
+description: Project structure conventions for Astro showcase repository
+alwaysApply: false
+---
+
+# Repo Structure (Astro Showcase)
+
+## Expected Layout
+- `src/pages/` for routes
+- `src/components/` for reusable UI
+- `src/layouts/` for shared page frames
+- `src/content/` for case-study markdown/content collections
+- `public/` for static assets
+- `docs/` for supporting technical notes
+
+## Content Conventions
+- One case study per page or markdown file.
+- Use predictable slugs and titles.
+- Keep diagrams and screenshots in organised asset folders.

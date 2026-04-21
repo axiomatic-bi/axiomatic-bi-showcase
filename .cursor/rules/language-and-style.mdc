@@ -1,0 +1,20 @@
+---
+description: British English and technical writing style for showcase content
+alwaysApply: true
+---
+
+# Language And Style
+
+## British English
+- Use British English spelling throughout: optimise, normalise, modelling, organisation, behaviour.
+- Apply this to page copy, comments, and docs.
+
+## Voice And Tone
+- Write in a professional, concise, technical tone.
+- Prefer clear claims over marketing language.
+- Avoid buzzwords unless they are defined in context.
+
+## Structure
+- Lead with outcomes and decisions, then implementation detail.
+- Explain intent and trade-offs, not obvious mechanics.
+- Keep paragraphs short and scannable.

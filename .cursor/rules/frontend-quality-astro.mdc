@@ -1,0 +1,24 @@
+---
+description: Astro implementation quality standards for static showcase site
+alwaysApply: true
+---
+
+# Frontend Quality (Astro)
+
+## Platform
+- Build as a static Astro site suitable for GitHub Pages.
+- Prefer zero-JS pages unless interactivity is required.
+
+## Accessibility
+- Use semantic HTML landmarks and heading hierarchy.
+- Provide alt text for all meaningful images.
+- Ensure colour contrast and keyboard accessibility.
+
+## Performance
+- Optimise and size images appropriately.
+- Avoid heavy client-side bundles unless justified.
+- Keep layout stable; avoid avoidable cumulative layout shift.
+
+## Consistency
+- Reuse shared layout/components for navigation, page headers, and callouts.
+- Keep typography, spacing, and code block style consistent across pages.

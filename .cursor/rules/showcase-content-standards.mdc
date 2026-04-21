@@ -1,0 +1,25 @@
+---
+description: Required sections and evidence standards for portfolio case studies
+alwaysApply: true
+---
+
+# Showcase Content Standards
+
+## Required Sections Per Case Study
+Each case-study page must include:
+1. Problem statement
+2. Architecture overview
+3. Data model (with star schema or equivalent diagram)
+4. Transformation approach
+5. Data quality and validation
+6. Results and insights
+7. Trade-offs and lessons learned
+
+## Evidence Requirements
+- Include at least one diagram (Mermaid allowed).
+- Include at least one SQL or code snippet tied to the narrative.
+- Link key claims to evidence: code paths, query outputs, or screenshots.
+
+## Reproducibility
+- Provide a short "How to reproduce" section with commands.
+- State assumptions and limitations explicitly.
