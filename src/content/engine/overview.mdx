@@ -36,9 +36,7 @@ decisions:
 This page anchors engine claims to architectural and ADR evidence.  
 Future semantic and MCP orchestration standards will be added with explicit `planned` status until implemented.
 
-<pre class="mermaid">
-flowchart TD
-  source[SourceProtocols] --> ingest[IngestorDLTStage]
-  ingest --> warehouse[WarehouseAdapter]
-  warehouse --> transform[DbtTransformationAdapter]
-</pre>
+<div class="mermaid">{`flowchart TD
+  sourceNode[SourceProtocols] --> ingestNode[IngestorDLTStage]
+  ingestNode --> warehouseNode[WarehouseAdapter]
+  warehouseNode --> transformNode[DbtTransformationAdapter]`}</div>

@@ -17,7 +17,11 @@ import ReproSteps from "../components/ReproSteps.astro";
 
   <section>
     <h2>Overview</h2>
-    <p>Placeholder: concise repository-level value proposition and audience context.</p>
+    <p>
+      This site documents how Axiomatic Engine orchestrates ingestion and transformation while keeping
+      domain logic in project-level code. The focus is practical data engineering: explicit contracts,
+      reproducible runs, and honest trade-off reporting.
+    </p>
   </section>
 
   <section>
@@ -30,7 +34,10 @@ import ReproSteps from "../components/ReproSteps.astro";
 
   <section>
     <h2>Evidence-First Approach</h2>
-    <p>Placeholder: explain how technical claims are tied to source artefacts.</p>
+    <p>
+      Each claim links to source artefacts under <code>context_docs/</code>, with implementation
+      behaviour and decisions traced to architecture notes, ADRs, and runnable scripts.
+    </p>
     <EvidenceCallout
       items={[
         {
@@ -59,6 +66,10 @@ import ReproSteps from "../components/ReproSteps.astro";
 
   <section>
     <h2>Next Pages</h2>
-    <p>Placeholder: quick navigation guidance for first-time readers.</p>
+    <p>
+      Start with <a href="/engine">Engine Overview</a> for architecture and design boundaries, then
+      move to <a href="/case-studies/fake-store">Fake Store Case Study</a> for an end-to-end example
+      with reproducibility notes.
+    </p>
   </section>
 </BaseLayout>

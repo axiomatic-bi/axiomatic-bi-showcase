@@ -28,37 +28,65 @@ const { Content } = await fakeStoreEntry.render();
 
   <section>
     <h2>Problem</h2>
-    <p>Placeholder: define the business and technical problem statement.</p>
+    <p>
+      The objective is to turn Fake Store API records into reliable analytics tables with deterministic
+      reruns. The case study demonstrates how project-specific logic sits outside engine internals while
+      still using a common orchestration contract.
+    </p>
   </section>
 
   <section>
     <h2>Architecture</h2>
-    <p>Placeholder: describe bronze/silver/gold and orchestration boundaries.</p>
+    <p>
+      The pipeline follows a medallion flow: bronze ingestion via dlt, silver typed staging models, and
+      gold analytical models. Ingestion and transformation are coordinated by the engine, while project
+      resources and normalisation stay in project scope.
+    </p>
   </section>
 
   <section>
     <h2>Data model</h2>
-    <p>Placeholder: include star-schema or equivalent analytical model view.</p>
+    <p>
+      Current documentation confirms analytical modelling intent and medallion layering. As model-level
+      artefacts are published, this section will link dimensional structures and grain choices directly
+      to dbt model files.
+    </p>
   </section>
 
   <section>
     <h2>Transform logic</h2>
-    <p>Placeholder: explain dbt-first model flow and orchestration call path.</p>
+    <p>
+      Transformation follows a dbt-first approach, triggered after ingestion when enabled. The
+      <code>run_pipeline.py</code> entrypoint applies CLI-over-env settings and delegates stage execution
+      to engine orchestration.
+    </p>
   </section>
 
   <section>
     <h2>Data quality/tests</h2>
-    <p>Placeholder: document test strategy, outcomes, and validation boundaries.</p>
+    <p>
+      Validation responsibilities are aligned to dbt and pipeline contracts. The project notes include
+      idempotent and deterministic rerun expectations, with test and query artefacts to be expanded as
+      publication-ready outputs are captured.
+    </p>
   </section>
 
   <section>
     <h2>Results/insights</h2>
-    <p>Placeholder: present measurable outputs and key analysis insights.</p>
+    <p>
+      Current evidence demonstrates repeatable load behaviour and clear runtime boundaries. Outcome
+      metrics and analytical findings are intentionally held until query result snapshots and visuals are
+      added to the public artefact set.
+    </p>
   </section>
 
   <section>
     <h2>Trade-offs/lessons</h2>
-    <p>Placeholder: summarise design trade-offs, constraints, and future work.</p>
+    <p>
+      Resource-level load hints improve rerun reliability, but they introduce additional configuration
+      decisions per endpoint. The scope is intentionally narrow and transparent, favouring reproducible
+      behaviour over broad feature claims.
+    </p>
   </section>
 
   <ReproSteps

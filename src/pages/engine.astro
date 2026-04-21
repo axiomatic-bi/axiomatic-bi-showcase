@@ -24,53 +24,94 @@ const { Content } = await engineEntry.render();
 
   <section>
     <h2>Problem</h2>
-    <p>Placeholder: clearly state orchestration and boundary challenges being addressed.</p>
+    <p>
+      Data projects often blur orchestration, source logic, warehouse behaviour, and transformation
+      execution. This increases maintenance cost and makes rerun behaviour harder to reason about.
+      Axiomatic Engine addresses this by separating responsibilities with typed protocols and adapter
+      boundaries.
+    </p>
   </section>
 
   <section>
     <h2>Architecture</h2>
-    <p>Placeholder: summarise key layers and data flow decisions.</p>
+    <p>
+      The engine is organised into contracts, adapters, and core stages. Sources expose resources
+      through protocol boundaries, ingestion is executed with dlt into a selected warehouse adapter,
+      and transformation is delegated through a transformation adapter. This keeps pipeline flow
+      centralised while backend specifics remain isolated.
+    </p>
   </section>
 
   <section>
     <h2>Core Contracts</h2>
-    <p>Placeholder: map contract interfaces to extension boundaries.</p>
+    <p>
+      Source, storage, warehouse, and transformation protocols define extension points. Literal kinds
+      constrain available options, so unsupported backends fail explicitly instead of degrading
+      silently. This helps keep project code domain-aware and engine code domain-agnostic.
+    </p>
   </section>
 
   <section>
     <h2>Execution Flow</h2>
-    <p>Placeholder: ingestion then transformation pipeline sequencing.</p>
+    <p>
+      Runtime flow is consistent: resources are wrapped and enriched, dlt performs ingestion into the
+      configured warehouse destination, and the transformation stage runs only when enabled. Settings
+      are loaded from <code>AXIOMATIC_*</code> variables with CLI override support.
+    </p>
   </section>
 
   <section>
     <h2>Transformation Strategy</h2>
-    <p>Placeholder: dbt-first orchestration rationale and implications.</p>
+    <p>
+      The transformation stage is dbt-first by design. Dependency graphing, model ordering, and tests
+      stay with dbt, while orchestration stays with the engine. This avoids reimplementing mature dbt
+      capabilities in engine internals and keeps CI execution straightforward.
+    </p>
   </section>
 
   <section>
     <h2>Warehouse Strategy</h2>
-    <p>Placeholder: DuckDB and MotherDuck adapter hierarchy and security handling.</p>
+    <p>
+      DuckDB and MotherDuck share a Duck-compatible base for common behaviour, with concrete adapters
+      handling backend-specific validation. MotherDuck token handling remains environment-driven and is
+      kept out of URI paths to reduce accidental credential exposure.
+    </p>
   </section>
 
   <section>
     <h2>Implemented Scope and Declared Extensions</h2>
-    <p>Placeholder: implemented now versus declared future extension points.</p>
+    <p>
+      Implemented scope includes REST and file-based ingestion paths, DuckDB-compatible warehouse
+      execution, typed settings, and dbt-first transformation orchestration. Declared extension points
+      remain for additional storage backends and warehouses, with explicit not-implemented signalling.
+    </p>
   </section>
 
   <section>
     <h2>Trade-offs and Lessons</h2>
-    <p>Placeholder: balanced outcomes, constraints, and honest scope statement.</p>
+    <p>
+      The current design favours clear boundaries and predictable execution over broad backend coverage.
+      This reduces ambiguity for early adopters, but it also means some integrations remain planned.
+      Semantic and MCP standards are tracked as planned capability work until concrete implementation is
+      published.
+    </p>
   </section>
 
   <section>
     <h2>Reproducibility Notes</h2>
     <ReproSteps
-      steps={["# placeholder: engine-level validation commands"]}
+      steps={[
+        "python context_docs/project_fake_store/run_pipeline.py --skip-transforms",
+        "python context_docs/project_fake_store/run_pipeline.py --run-transforms"
+      ]}
       assumptions={[
         "Environment variables are set via AXIOMATIC_* entries.",
         "Secrets are loaded from local uncommitted env files."
       ]}
-      limitations={["This section will be expanded with runnable, project-verified commands."]}
+      limitations={[
+        "Engine-level commands are demonstrated through project runners in this repository.",
+        "Non-MotherDuck warehouse transform paths are intentionally scoped for future work."
+      ]}
     />
   </section>
 
