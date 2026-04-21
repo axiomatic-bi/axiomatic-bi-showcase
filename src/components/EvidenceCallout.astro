@@ -1,0 +1,31 @@
+---
+interface EvidenceItem {
+  type?: "code" | "sql" | "test" | "diagram" | "video";
+  label: string;
+  path: string;
+  note?: string;
+}
+
+interface Props {
+  title?: string;
+  items: EvidenceItem[];
+}
+
+const { title = "Evidence", items } = Astro.props;
+---
+
+<aside aria-label={title}>
+  <h3>{title}</h3>
+  <ul>
+    {
+      items.map((item) => (
+        <li>
+          <strong>{item.label}</strong>{" "}
+          {item.type && <span>({item.type}) </span>}
+          <code>{item.path}</code>
+          {item.note && <> - {item.note}</>}
+        </li>
+      ))
+    }
+  </ul>
+</aside>

@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+
+const entries = await getCollection("caseStudies");
+---
+
+<BaseLayout title="Case Studies" description="Portfolio case studies with evidence and reproducibility notes.">
+  <PageHeader
+    eyebrow="Case Studies"
+    title="Case Studies"
+    lede="Technical walkthroughs with explicit assumptions, reproducibility steps, and trade-offs."
+  />
+
+  <section>
+    <h2>Case Studies</h2>
+    <p>Placeholder: introduce the purpose and audience for case study pages.</p>
+  </section>
+
+  <section>
+    <h2>Fake Store Pipeline</h2>
+    <ul>
+      {entries.map((entry) => <li><a href={`/case-studies/${entry.slug}`}>{entry.data.title}</a></li>)}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Comparison Criteria</h2>
+    <p>Placeholder: explain how case studies are compared across architecture, data quality, and outcomes.</p>
+  </section>
+
+  <section>
+    <h2>Reproducibility Standards</h2>
+    <p>Placeholder: define minimum evidence and reproducibility expectations for every case study.</p>
+  </section>
+</BaseLayout>

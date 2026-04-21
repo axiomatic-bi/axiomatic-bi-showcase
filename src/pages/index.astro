@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import EvidenceCallout from "../components/EvidenceCallout.astro";
+import ReproSteps from "../components/ReproSteps.astro";
+---
+
+<BaseLayout
+  title="Axiomatic BI Showcase"
+  description="A static technical portfolio for Axiomatic Engine and analytics case studies."
+>
+  <PageHeader
+    eyebrow="Home"
+    title="Axiomatic BI Showcase"
+    lede="Evidence-backed walkthroughs of engine architecture and analytics case studies."
+  />
+
+  <section>
+    <h2>Overview</h2>
+    <p>Placeholder: concise repository-level value proposition and audience context.</p>
+  </section>
+
+  <section>
+    <h2>Featured Work</h2>
+    <ul>
+      <li><a href="/engine">Engine Overview</a></li>
+      <li><a href="/case-studies/fake-store">Fake Store Case Study</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Evidence-First Approach</h2>
+    <p>Placeholder: explain how technical claims are tied to source artefacts.</p>
+    <EvidenceCallout
+      items={[
+        {
+          label: "Engine Architecture",
+          path: "context_docs/axiomatic_engine/architecture.md",
+          type: "code",
+          note: "Primary architecture source."
+        },
+        {
+          label: "Fake Store Pipeline",
+          path: "context_docs/project_fake_store/README.md",
+          type: "code",
+          note: "Case study scope and runtime contract."
+        }
+      ]}
+    />
+  </section>
+
+  <section>
+    <h2>What You Can Reproduce</h2>
+    <ReproSteps
+      steps={["npm install", "npm run dev", "npm run build", "npm run preview"]}
+      assumptions={["Node.js and npm are installed locally."]}
+    />
+  </section>
+
+  <section>
+    <h2>Next Pages</h2>
+    <p>Placeholder: quick navigation guidance for first-time readers.</p>
+  </section>
+</BaseLayout>

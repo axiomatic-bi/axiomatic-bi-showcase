@@ -1,0 +1,84 @@
+---
+import { getEntry } from "astro:content";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import EvidenceCallout from "../../components/EvidenceCallout.astro";
+import ReproSteps from "../../components/ReproSteps.astro";
+
+const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
+
+if (!fakeStoreEntry) {
+  throw new Error("Missing case study entry: fake-store");
+}
+
+const { Content } = await fakeStoreEntry.render();
+---
+
+<BaseLayout
+  title="Fake Store Case Study"
+  description="End-to-end Fake Store analytics case study on Axiomatic Engine."
+  enableMermaid={true}
+>
+  <PageHeader
+    eyebrow="Case Study"
+    title="Fake Store Case Study"
+    lede="A reference pipeline demonstrating ingestion policies, transformation orchestration, and reproducible outcomes."
+  />
+
+  <section>
+    <h2>Problem</h2>
+    <p>Placeholder: define the business and technical problem statement.</p>
+  </section>
+
+  <section>
+    <h2>Architecture</h2>
+    <p>Placeholder: describe bronze/silver/gold and orchestration boundaries.</p>
+  </section>
+
+  <section>
+    <h2>Data model</h2>
+    <p>Placeholder: include star-schema or equivalent analytical model view.</p>
+  </section>
+
+  <section>
+    <h2>Transform logic</h2>
+    <p>Placeholder: explain dbt-first model flow and orchestration call path.</p>
+  </section>
+
+  <section>
+    <h2>Data quality/tests</h2>
+    <p>Placeholder: document test strategy, outcomes, and validation boundaries.</p>
+  </section>
+
+  <section>
+    <h2>Results/insights</h2>
+    <p>Placeholder: present measurable outputs and key analysis insights.</p>
+  </section>
+
+  <section>
+    <h2>Trade-offs/lessons</h2>
+    <p>Placeholder: summarise design trade-offs, constraints, and future work.</p>
+  </section>
+
+  <ReproSteps
+    steps={fakeStoreEntry.data.reproducibility.map((item) => item.command)}
+    assumptions={fakeStoreEntry.data.assumptions}
+    limitations={fakeStoreEntry.data.limitations}
+  />
+
+  <EvidenceCallout
+    title="Evidence map"
+    items={fakeStoreEntry.data.evidence.map((item) => ({
+      label: item.claim,
+      path: item.sourcePath,
+      note: item.status,
+      type: item.type
+    }))}
+  />
+
+  <section>
+    <h2>Source Narrative</h2>
+    <Content />
+  </section>
+</BaseLayout>

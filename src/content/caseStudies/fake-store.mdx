@@ -1,0 +1,53 @@
+---
+title: Fake Store Case Study
+summary: End-to-end reference pipeline using Axiomatic Engine and dbt-first transformation.
+sectionOrder:
+  - Problem
+  - Architecture
+  - Data model
+  - Transform logic
+  - Data quality/tests
+  - Results/insights
+  - Trade-offs/lessons
+capabilityMaturity:
+  ingestion: implemented
+  transformation: implemented
+  semantic_mcp: planned
+evidence:
+  - type: code
+    claim: Pipeline architecture and medallion flow
+    sourcePath: context_docs/project_fake_store/README.md
+    status: implemented
+  - type: code
+    claim: Runtime orchestration path and resource-level load hints
+    sourcePath: context_docs/project_fake_store/run_pipeline.py
+    status: implemented
+  - type: code
+    claim: Environment contract and secret handling expectations
+    sourcePath: context_docs/project_fake_store/.env.example
+    status: implemented
+  - type: video
+    claim: Planned MCP connection walkthrough and semantic demonstration
+    sourcePath: docs/media/placeholder-mcp-demo.md
+    status: planned
+reproducibility:
+  - command: python run_pipeline.py
+    assumption: Run from the Fake Store project root with a configured local .env file.
+  - command: ../../.venv/Scripts/python.exe run_pipeline.py --force-reload --skip-transforms
+    assumption: Local virtual environment exists and dbt stage is intentionally bypassed.
+assumptions:
+  - Environment values are loaded from local non-committed files.
+  - Warehouse and transform settings follow AXIOMATIC_* contracts.
+limitations:
+  - Metrics and screenshots will be added once execution artefacts are captured for publication.
+---
+
+This page will present a complete narrative from problem to trade-offs, backed by source paths and reproducible commands.
+
+<pre class="mermaid">
+flowchart TD
+  api[FakeStoreAPI] --> bronze[BronzeLoad]
+  bronze --> silver[SilverModels]
+  silver --> gold[GoldModels]
+  gold --> analytics[AnalyticsViews]
+</pre>

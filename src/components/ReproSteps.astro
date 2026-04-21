@@ -1,0 +1,37 @@
+---
+interface Props {
+  title?: string;
+  assumptions?: string[];
+  steps: string[];
+  limitations?: string[];
+}
+
+const {
+  title = "How to reproduce",
+  assumptions = [],
+  steps,
+  limitations = []
+} = Astro.props;
+---
+
+<section aria-label={title}>
+  <h3>{title}</h3>
+  {assumptions.length > 0 && (
+    <>
+      <h4>Assumptions</h4>
+      <ul>
+        {assumptions.map((item) => <li>{item}</li>)}
+      </ul>
+    </>
+  )}
+  <h4>Commands</h4>
+  <pre><code>{steps.join("\n")}</code></pre>
+  {limitations.length > 0 && (
+    <>
+      <h4>Limitations</h4>
+      <ul>
+        {limitations.map((item) => <li>{item}</li>)}
+      </ul>
+    </>
+  )}
+</section>

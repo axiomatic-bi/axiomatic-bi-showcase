@@ -1,0 +1,44 @@
+---
+title: Engine Overview
+summary: Contract-first orchestration with typed settings and adapter isolation.
+capabilityMaturity:
+  ingestion: implemented
+  transformation: implemented
+  semantic_mcp: planned
+evidence:
+  - type: code
+    claim: Engine purpose, boundaries, and current package structure
+    sourcePath: context_docs/axiomatic_engine/architecture.md
+    status: implemented
+  - type: code
+    claim: Ingestion hints, schema evolution policy, and rerun semantics
+    sourcePath: context_docs/axiomatic_engine/README.md
+    status: implemented
+  - type: code
+    claim: Duck-compatible warehouse hierarchy and token handling decisions
+    sourcePath: context_docs/axiomatic_engine/adr/001-warehouse-adapter-hierarchy.md
+    status: implemented
+  - type: code
+    claim: dbt-first transformation orchestration decision
+    sourcePath: context_docs/axiomatic_engine/adr/002-dbt-first-transformation-orchestration.md
+    status: implemented
+decisions:
+  - id: ADR 001
+    status: accepted
+    summary: Keep shared Duck behaviour in a base class with concrete DuckDB and MotherDuck adapters.
+    sourcePath: context_docs/axiomatic_engine/adr/001-warehouse-adapter-hierarchy.md
+  - id: ADR 002
+    status: accepted
+    summary: Orchestrate transformations via a dbt-first adapter behind typed contracts.
+    sourcePath: context_docs/axiomatic_engine/adr/002-dbt-first-transformation-orchestration.md
+---
+
+This page anchors engine claims to architectural and ADR evidence.  
+Future semantic and MCP orchestration standards will be added with explicit `planned` status until implemented.
+
+<pre class="mermaid">
+flowchart TD
+  source[SourceProtocols] --> ingest[IngestorDLTStage]
+  ingest --> warehouse[WarehouseAdapter]
+  warehouse --> transform[DbtTransformationAdapter]
+</pre>

@@ -1,0 +1,28 @@
+---
+interface Decision {
+  id: string;
+  status: "accepted" | "proposed" | "superseded";
+  summary: string;
+  sourcePath: string;
+}
+
+interface Props {
+  decisions: Decision[];
+}
+
+const { decisions } = Astro.props;
+---
+
+<section aria-label="Decision log">
+  <h3>Decision log</h3>
+  <ul>
+    {
+      decisions.map((decision) => (
+        <li>
+          <strong>{decision.id}</strong> ({decision.status}) - {decision.summary}{" "}
+          <code>{decision.sourcePath}</code>
+        </li>
+      ))
+    }
+  </ul>
+</section>

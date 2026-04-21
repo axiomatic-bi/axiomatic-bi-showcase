@@ -1,0 +1,84 @@
+---
+import { getCollection } from "astro:content";
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import EvidenceCallout from "../components/EvidenceCallout.astro";
+import ReproSteps from "../components/ReproSteps.astro";
+import DecisionLog from "../components/DecisionLog.astro";
+
+const [engineEntry] = await getCollection("engine");
+const { Content } = await engineEntry.render();
+---
+
+<BaseLayout
+  title="Engine Overview"
+  description="Architecture and decisions behind the Axiomatic Engine."
+  enableMermaid={true}
+>
+  <PageHeader
+    eyebrow="Engine"
+    title="Engine Overview"
+    lede="Contract-first orchestration design for ingestion, transformation, and warehouse execution."
+  />
+
+  <section>
+    <h2>Problem</h2>
+    <p>Placeholder: clearly state orchestration and boundary challenges being addressed.</p>
+  </section>
+
+  <section>
+    <h2>Architecture</h2>
+    <p>Placeholder: summarise key layers and data flow decisions.</p>
+  </section>
+
+  <section>
+    <h2>Core Contracts</h2>
+    <p>Placeholder: map contract interfaces to extension boundaries.</p>
+  </section>
+
+  <section>
+    <h2>Execution Flow</h2>
+    <p>Placeholder: ingestion then transformation pipeline sequencing.</p>
+  </section>
+
+  <section>
+    <h2>Transformation Strategy</h2>
+    <p>Placeholder: dbt-first orchestration rationale and implications.</p>
+  </section>
+
+  <section>
+    <h2>Warehouse Strategy</h2>
+    <p>Placeholder: DuckDB and MotherDuck adapter hierarchy and security handling.</p>
+  </section>
+
+  <section>
+    <h2>Implemented Scope and Declared Extensions</h2>
+    <p>Placeholder: implemented now versus declared future extension points.</p>
+  </section>
+
+  <section>
+    <h2>Trade-offs and Lessons</h2>
+    <p>Placeholder: balanced outcomes, constraints, and honest scope statement.</p>
+  </section>
+
+  <section>
+    <h2>Reproducibility Notes</h2>
+    <ReproSteps
+      steps={["# placeholder: engine-level validation commands"]}
+      assumptions={[
+        "Environment variables are set via AXIOMATIC_* entries.",
+        "Secrets are loaded from local uncommitted env files."
+      ]}
+      limitations={["This section will be expanded with runnable, project-verified commands."]}
+    />
+  </section>
+
+  <EvidenceCallout items={engineEntry.data.evidence.map((item) => ({ label: item.claim, path: item.sourcePath, type: item.type }))} />
+  <DecisionLog decisions={engineEntry.data.decisions} />
+
+  <section>
+    <h2>Source Narrative</h2>
+    <Content />
+  </section>
+</BaseLayout>
