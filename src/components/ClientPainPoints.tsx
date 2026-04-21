@@ -1,6 +1,7 @@
 import { Bot, Gauge, ShieldCheck } from "lucide-react";
+import IconCardGrid, { type IconCardItem } from "./IconCardGrid";
 
-const items = [
+const items: IconCardItem[] = [
   {
     title: "Fragile manual operations",
     description: "Replace brittle hand-run jobs with reliable automation through GitHub Actions.",
@@ -19,17 +20,5 @@ const items = [
 ];
 
 export default function ClientPainPoints() {
-  return (
-    <div className="pain-point-grid" role="list">
-      {items.map(({ title, description, Icon }) => (
-        <article className="pain-point-card" role="listitem" key={title}>
-          <span className="pain-point-icon" aria-hidden="true">
-            <Icon size={20} strokeWidth={2} />
-          </span>
-          <h3>{title}</h3>
-          <p>{description}</p>
-        </article>
-      ))}
-    </div>
-  );
+  return <IconCardGrid items={items} />;
 }

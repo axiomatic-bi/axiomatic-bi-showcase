@@ -10,8 +10,15 @@ const { eyebrow, title, lede, updatedAt } = Astro.props;
 ---
 
 <header class="page-header">
-  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-  <h1>{title}</h1>
-  <p>{lede}</p>
-  {updatedAt && <p><small>Updated: {updatedAt}</small></p>}
+  <div class="page-header-content">
+    <div class="page-header-copy">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{title}</h1>
+      <p>{lede}</p>
+      {updatedAt && <p><small>Updated: {updatedAt}</small></p>}
+    </div>
+    <div class="page-header-visual">
+      <slot name="visual" />
+    </div>
+  </div>
 </header>

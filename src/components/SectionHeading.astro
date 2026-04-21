@@ -1,0 +1,12 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<h2 class="section-heading">
+  <span class="section-heading-icon" aria-hidden="true"><slot name="icon" /></span>
+  {title}
+</h2>

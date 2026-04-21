@@ -3,6 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import EvidenceCallout from "../components/EvidenceCallout.astro";
 import ClientPainPoints from "../components/ClientPainPoints";
+import DeliveryOutcomeCards from "../components/DeliveryOutcomeCards";
+import SectionHeading from "../components/SectionHeading.astro";
+import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
   BriefcaseBusiness,
@@ -12,6 +15,95 @@ import {
   Sparkles,
   Target
 } from "lucide-react";
+
+interface TextSection {
+  title: string;
+  Icon: LucideIcon;
+  paragraphs: string[];
+}
+
+const primaryCta = {
+  label: "Book a discovery call",
+  href: "/about#contact"
+};
+
+const sectionCopy = {
+  discovery: {
+    title: "Start with a discovery call",
+    Icon: BriefcaseBusiness,
+    paragraphs: [
+      "If you are planning a new analytics stack or trying to stabilise an existing one, I can scope a commercial delivery plan with clear milestones, ownership boundaries, and measurable technical outcomes."
+    ]
+  } satisfies TextSection,
+  outcomes: {
+    title: "Delivery outcomes",
+    Icon: CheckCircle2,
+    paragraphs: [
+      "I implement end-to-end ingestion and transformation with explicit orchestration boundaries, then model clean star schemas so reporting tools can be used immediately without extra reshaping work."
+    ]
+  } satisfies TextSection,
+  crossSource: {
+    title: "Cross-source insights, not single-source dashboards",
+    Icon: Lightbulb,
+    paragraphs: [
+      "Pipeline design can combine multiple operational systems into one analytical model. A representative example is joining commerce and marketing data (for example Shopify plus Google Ads) to understand revenue, acquisition efficiency, and product performance in one trusted view."
+    ]
+  } satisfies TextSection,
+  proof: {
+    title: "Technical proof",
+    Icon: Microscope,
+    paragraphs: [
+      "Claims on this site are linked to implementation artefacts, architecture notes, and full architecture decision records."
+    ]
+  } satisfies TextSection,
+  comingSoon: {
+    title: "Coming soon",
+    Icon: Sparkles,
+    paragraphs: [
+      "MCP server support and an optional semantic API layer are planned to improve AI-assisted analysis consistency while retaining governed model logic."
+    ]
+  } satisfies TextSection,
+  closing: {
+    title: "Ready to scope your pipeline?",
+    Icon: BriefcaseBusiness,
+    paragraphs: [
+      "Book a discovery call to discuss sources, target warehouse, delivery timeline, and ownership model."
+    ]
+  } satisfies TextSection
+};
+
+const crossSourceMermaid = `flowchart LR
+  shopifySource["Shopify sales data"] --> unifiedModel["Unified reporting model"]
+  googleAdsSource["Google Ads performance data"] --> unifiedModel
+  productSource["Product and catalogue data"] --> unifiedModel
+  unifiedModel --> biTools["BI tools and dashboards"]
+  unifiedModel --> aiAssistant["AI-assisted analysis"]`;
+
+const evidenceItems = [
+  {
+    label: "Engine architecture and implementation scope",
+    path: "context_docs/axiomatic_engine/architecture.md",
+    type: "code" as const,
+    note: "Runtime boundaries and implemented capability."
+  },
+  {
+    label: "Reference case study with reproducibility notes",
+    path: "context_docs/project_fake_store/README.md",
+    type: "code" as const,
+    note: "End-to-end medallion pipeline example."
+  },
+  {
+    label: "Full architecture decision records",
+    path: "src/content/adr/001-warehouse-adapter-hierarchy.md",
+    type: "code" as const,
+    note: "All ADRs are browsable in the UI."
+  }
+];
+
+const proofLinks = [
+  { href: "/engine", label: "Engine Overview" },
+  { href: "/case-studies/fake-store", label: "Fake Store Case Study" }
+];
 ---
 
 <BaseLayout
@@ -23,123 +115,77 @@ import {
     eyebrow="Home"
     title="Build an AI-ready and analyst-ready data pipeline your team actually owns"
     lede="I deliver automated, source-agnostic pipelines with clear star schemas that keep SQL and DAX simpler, improve reporting trust, and support more consistent AI-assisted analysis."
-  />
+  >
+    <div slot="visual" class="hero-visual-placeholder" aria-hidden="true"></div>
+  </PageHeader>
 
   <section>
-    <h2 class="section-heading">
-      <span class="section-heading-icon" aria-hidden="true"><BriefcaseBusiness size={18} strokeWidth={2} /></span>
-      Start with a discovery call
-    </h2>
+    <SectionHeading title={sectionCopy.discovery.title}>
+      <sectionCopy.discovery.Icon slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    {sectionCopy.discovery.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
     <p>
-      If you are planning a new analytics stack or trying to stabilise an existing one, I can scope a
-      commercial delivery plan with clear milestones, ownership boundaries, and measurable technical outcomes.
-    </p>
-    <p>
-      <a class="button button-primary" href="/about#contact">
-        Book a discovery call <ArrowRight size={16} strokeWidth={2} />
+      <a class="button button-primary" href={primaryCta.href}>
+        {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
       </a>
     </p>
   </section>
 
   <section>
-    <h2 class="section-heading">
-      <span class="section-heading-icon" aria-hidden="true"><Target size={18} strokeWidth={2} /></span>
-      What clients typically need solved
-    </h2>
+    <SectionHeading title="What clients typically need solved">
+      <Target slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <ClientPainPoints />
   </section>
 
   <section>
-    <h2 class="section-heading">
-      <span class="section-heading-icon" aria-hidden="true"><CheckCircle2 size={18} strokeWidth={2} /></span>
-      Delivery outcomes
-    </h2>
-    <p>
-      I implement end-to-end ingestion and transformation with explicit orchestration boundaries, then
-      model clean star schemas so reporting tools can be used immediately without extra reshaping work.
-    </p>
-    <ul>
-      <li>Star schemas designed for Power BI, Python, Tableau, R, or other downstream tooling.</li>
-      <li>Warehouse and source agnostic implementation, with DuckDB and MotherDuck as standard recommendation.</li>
-      <li>Documentation and handover that supports long-term client ownership.</li>
-    </ul>
+    <SectionHeading title={sectionCopy.outcomes.title}>
+      <sectionCopy.outcomes.Icon slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    {sectionCopy.outcomes.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    <DeliveryOutcomeCards />
   </section>
 
   <section>
-    <h2 class="section-heading">
-      <span class="section-heading-icon" aria-hidden="true"><Lightbulb size={18} strokeWidth={2} /></span>
-      Cross-source insights, not single-source dashboards
-    </h2>
-    <p>
-      Pipeline design can combine multiple operational systems into one analytical model. A representative
-      example is joining commerce and marketing data (for example Shopify plus Google Ads) to understand
-      revenue, acquisition efficiency, and product performance in one trusted view.
-    </p>
-    <div class="mermaid">{`flowchart LR
-  shopifySource["Shopify sales data"] --> unifiedModel["Unified reporting model"]
-  googleAdsSource["Google Ads performance data"] --> unifiedModel
-  productSource["Product and catalogue data"] --> unifiedModel
-  unifiedModel --> biTools["BI tools and dashboards"]
-  unifiedModel --> aiAssistant["AI-assisted analysis"]`}</div>
+    <SectionHeading title={sectionCopy.crossSource.title}>
+      <sectionCopy.crossSource.Icon slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    {sectionCopy.crossSource.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    <div class="mermaid">{crossSourceMermaid}</div>
   </section>
 
   <section>
-    <h2 class="section-heading">
-      <span class="section-heading-icon" aria-hidden="true"><Microscope size={18} strokeWidth={2} /></span>
-      Technical proof
-    </h2>
+    <SectionHeading title={sectionCopy.proof.title}>
+      <sectionCopy.proof.Icon slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    {sectionCopy.proof.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    <EvidenceCallout items={evidenceItems} />
     <p>
-      Claims on this site are linked to implementation artefacts, architecture notes, and full
-      architecture decision records.
-    </p>
-    <EvidenceCallout
-      items={[
-        {
-          label: "Engine architecture and implementation scope",
-          path: "context_docs/axiomatic_engine/architecture.md",
-          type: "code",
-          note: "Runtime boundaries and implemented capability."
-        },
-        {
-          label: "Reference case study with reproducibility notes",
-          path: "context_docs/project_fake_store/README.md",
-          type: "code",
-          note: "End-to-end medallion pipeline example."
-        },
-        {
-          label: "Full architecture decision records",
-          path: "src/content/adr/001-warehouse-adapter-hierarchy.md",
-          type: "code",
-          note: "All ADRs are browsable in the UI."
-        }
-      ]}
-    />
-    <p>
-      <a class="button button-secondary" href="/engine">Engine Overview</a>{" "}
-      <a class="button button-secondary" href="/case-studies/fake-store">Fake Store Case Study</a>
+      {
+        proofLinks.map((link) => (
+          <span style="display:inline-block; margin-right:0.45rem;">
+            <a class="button button-secondary" href={link.href}>{link.label}</a>
+          </span>
+        ))
+      }
     </p>
   </section>
 
   <section>
-    <h2 class="section-heading">
-      <span class="section-heading-icon" aria-hidden="true"><Sparkles size={18} strokeWidth={2} /></span>
-      Coming soon
-    </h2>
-    <p>
-      MCP server support and an optional semantic API layer are planned to improve AI-assisted analysis
-      consistency while retaining governed model logic.
-    </p>
+    <SectionHeading title={sectionCopy.comingSoon.title}>
+      <sectionCopy.comingSoon.Icon slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    {sectionCopy.comingSoon.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
   </section>
 
   <section>
-    <h2 class="section-heading">
-      <span class="section-heading-icon" aria-hidden="true"><BriefcaseBusiness size={18} strokeWidth={2} /></span>
-      Ready to scope your pipeline?
-    </h2>
-    <p>Book a discovery call to discuss sources, target warehouse, delivery timeline, and ownership model.</p>
+    <SectionHeading title={sectionCopy.closing.title}>
+      <sectionCopy.closing.Icon slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    {sectionCopy.closing.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
     <p>
-      <a class="button button-primary" href="/about#contact">
-        Book a discovery call <ArrowRight size={16} strokeWidth={2} />
+      <a class="button button-primary" href={primaryCta.href}>
+        {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
       </a>
     </p>
   </section>

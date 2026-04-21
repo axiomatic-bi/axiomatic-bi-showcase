@@ -31,31 +31,19 @@ function isActive(href: string): boolean {
     <title>{title}</title>
     <style>
       :root {
-        color-scheme: light;
-        --bg: #f6f8fb;
-        --surface: #ffffff;
-        --surface-muted: #f1f5f9;
-        --border: #d5dde8;
-        --text: #0f172a;
-        --text-muted: #334155;
-        --brand: #155eef;
+        color-scheme: dark;
+        --bg: #000000;
+        --surface: #05070d;
+        --surface-muted: #0b1020;
+        --border: #222a3d;
+        --text: #eef3ff;
+        --text-muted: #c2cadf;
+        --brand: #7a8dff;
         --brand-contrast: #ffffff;
+        --accent-blue: #5ea2ff;
+        --accent-purple: #c06bff;
         --radius: 12px;
-        --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          color-scheme: dark;
-          --bg: #0b1220;
-          --surface: #111a2c;
-          --surface-muted: #162136;
-          --border: #253450;
-          --text: #e6edf7;
-          --text-muted: #b7c2d7;
-          --brand: #77a8ff;
-          --brand-contrast: #0b1220;
-          --shadow: 0 10px 30px rgba(2, 6, 23, 0.4);
-        }
+        --shadow: 0 20px 44px rgba(0, 0, 0, 0.52);
       }
       body {
         margin: 0;
@@ -74,7 +62,7 @@ function isActive(href: string): boolean {
         top: 0;
         z-index: 10;
         backdrop-filter: blur(8px);
-        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        background: color-mix(in srgb, var(--bg) 78%, transparent);
         border-bottom: 1px solid var(--border);
       }
       .site-header-inner {
@@ -112,7 +100,7 @@ function isActive(href: string): boolean {
         border-color: var(--border);
       }
       .nav-link[aria-current="page"] {
-        background: var(--brand);
+        background: linear-gradient(120deg, var(--accent-purple), var(--accent-blue));
         color: var(--brand-contrast);
         border-color: transparent;
       }
@@ -124,6 +112,10 @@ function isActive(href: string): boolean {
         margin: 0.2rem 0 0.5rem;
         font-size: clamp(1.85rem, 3vw, 2.45rem);
         line-height: 1.2;
+        background: linear-gradient(110deg, var(--accent-blue) 5%, var(--accent-purple) 52%, #e7d8ff 95%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
       :global(h2) {
         margin-top: 0;
@@ -141,27 +133,71 @@ function isActive(href: string): boolean {
         width: 1.85rem;
         height: 1.85rem;
         border-radius: 8px;
-        background: color-mix(in srgb, var(--brand) 14%, var(--surface));
-        color: var(--brand);
-        border: 1px solid color-mix(in srgb, var(--brand) 24%, var(--border));
+        background: linear-gradient(
+          140deg,
+          color-mix(in srgb, var(--accent-blue) 26%, transparent),
+          color-mix(in srgb, var(--accent-purple) 28%, transparent)
+        );
+        backdrop-filter: blur(8px);
+        color: #d3deff;
+        border: 1px solid color-mix(in srgb, var(--accent-blue) 28%, var(--border));
         flex: 0 0 auto;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
       }
       :global(.page-header) {
-        background: linear-gradient(160deg, color-mix(in srgb, var(--surface) 85%, var(--brand) 15%), var(--surface));
+        background: radial-gradient(circle at 20% 10%, rgba(82, 127, 255, 0.14), transparent 48%),
+          radial-gradient(circle at 90% 24%, rgba(182, 107, 255, 0.16), transparent 40%),
+          linear-gradient(165deg, #070a13, #03050b);
         border: 1px solid var(--border);
         border-radius: var(--radius);
         box-shadow: var(--shadow);
         padding: 1.2rem 1.2rem 1rem;
         margin: 0 0 1rem;
       }
+      :global(.page-header-content) {
+        display: grid;
+        grid-template-columns: 1.5fr minmax(150px, 0.8fr);
+        gap: 1rem;
+        align-items: center;
+      }
+      :global(.page-header-copy p) {
+        max-width: 64ch;
+      }
+      :global(.page-header-visual) {
+        display: flex;
+        justify-content: flex-end;
+      }
+      :global(.hero-visual-placeholder) {
+        width: min(210px, 100%);
+        aspect-ratio: 1 / 1;
+        border-radius: 999px;
+        position: relative;
+        background:
+          radial-gradient(circle at 33% 28%, rgba(255, 255, 255, 0.42), transparent 25%),
+          conic-gradient(from 120deg, #4ea4ff, #a67bff, #57d0ff, #ca7fff, #4ea4ff);
+        box-shadow: 0 0 0 1px rgba(140, 177, 255, 0.32), 0 16px 38px rgba(90, 76, 255, 0.32);
+      }
+      :global(.hero-visual-placeholder::after) {
+        content: "Sphere visual placeholder";
+        position: absolute;
+        inset: auto 8% -1.6rem;
+        text-align: center;
+        font-size: 0.72rem;
+        letter-spacing: 0.02em;
+        color: color-mix(in srgb, var(--text-muted) 70%, white);
+      }
       :global(.page-header .eyebrow) {
         display: inline-flex;
         margin: 0;
         padding: 0.18rem 0.55rem;
         border-radius: 999px;
-        background: var(--surface-muted);
-        border: 1px solid var(--border);
-        color: var(--text);
+        background: linear-gradient(
+          140deg,
+          color-mix(in srgb, var(--accent-purple) 35%, transparent),
+          color-mix(in srgb, var(--accent-blue) 35%, transparent)
+        );
+        border: 1px solid color-mix(in srgb, var(--accent-blue) 22%, var(--border));
+        color: #ebf1ff;
         font-size: 0.82rem;
         font-weight: 600;
         letter-spacing: 0.02em;
@@ -171,25 +207,25 @@ function isActive(href: string): boolean {
         color: var(--text-muted);
       }
       :global(section) {
-        background: var(--surface);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 90%, black), var(--surface));
         border: 1px solid var(--border);
         border-radius: var(--radius);
         box-shadow: var(--shadow);
         padding: 1.1rem 1.2rem;
         margin: 0 0 1rem;
       }
-      :global(.pain-point-grid) {
+      :global(.icon-card-grid) {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
         gap: 0.75rem;
       }
-      :global(.pain-point-card) {
-        background: var(--surface-muted);
+      :global(.icon-card) {
+        background: linear-gradient(180deg, color-mix(in srgb, var(--surface-muted) 92%, black), var(--surface-muted));
         border: 1px solid var(--border);
         border-radius: 10px;
         padding: 0.85rem 0.9rem;
       }
-      :global(.pain-point-icon) {
+      :global(.icon-card-icon) {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -197,15 +233,22 @@ function isActive(href: string): boolean {
         height: 2rem;
         border-radius: 8px;
         margin-bottom: 0.45rem;
-        background: color-mix(in srgb, var(--brand) 16%, var(--surface));
-        color: var(--brand);
+        background: linear-gradient(
+          140deg,
+          color-mix(in srgb, var(--accent-blue) 30%, transparent),
+          color-mix(in srgb, var(--accent-purple) 30%, transparent)
+        );
+        backdrop-filter: blur(8px);
+        color: #dae3ff;
+        border: 1px solid color-mix(in srgb, var(--accent-purple) 22%, var(--border));
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
       }
-      :global(.pain-point-card h3) {
+      :global(.icon-card h3) {
         margin: 0 0 0.3rem;
         font-size: 1rem;
         color: var(--text);
       }
-      :global(.pain-point-card p) {
+      :global(.icon-card p) {
         margin: 0;
       }
       :global(code) {
@@ -229,22 +272,34 @@ function isActive(href: string): boolean {
         padding: 0.55rem 0.9rem;
         text-decoration: none;
         font-weight: 600;
-        border: 1px solid var(--border);
+        border: 1px solid color-mix(in srgb, var(--accent-blue) 24%, var(--border));
+        color: #f2f6ff;
+        background: linear-gradient(
+          130deg,
+          color-mix(in srgb, var(--accent-purple) 28%, #0a1020),
+          color-mix(in srgb, var(--accent-blue) 30%, #0a1020)
+        );
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), 0 10px 24px rgba(23, 17, 43, 0.42);
       }
       :global(.button-primary) {
-        background: var(--brand);
-        color: var(--brand-contrast);
-        border-color: transparent;
+        background: linear-gradient(120deg, #7b5cff, #5f95ff);
+        border-color: color-mix(in srgb, #90b3ff 35%, transparent);
       }
       :global(.button-primary:hover) {
-        filter: brightness(1.05);
+        filter: brightness(1.08);
+        transform: translateY(-1px);
       }
       :global(.button-secondary) {
-        background: var(--surface);
-        color: var(--text);
+        background: linear-gradient(
+          130deg,
+          color-mix(in srgb, var(--accent-purple) 18%, #080c18),
+          color-mix(in srgb, var(--accent-blue) 20%, #080c18)
+        );
+        color: #dee7ff;
       }
       :global(.button-secondary:hover) {
-        background: var(--surface-muted);
+        filter: brightness(1.06);
+        transform: translateY(-1px);
       }
       .mermaid {
         background: var(--surface-muted);
@@ -264,6 +319,15 @@ function isActive(href: string): boolean {
       .site-footer .container {
         padding-top: 1.3rem;
         padding-bottom: 1.3rem;
+      }
+      @media (max-width: 860px) {
+        :global(.page-header-content) {
+          grid-template-columns: 1fr;
+        }
+        :global(.page-header-visual) {
+          justify-content: center;
+          margin-top: 0.35rem;
+        }
       }
     </style>
     {
