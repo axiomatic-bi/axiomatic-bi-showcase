@@ -6,6 +6,20 @@ interface Props {
 }
 
 const { title, description, enableMermaid = false } = Astro.props;
+const currentPath = Astro.url.pathname;
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/engine", label: "Engine Overview" },
+  { href: "/case-studies", label: "Case Studies" },
+  { href: "/about", label: "About" }
+];
+
+function isActive(href: string): boolean {
+  if (href === "/") {
+    return currentPath === "/";
+  }
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
 ---
 
 <!doctype html>
@@ -17,60 +31,255 @@ const { title, description, enableMermaid = false } = Astro.props;
     <title>{title}</title>
     <style>
       :root {
-        color-scheme: light dark;
+        color-scheme: light;
+        --bg: #f6f8fb;
+        --surface: #ffffff;
+        --surface-muted: #f1f5f9;
+        --border: #d5dde8;
+        --text: #0f172a;
+        --text-muted: #334155;
+        --brand: #155eef;
+        --brand-contrast: #ffffff;
+        --radius: 12px;
+        --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          color-scheme: dark;
+          --bg: #0b1220;
+          --surface: #111a2c;
+          --surface-muted: #162136;
+          --border: #253450;
+          --text: #e6edf7;
+          --text-muted: #b7c2d7;
+          --brand: #77a8ff;
+          --brand-contrast: #0b1220;
+          --shadow: 0 10px 30px rgba(2, 6, 23, 0.4);
+        }
       }
       body {
         margin: 0;
-        font-family: Arial, sans-serif;
-        line-height: 1.5;
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+        line-height: 1.65;
+        background: var(--bg);
+        color: var(--text);
       }
       .container {
-        max-width: 960px;
+        max-width: 1040px;
         margin: 0 auto;
-        padding: 1rem;
+        padding: 1rem 1.25rem;
       }
-      header,
-      footer {
-        border-bottom: 1px solid #7773;
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(8px);
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        border-bottom: 1px solid var(--border);
       }
-      footer {
-        border-top: 1px solid #7773;
-        border-bottom: 0;
-        margin-top: 2rem;
+      .site-header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.5rem 0;
       }
       nav ul {
         display: flex;
-        gap: 1rem;
+        gap: 0.5rem;
         list-style: none;
         padding: 0;
-        margin: 0.75rem 0;
+        margin: 0;
         flex-wrap: wrap;
       }
       a {
-        text-underline-offset: 0.2rem;
+        color: var(--brand);
+      }
+      .nav-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.4rem 0.8rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-weight: 600;
+      }
+      .nav-link:hover {
+        color: var(--text);
+        background: var(--surface-muted);
+        border-color: var(--border);
+      }
+      .nav-link[aria-current="page"] {
+        background: var(--brand);
+        color: var(--brand-contrast);
+        border-color: transparent;
+      }
+      main.container {
+        padding-top: 1.75rem;
+        padding-bottom: 2rem;
+      }
+      :global(h1) {
+        margin: 0.2rem 0 0.5rem;
+        font-size: clamp(1.85rem, 3vw, 2.45rem);
+        line-height: 1.2;
+      }
+      :global(h2) {
+        margin-top: 0;
+        font-size: clamp(1.25rem, 2.2vw, 1.45rem);
+      }
+      :global(.page-header) {
+        background: linear-gradient(160deg, color-mix(in srgb, var(--surface) 85%, var(--brand) 15%), var(--surface));
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 1.2rem 1.2rem 1rem;
+        margin: 0 0 1rem;
+      }
+      :global(.page-header .eyebrow) {
+        display: inline-flex;
+        margin: 0;
+        padding: 0.18rem 0.55rem;
+        border-radius: 999px;
+        background: var(--surface-muted);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      :global(p),
+      :global(li) {
+        color: var(--text-muted);
+      }
+      :global(section) {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 1.1rem 1.2rem;
+        margin: 0 0 1rem;
+      }
+      :global(code) {
+        background: var(--surface-muted);
+        padding: 0.1rem 0.35rem;
+        border-radius: 6px;
+      }
+      :global(pre) {
+        background: var(--surface-muted);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.75rem;
+        overflow-x: auto;
+      }
+      :global(.button) {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        border-radius: 10px;
+        padding: 0.55rem 0.9rem;
+        text-decoration: none;
+        font-weight: 600;
+        border: 1px solid var(--border);
+      }
+      :global(.button-primary) {
+        background: var(--brand);
+        color: var(--brand-contrast);
+        border-color: transparent;
+      }
+      :global(.button-primary:hover) {
+        filter: brightness(1.05);
+      }
+      :global(.button-secondary) {
+        background: var(--surface);
+        color: var(--text);
+      }
+      :global(.button-secondary:hover) {
+        background: var(--surface-muted);
       }
       .mermaid {
+        background: var(--surface-muted);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.8rem;
+        margin-top: 0.8rem;
         overflow-x: auto;
+      }
+      :global(.mermaid svg) {
+        max-width: 100%;
+        height: auto;
+      }
+      .site-footer {
+        border-top: 1px solid var(--border);
+      }
+      .site-footer .container {
+        padding-top: 1.3rem;
+        padding-bottom: 1.3rem;
       }
     </style>
     {
       enableMermaid && (
         <script type="module" is:inline>
           import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-          mermaid.initialize({ startOnLoad: true, securityLevel: "strict" });
+          const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const themeConfig = isDark
+            ? {
+                theme: "base",
+                themeVariables: {
+                  background: "#111a2c",
+                  primaryColor: "#162136",
+                  secondaryColor: "#111a2c",
+                  tertiaryColor: "#0b1220",
+                  primaryTextColor: "#e6edf7",
+                  secondaryTextColor: "#e6edf7",
+                  tertiaryTextColor: "#e6edf7",
+                  primaryBorderColor: "#4b5e83",
+                  lineColor: "#9cb0d1",
+                  fontFamily: "Inter, Segoe UI, Arial, sans-serif"
+                }
+              }
+            : {
+                theme: "base",
+                themeVariables: {
+                  background: "#ffffff",
+                  primaryColor: "#eff6ff",
+                  secondaryColor: "#f8fafc",
+                  tertiaryColor: "#ffffff",
+                  primaryTextColor: "#0f172a",
+                  secondaryTextColor: "#0f172a",
+                  tertiaryTextColor: "#0f172a",
+                  primaryBorderColor: "#8aa3d1",
+                  lineColor: "#475569",
+                  fontFamily: "Inter, Segoe UI, Arial, sans-serif"
+                }
+              };
+          mermaid.initialize({
+            startOnLoad: true,
+            securityLevel: "strict",
+            flowchart: { useMaxWidth: true, htmlLabels: false, curve: "linear" },
+            ...themeConfig
+          });
         </script>
       )
     }
   </head>
   <body>
-    <header>
-      <div class="container">
+    <header class="site-header">
+      <div class="container site-header-inner">
+        <a class="nav-link" href="/">Axiomatic BI Showcase</a>
         <nav aria-label="Primary">
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/engine">Engine Overview</a></li>
-            <li><a href="/case-studies">Case Studies</a></li>
-            <li><a href="/about">About</a></li>
+            {
+              navItems.map((item) => (
+                <li>
+                  <a class="nav-link" href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
           </ul>
         </nav>
       </div>
@@ -78,7 +287,7 @@ const { title, description, enableMermaid = false } = Astro.props;
     <main class="container">
       <slot />
     </main>
-    <footer>
+    <footer class="site-footer">
       <div class="container">
         <small>Axiomatic BI Showcase</small>
       </div>

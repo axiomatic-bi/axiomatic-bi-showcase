@@ -7,20 +7,21 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
 <BaseLayout
   title="Data Pipeline Delivery"
   description="Client-focused data pipeline delivery with automation, ownership, and trustworthy modelling outcomes."
+  enableMermaid={true}
 >
   <PageHeader
     eyebrow="Home"
-    title="Build a trustworthy data pipeline your team actually owns"
-    lede="I design and implement automated, source-agnostic pipelines with clean reporting models, then hand over code and operations so your team stays in control."
+    title="Build an AI-ready and analyst-ready data pipeline your team actually owns"
+    lede="I deliver automated, source-agnostic pipelines with clear star schemas that keep SQL and DAX simpler, improve reporting trust, and support more consistent AI-assisted analysis."
   />
 
   <section>
     <h2>Start with a discovery call</h2>
     <p>
       If you are planning a new analytics stack or trying to stabilise an existing one, I can scope a
-      practical delivery plan with clear milestones, ownership boundaries, and implementation trade-offs.
+      commercial delivery plan with clear milestones, ownership boundaries, and measurable technical outcomes.
     </p>
-    <p><a href="/about#contact">Book a discovery call</a></p>
+    <p><a class="button button-primary" href="/about#contact">Book a discovery call</a></p>
   </section>
 
   <section>
@@ -52,6 +53,12 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
       example is joining commerce and marketing data (for example Shopify plus Google Ads) to understand
       revenue, acquisition efficiency, and product performance in one trusted view.
     </p>
+    <div class="mermaid">{`flowchart LR
+  shopifySource[ShopifyData] --> unifiedModel[UnifiedStarSchema]
+  googleAdsSource[GoogleAdsData] --> unifiedModel
+  productSource[ProductAndCatalogueData] --> unifiedModel
+  unifiedModel --> biTools[PowerBI_Tableau_Python_R]
+  unifiedModel --> aiAssistant[AIAndMCPConsumption]`}</div>
   </section>
 
   <section>
@@ -83,7 +90,8 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
       ]}
     />
     <p>
-      Explore <a href="/engine">Engine Overview</a> and <a href="/case-studies/fake-store">Fake Store Case Study</a>.
+      <a class="button button-secondary" href="/engine">Engine Overview</a>{" "}
+      <a class="button button-secondary" href="/case-studies/fake-store">Fake Store Case Study</a>
     </p>
   </section>
 
@@ -98,6 +106,6 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
   <section>
     <h2>Ready to scope your pipeline?</h2>
     <p>Book a discovery call to discuss sources, target warehouse, delivery timeline, and ownership model.</p>
-    <p><a href="/about#contact">Book a discovery call</a></p>
+    <p><a class="button button-primary" href="/about#contact">Book a discovery call</a></p>
   </section>
 </BaseLayout>

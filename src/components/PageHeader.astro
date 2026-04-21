@@ -9,8 +9,8 @@ interface Props {
 const { eyebrow, title, lede, updatedAt } = Astro.props;
 ---
 
-<header>
-  {eyebrow && <p>{eyebrow}</p>}
+<header class="page-header">
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
   <h1>{title}</h1>
   <p>{lede}</p>
   {updatedAt && <p><small>Updated: {updatedAt}</small></p>}
