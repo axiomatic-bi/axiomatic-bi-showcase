@@ -33,8 +33,32 @@ decisions:
     sourcePath: context_docs/axiomatic_engine/adr/002-dbt-first-transformation-orchestration.md
 ---
 
-This page anchors engine claims to architectural and ADR evidence.  
-Future semantic and MCP orchestration standards will be added with explicit `planned` status until implemented.
+This page anchors engine claims to architectural and ADR evidence, rather than framework-level marketing statements.
+
+## Current measurable scope
+
+- Protocol boundary areas: source, storage, warehouse, transformation.
+- Implemented transformation backend: `dbt` (dbt-first orchestration path).
+- Implemented warehouse adapters: `duckdb` and `motherduck` with shared Duck-compatible base behaviour.
+- Declared-but-unimplemented examples: storage `gcs`/`s3`, warehouse `bigquery`, and additional transformation backends.
+
+## Operational behaviour already evidenced
+
+- Ingestion supports per-resource `write_disposition` (`append`, `replace`, `merge`) and optional `primary_key`.
+- Schema evolution policy supports `auto`, `strict`, and `discard`.
+- Rerun semantics are explicit: `merge` for idempotent upsert behaviour, `replace` for deterministic snapshots, `append` for arrival history.
+
+```text
+ResourceLoadHints
+- write_disposition: append | replace | merge
+- primary_key: optional, used by merge semantics
+- schema_evolution_mode: auto | strict | discard
+```
+
+## Reproducibility boundary
+
+Engine orchestration is exercised here through a project runner rather than a standalone engine CLI.  
+Future semantic and MCP orchestration standards remain explicitly `planned` until implementation artefacts are published.
 
 <div class="mermaid">{`flowchart TD
   sourceNode[SourceProtocols] --> ingestNode[IngestorDLTStage]

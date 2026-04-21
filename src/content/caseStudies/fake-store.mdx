@@ -42,7 +42,52 @@ limitations:
   - Metrics and screenshots will be added once execution artefacts are captured for publication.
 ---
 
-This page will present a complete narrative from problem to trade-offs, backed by source paths and reproducible commands.
+## Problem
+
+Build a reproducible analytics pipeline from Fake Store API data while keeping domain logic in project code and orchestration logic in the engine.
+
+## Architecture
+
+The documented flow is bronze to silver to gold, with optional analytics views.  
+Ingestion runs via dlt through the engine; transformation runs through the dbt-first adapter path when enabled.
+
+## Data model
+
+The project documentation defines silver/gold modelling layers and references dimensional/fact intent.  
+As model files are published into showcase context, this section should link each analytical table claim to concrete dbt model paths.
+
+## Transform logic
+
+`run_pipeline.py` applies CLI-over-env settings and defines resource-level ingestion contracts used by engine orchestration:
+
+```python
+RestApiResourceDefinition(
+    name="products",
+    endpoint_path="products",
+    load_hints=ResourceLoadHints(
+        write_disposition="merge",
+        primary_key="id",
+        schema_evolution_mode="auto",
+    ),
+)
+```
+
+The same pattern is used for `users` (`merge`) and `carts` (`replace`), giving deterministic rerun behaviour per resource policy.
+
+## Data quality/tests
+
+The pipeline contract includes dbt execution support and optional test execution controls through environment settings (`AXIOMATIC_DBT_RUN_TESTS`).  
+Current public evidence confirms the validation path; publication-ready test result artefacts are tracked for follow-up.
+
+## Results/insights
+
+Current measurable outcome: rerun expectations are explicit and testable from documented commands (`merge` resources should be idempotent; `replace` resources should be deterministic on rerun).  
+Analytical insight metrics will be added once query result snapshots are captured in public-safe form.
+
+## Trade-offs/lessons
+
+Resource-level policy control improves operational clarity but requires deliberate per-endpoint configuration choices.  
+The case study currently prioritises reproducibility and explicit boundaries over broad feature scope claims.
 
 <div class="mermaid">{`flowchart TD
   apiNode[FakeStoreAPI] --> bronzeNode[BronzeLoad]
