@@ -1,94 +1,47 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import ProofStrip from "../components/ProofStrip.astro";
-import OutcomeHighlights from "../components/OutcomeHighlights.astro";
-import CaseStudyPreviewGrid from "../components/CaseStudyPreviewGrid.astro";
-import ReportingShowcase from "../components/ReportingShowcase.astro";
-import ProcessSteps from "../components/ProcessSteps.astro";
 import heroImage from "../../assets/hero-image.webp";
-import { ArrowRight, Layers3, Network, SearchCheck } from "lucide-react";
+import { ArrowRight, Check, CircleAlert, Layers3 } from "lucide-react";
 
 const primaryCta = {
   label: "Book a discovery call",
   href: "/contact"
 };
 
-const caseStudies = await getCollection("caseStudies");
-
 const crossSourceMermaid = `flowchart LR
-  shopifySource["Shopify sales"] --> unifiedModel["Unified analytical model"]
-  googleAdsSource["Google Ads"] --> unifiedModel
-  productSource["Product catalogue"] --> unifiedModel
-  unifiedModel --> biTools["BI dashboards"]
-  unifiedModel --> aiAssistant["AI-assisted analysis"]`;
+  sourceApis["Source APIs"] --> dataLoads["Automated loads"]
+  fileStreams["File streams"] --> dataLoads
+  dataLoads --> sharedModel["Shared model"]
+  sharedModel --> biReports["Dashboards"]
+  sharedModel --> aiContext["AI context"]`;
 
 const proofChips = [
-  { label: "Published ADR set" },
-  { label: "1 reproducible case study" },
-  { label: "Open engine architecture documentation" },
-  { label: "Public implementation notes" },
-  { label: "Client-owned delivery model" }
+  { label: "Python orchestration" },
+  { label: "dlt ingestion" },
+  { label: "dbt transformation" },
+  { label: "REST API sources" },
+  { label: "DuckDB + MotherDuck" },
+  { label: "Published ADRs" },
+  { label: "Reproducible case study" },
+  { label: "Client-owned code and data" }
 ];
 
-const proofCards = [
-  {
-    title: "Engine architecture",
-    description: "Runtime boundaries, capabilities, and implementation scope.",
-    href: "/engine",
-    cta: "Open engine overview"
-  },
-  {
-    title: "Reference case study",
-    description: "End-to-end pipeline walkthrough with reproducibility notes.",
-    href: "/case-studies/fake-store",
-    cta: "Open fake store case study"
-  },
-  {
-    title: "Architecture decisions",
-    description: "Decision records behind engine and delivery approach.",
-    href: "https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr",
-    cta: "View ADR repository"
-  }
-];
-
-const outcomeCards = [
-  { title: "Faster delivery", description: "Reusable patterns reduce setup time." },
-  { title: "Clear handover", description: "Documentation makes the stack easier to run." },
-  { title: "Cross-source visibility", description: "Multiple systems aligned in one reporting model." }
-];
-
-const caseStudyCards = caseStudies.map((entry) => ({
-  href: `/case-studies/${entry.slug}`,
-  title: entry.data.title,
-  problem: "Reporting relied on fragmented source outputs and manual process checks.",
-  change: "Built a reproducible pipeline and modelled layered analytical tables.",
-  result: "Clear rerun behaviour and faster route from ingestion to decision-ready reporting."
-}));
-
-const processSteps = [
-  { title: "Discovery", caption: "Scope sources, constraints, ownership, and reporting priorities before build." },
-  { title: "Build", caption: "Implement ingestion, modelling, and reporting foundations with explicit boundaries." },
-  { title: "Validate", caption: "Confirm quality, reproducibility, and confidence signals before handover." },
-  { title: "Handover", caption: "Transfer documentation, run guidance, and operating ownership to your team." }
-];
-
-const heroHighlights = ["Reporting-ready models", "Client-owned handover", "Reusable delivery patterns", "AI-ready"];
 ---
 
 <BaseLayout
-  title="Premium Data and BI Delivery"
-  description="Analytics engineering and reporting delivery with visible proof, clear ownership, and structured handover."
+  title="Reliable Reporting Systems and BI Delivery"
+  description="Analytics engineering for client-owned reporting systems with reproducible pipelines, shared models, and clear handover."
   enableMermaid={true}
 >
   <div class="full-bleed hero-scene">
     <div class="band-inner">
       <PageHeader
         eyebrow="Home"
-        title="Reporting systems your team can trust and run."
-        lede="I design and deliver reporting systems that reduce manual work, improve confidence in the numbers, and leave your team with something they can run confidently."
+        title="Reliable reporting systems your team can own."
+        lede="For operations, finance, and growth teams, this service replaces manual reporting work with an automated, governed data model your team can trust and run after handover."
       >
         <img
           slot="visual"
@@ -102,120 +55,238 @@ const heroHighlights = ["Reporting-ready models", "Client-owned handover", "Reus
         />
       </PageHeader>
       <p class="hero-proofline">Client-owned delivery. Clear handover. Built for reporting and AI-assisted analysis.</p>
-      <ul class="hero-highlight-list" role="list" aria-label="Delivery highlights">
-        {heroHighlights.map((item) => <li>{item}</li>)}
-      </ul>
       <p class="hero-actions">
         <a class="button button-primary" href={primaryCta.href}>
           {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
         </a>
-        <a class="button button-secondary" href="/case-studies">
-          View case studies
-        </a>
       </p>
     </div>
   </div>
 
-  <ProofStrip
-    title="Proof"
-    intro="Review the architecture, delivery notes, and implementation decisions behind the work."
-    items={proofChips}
-  />
+  <div class="full-bleed proof-band">
+    <div class="band-inner proof-band-inner">
+      <ProofStrip
+        title="Technology and delivery proof"
+        intro="Engine orchestration combines dlt ingestion and dbt transformation with client-owned delivery assets. Planned next adapters include GraphQL API and SharePoint files."
+        items={proofChips}
+      />
+    </div>
+  </div>
 
   <section class="problem-section" aria-labelledby="problem-heading">
-    <p class="section-label">Where teams usually get stuck</p>
-    <h2 id="problem-heading">Facing these problems?</h2>
-    <p class="section-intro">Most clients arrive with one of these recurring constraints.</p>
-    <div class="problem-grid">
-      <article class="problem-card problem-card-featured">
-        <span class="problem-icon" aria-hidden="true"><Network size={18} strokeWidth={2} /></span>
-        <h3>Manual operations</h3>
-        <p>Pipelines depend on brittle scripts or one person remembering each run.</p>
-      </article>
-      <article class="problem-card">
-        <span class="problem-icon" aria-hidden="true"><SearchCheck size={18} strokeWidth={2} /></span>
-        <h3>Low-trust reporting</h3>
-        <p>Teams see different numbers because data quality and modelling standards drift.</p>
-      </article>
-      <article class="problem-card">
-        <span class="problem-icon" aria-hidden="true"><Layers3 size={18} strokeWidth={2} /></span>
-        <h3>Vendor lock-in</h3>
-        <p>Ownership is unclear and analytical layers are not designed for reuse.</p>
-      </article>
+    <div class="problem-columns">
+      <div class="problem-column-intro">
+        <p class="section-label">Why reporting breaks</p>
+        <h2 id="problem-heading">Why reporting fails long before the dashboard.</h2>
+        <p class="section-intro">The delivery model below addresses the operational issues that make reporting hard to trust.</p>
+        <p class="section-intro">This service provides consistent metrics, lower manual overhead, and auditable reporting paths.</p>
+      </div>
+      <div class="problem-column-stack" aria-label="Problems and solutions">
+        <article class="proof-card problem-pair-card">
+          <h3 class="problem-line">
+            <CircleAlert size={14} strokeWidth={2.1} aria-hidden="true" />
+            <span>Still relying on manual exports and ad hoc ingest?</span>
+          </h3>
+          <p class="solution-line">
+            <Check size={14} strokeWidth={2.2} aria-hidden="true" />
+            <span>Scheduled ingestion pipelines with explicit source contracts and repeatable runs.</span>
+          </p>
+        </article>
+        <article class="proof-card problem-pair-card">
+          <h3 class="problem-line">
+            <CircleAlert size={14} strokeWidth={2.1} aria-hidden="true" />
+            <span>Seeing different metric logic across reports?</span>
+          </h3>
+          <p class="solution-line">
+            <Check size={14} strokeWidth={2.2} aria-hidden="true" />
+            <span>Shared analytical models and governed definitions so every report uses the same logic.</span>
+          </p>
+        </article>
+        <article class="proof-card problem-pair-card">
+          <h3 class="problem-line">
+            <CircleAlert size={14} strokeWidth={2.1} aria-hidden="true" />
+            <span>Locked into a managed stack with unclear ownership?</span>
+          </h3>
+          <p class="solution-line">
+            <Check size={14} strokeWidth={2.2} aria-hidden="true" />
+            <span>Client-owned code, data, automation, and handover boundaries from the start.</span>
+          </p>
+        </article>
+      </div>
     </div>
   </section>
 
-  <OutcomeHighlights
-    featuredTitle="Trusted reporting foundation"
-    featuredDescription="Clean models and stable pipelines that make reporting easier to trust and extend."
-    items={outcomeCards}
-  />
-
   <section class="engine-overview" aria-labelledby="engine-overview-heading">
-    <div>
-      <p class="section-label">How the work stays fast and structured</p>
-      <SectionHeading title="A structured delivery model behind each engagement">
+    <div class="engine-copy">
+      <p class="section-label">Service architecture</p>
+      <SectionHeading title="From source data to trusted reporting">
         <Layers3 slot="icon" size={18} strokeWidth={2} />
       </SectionHeading>
       <p id="engine-overview-heading">
-        I use a repeatable delivery framework to speed up implementation, keep technical decisions
-        explicit, and make handover easier. The result is tailored delivery without improvised architecture.
+        Data from APIs and file feeds is loaded on schedule, modelled into a shared reporting layer, and then used by
+        dashboards and AI-assisted analysis.
       </p>
+      <p>The focus is one trusted model, clear ownership, and straightforward handover.</p>
     </div>
-    <div class="mermaid">{crossSourceMermaid}</div>
+    <div class="proof-card engine-diagram-card">
+      <p class="engine-diagram-label">Delivery flow</p>
+      <div class="mermaid">{crossSourceMermaid}</div>
+    </div>
   </section>
 
-  <section class="proof-grid-section" aria-labelledby="proof-grid-heading">
-    <p class="section-label">Evidence</p>
-    <h2 id="proof-grid-heading">Implementation detail linked to artefacts</h2>
-    <div class="proof-grid">
-      {
-        proofCards.map((item) => (
-          <article class="proof-card">
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-            <a
-              class="button button-secondary"
-              href={item.href}
-              target={item.href.startsWith("http") ? "_blank" : undefined}
-              rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-            >
-              {item.cta}
+  <div class="full-bleed example-band">
+    <section class="proof-grid-section band-inner" aria-labelledby="proof-grid-heading">
+      <p class="section-label">Example engagement</p>
+      <h2 id="proof-grid-heading">Fake Store reference build: reproducible pipeline, modelled reporting, explicit reruns.</h2>
+      <div class="proof-grid">
+        <article class="proof-card">
+          <h3>What changed</h3>
+          <p>
+            Built a Python orchestration layer around dlt ingestion and dbt-first transformation, with deterministic
+            rerun policies across products, users, and carts.
+          </p>
+          <p>
+            Evidence includes resource-level merge/replace configuration, reproducible run commands, and implementation
+            artefacts in the published case study.
+          </p>
+          <p class="hero-actions">
+            <a class="button button-primary" href="/case-studies/fake-store">
+              Open Fake Store case study <ArrowRight size={16} strokeWidth={2} />
             </a>
-          </article>
-        ))
-      }
-    </div>
-  </section>
-
-  <CaseStudyPreviewGrid items={caseStudyCards} />
-
-  <ReportingShowcase />
-
-  <ProcessSteps steps={processSteps} />
-
-  <section class="roadmap-callout" aria-label="Roadmap">
-    <p class="section-label">Roadmap</p>
-    <h2>Planned next: semantic access and MCP support</h2>
-    <p>Optional agent-facing layers are planned to support consistent analysis on governed models.</p>
-  </section>
-
-  <div class="full-bleed cta-band">
-    <section class="final-cta" aria-label="Final call to action">
-      <div class="final-cta-inner">
-        <SectionHeading title="Ready to scope the right reporting foundation?">
-          <ArrowRight slot="icon" size={18} strokeWidth={2} />
-        </SectionHeading>
-        <p>
-          If you need a cleaner pipeline, more reliable reporting, or a stack your team can genuinely own,
-          let&rsquo;s scope the right next step.
-        </p>
-        <p>
-          <a class="button button-primary" href={primaryCta.href}>
-            {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
-          </a>
-        </p>
+            <a class="button button-secondary" href="/case-studies">
+              View all case studies
+            </a>
+          </p>
+          <p>A report screenshot slot can be added here once a publication-safe image is ready.</p>
+        </article>
       </div>
     </section>
   </div>
 </BaseLayout>
+
+<style>
+  :global(.hero-scene) {
+    margin-bottom: 0;
+  }
+
+  .problem-section {
+    padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .problem-columns {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .problem-column-intro {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+  }
+
+  .problem-column-stack {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .problem-pair-card h3 {
+    margin-bottom: 0.45rem;
+  }
+
+  .problem-line {
+    display: flex;
+    gap: 0.45rem;
+    align-items: flex-start;
+  }
+
+  .problem-line :global(svg) {
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+
+  .problem-pair-card p {
+    margin: 0;
+  }
+
+  .solution-line {
+    display: flex;
+    gap: 0.45rem;
+    align-items: flex-start;
+  }
+
+  .solution-line :global(svg) {
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+    opacity: 0.8;
+  }
+
+  .proof-band {
+    background: color-mix(in srgb, var(--background, #050c1a) 90%, #13294d 10%);
+  }
+
+  .proof-band-inner {
+    padding-top: clamp(1.5rem, 3vw, 2.25rem);
+    padding-bottom: clamp(1.25rem, 2.2vw, 2rem);
+  }
+
+  .proof-band :global(.proof-strip) {
+    padding-top: 0;
+    margin-bottom: 0;
+  }
+
+  :global(.engine-overview) {
+    display: grid;
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+    align-items: start;
+    padding-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .engine-copy {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .engine-diagram-card {
+    display: grid;
+    gap: 0.6rem;
+    overflow: hidden;
+  }
+
+  .engine-diagram-label {
+    margin: 0;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .engine-diagram-card .mermaid {
+    min-width: 0;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .engine-diagram-card .mermaid :global(svg) {
+    width: 100% !important;
+    max-width: 100%;
+    height: auto !important;
+  }
+
+  .example-band {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    background: color-mix(in srgb, var(--background, #050c1a) 86%, #0f1c34 14%);
+  }
+
+  @media (min-width: 64rem) {
+    .problem-columns {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+      gap: 1.25rem;
+    }
+  }
+</style>
