@@ -7,6 +7,7 @@ import SectionHeading from "../../components/SectionHeading.astro";
 import { ArrowRight, CheckCircle2, Microscope, Target } from "lucide-react";
 
 const entries = await getCollection("caseStudies");
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 ---
 
 <BaseLayout title="Case Studies" description="Portfolio case studies with evidence and reproducibility notes.">
@@ -54,7 +55,7 @@ const entries = await getCollection("caseStudies");
               </div>
             </dl>
             <p>
-              <a class="button button-secondary" href={`/case-studies/${entry.slug}`}>
+              <a class="button button-secondary" href={withBase(`/case-studies/${entry.slug}`)}>
                 Read case study <ArrowRight size={16} strokeWidth={2} />
               </a>
             </p>

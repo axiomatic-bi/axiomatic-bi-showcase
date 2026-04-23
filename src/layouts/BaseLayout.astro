@@ -7,6 +7,24 @@ interface Props {
 
 const { title, description, enableMermaid = false } = Astro.props;
 const currentPath = Astro.url.pathname;
+const basePath = import.meta.env.BASE_URL;
+
+function withBase(path: string): string {
+  return `${basePath}${path.replace(/^\//, "")}`;
+}
+
+function stripBase(pathname: string): string {
+  if (basePath === "/") {
+    return pathname;
+  }
+  if (!pathname.startsWith(basePath)) {
+    return pathname;
+  }
+  const stripped = `/${pathname.slice(basePath.length)}`;
+  return stripped === "//" ? "/" : stripped;
+}
+
+const routePathname = stripBase(currentPath);
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/engine", label: "Engine" },
@@ -21,12 +39,12 @@ function isActive(href: string): boolean {
   }
   const routePath = href.split("#")[0] ?? href;
   if (routePath === "/about") {
-    return currentPath === "/about";
+    return routePathname === "/about";
   }
   if (href === "/") {
-    return currentPath === "/";
+    return routePathname === "/";
   }
-  return currentPath === routePath || currentPath.startsWith(`${routePath}/`);
+  return routePathname === routePath || routePathname.startsWith(`${routePath}/`);
 }
 ---
 
@@ -884,13 +902,13 @@ function isActive(href: string): boolean {
   <body>
     <header class="site-header">
       <div class="container site-header-inner">
-        <a class="nav-link" href="/">Axiomatic BI Showcase</a>
+        <a class="nav-link" href={withBase("/")}>Axiomatic BI Showcase</a>
         <nav aria-label="Primary">
           <ul>
             {
               navItems.map((item) => (
                 <li>
-                  <a class="nav-link" href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+                  <a class="nav-link" href={withBase(item.href)} aria-current={isActive(item.href) ? "page" : undefined}>
                     {item.label}
                   </a>
                 </li>

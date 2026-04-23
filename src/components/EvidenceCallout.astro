@@ -12,13 +12,14 @@ interface Props {
 }
 
 const { title = "Evidence", items } = Astro.props;
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
 function toAdrHref(path: string): string | null {
   const match = path.match(/^src\/content\/adr\/(.+)\.md$/);
   if (!match) {
     return null;
   }
-  return `/adr/${match[1]}`;
+  return withBase(`/adr/${match[1]}`);
 }
 
 function toExternalHref(path: string): string | null {

@@ -5,6 +5,8 @@ import SectionHeading from "../components/SectionHeading.astro";
 import heroImage from "../../assets/hero-image.webp";
 import { ArrowRight, Check, CircleAlert, Layers3 } from "lucide-react";
 
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+
 const primaryCta = {
   label: "Book a discovery call",
   href: "/contact"
@@ -52,7 +54,7 @@ const proofLinks = [
       </PageHeader>
       <p class="hero-proofline">Client-owned delivery. Clear handover. Built for reporting and AI-assisted analysis.</p>
       <p class="hero-actions">
-        <a class="button button-primary" href={primaryCta.href}>
+        <a class="button button-primary" href={withBase(primaryCta.href)}>
           {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
         </a>
       </p>
@@ -73,7 +75,7 @@ const proofLinks = [
             proofLinks.map((item) => (
               <a
                 class="button button-secondary"
-                href={item.href}
+                href={item.href.startsWith("http") ? item.href : withBase(item.href)}
                 target={item.href.startsWith("http") ? "_blank" : undefined}
                 rel={item.href.startsWith("http") ? "noreferrer" : undefined}
               >
@@ -164,10 +166,10 @@ const proofLinks = [
             artefacts in the published case study.
           </p>
           <p class="hero-actions">
-            <a class="button button-primary" href="/case-studies/fake-store">
+            <a class="button button-primary" href={withBase("/case-studies/fake-store")}>
               Open Fake Store case study <ArrowRight size={16} strokeWidth={2} />
             </a>
-            <a class="button button-secondary" href="/case-studies">
+            <a class="button button-secondary" href={withBase("/case-studies")}>
               View all case studies
             </a>
           </p>

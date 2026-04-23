@@ -10,6 +10,7 @@ import { ArrowLeft, CheckCircle2, ExternalLink, FileCode2, Lightbulb, Microscope
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
 const fakeStoreExampleRepoUrl = "https://github.com/axiomatic-bi/axiomatic-bi-showcase/tree/main/examples/fake_store";
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 const fakeStoreArchitectureMermaid = `flowchart TD
   apiNode[FakeStoreAPI] --> bronzeNode[BronzeLoad]
   bronzeNode --> silverNode[SilverModels]
@@ -36,7 +37,7 @@ const { Content } = await fakeStoreEntry.render();
         lede="A reference pipeline demonstrating ingestion policies, transformation orchestration, and reproducible outcomes."
       />
       <div class="case-study-actions">
-        <a class="button button-secondary" href="/case-studies">
+        <a class="button button-secondary" href={withBase("/case-studies")}>
           <ArrowLeft size={16} strokeWidth={2} /> Back to case studies
         </a>
         <a class="button button-primary" href={fakeStoreExampleRepoUrl} target="_blank" rel="noreferrer">
