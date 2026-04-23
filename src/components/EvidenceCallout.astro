@@ -28,24 +28,23 @@ function toExternalHref(path: string): string | null {
 
 <aside aria-label={title}>
   <h3>{title}</h3>
-  <ul>
+  <ul class="evidence-list" role="list">
     {
       items.map((item) => (
-        <li>
-          <strong>{item.label}</strong>{" "}
-          {item.type && <span>({item.type}) </span>}
-          <code>{item.path}</code>{" "}
-          {toAdrHref(item.path) && (
-            <>
-              - <a href={toAdrHref(item.path) ?? "#"}>Open ADR</a>
-            </>
-          )}
-          {toExternalHref(item.path) && (
-            <>
-              - <a href={toExternalHref(item.path) ?? "#"} target="_blank" rel="noreferrer">Open source</a>
-            </>
-          )}
-          {item.note && <> - {item.note}</>}
+        <li class="evidence-item" role="listitem">
+          <p class="evidence-label">
+            <strong>{item.label}</strong> {item.type && <span class="evidence-type">{item.type}</span>}
+          </p>
+          <p><code>{item.path}</code></p>
+          {item.note && <p>{item.note}</p>}
+          <p class="evidence-links">
+            {toAdrHref(item.path) && <a class="button button-secondary" href={toAdrHref(item.path) ?? "#"}>Open ADR</a>}
+            {toExternalHref(item.path) && (
+              <a class="button button-secondary" href={toExternalHref(item.path) ?? "#"} target="_blank" rel="noreferrer">
+                Open source
+              </a>
+            )}
+          </p>
         </li>
       ))
     }

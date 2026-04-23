@@ -1,0 +1,44 @@
+---
+interface CaseStudyPreview {
+  href: string;
+  title: string;
+  problem: string;
+  change: string;
+  result: string;
+}
+
+interface Props {
+  items: CaseStudyPreview[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="case-preview" aria-labelledby="case-preview-heading">
+  <p class="section-label">Case studies</p>
+  <h2 id="case-preview-heading">Examples with outcomes, not just implementation notes</h2>
+  <div class="case-preview-grid">
+    {
+      items.map((item) => (
+        <article class="case-preview-card">
+          <h3>{item.title}</h3>
+          <dl class="case-preview-list">
+            <div>
+              <dt>Problem</dt>
+              <dd>{item.problem}</dd>
+            </div>
+            <div>
+              <dt>What changed</dt>
+              <dd>{item.change}</dd>
+            </div>
+            <div>
+              <dt>What improved</dt>
+              <dd>{item.result}</dd>
+            </div>
+          </dl>
+          <a class="button button-secondary" href={item.href}>Read case study</a>
+        </article>
+      ))
+    }
+  </div>
+</section>

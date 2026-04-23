@@ -12,33 +12,46 @@ const entries = await getCollection("caseStudies");
 <BaseLayout title="Case Studies" description="Portfolio case studies with evidence and reproducibility notes.">
   <PageHeader
     eyebrow="Case Studies"
-    title="Case Studies"
-    lede="Technical walkthroughs with explicit assumptions, reproducibility steps, and trade-offs."
+    title="Case studies with outcomes and implementation evidence"
+    lede="Each walkthrough links challenge, implementation choices, and measurable improvements in one scannable format."
   />
 
   <section>
-    <SectionHeading title="Case Studies">
+    <SectionHeading title="How to read these case studies">
       <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
     <p>
-      Case studies document implementation choices end to end: problem framing, architecture, modelling
-      decisions, validation approach, measured outcomes, and trade-offs.
+      Each page follows the same structure: problem context, what changed, and what improved. Technical
+      details stay linked to architecture notes, commands, and implementation artefacts.
     </p>
   </section>
 
   <section>
-    <SectionHeading title="Available Case Studies">
+    <SectionHeading title="Available case studies">
       <Target slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
-    <div class="icon-card-grid">
+    <div class="case-preview-grid">
       {
         entries.map((entry) => (
-          <article class="icon-card">
+          <article class="case-preview-card">
             <h3>{entry.data.title}</h3>
-            <p>{entry.data.summary}</p>
+            <dl class="case-preview-list">
+              <div>
+                <dt>Problem</dt>
+                <dd>Fragmented source outputs and limited confidence in reporting behaviour.</dd>
+              </div>
+              <div>
+                <dt>What changed</dt>
+                <dd>{entry.data.summary}</dd>
+              </div>
+              <div>
+                <dt>What improved</dt>
+                <dd>Reproducible delivery boundaries and clearer route to decision-ready models.</dd>
+              </div>
+            </dl>
             <p>
               <a class="button button-secondary" href={`/case-studies/${entry.slug}`}>
-                Open case study <ArrowRight size={16} strokeWidth={2} />
+                Read case study <ArrowRight size={16} strokeWidth={2} />
               </a>
             </p>
           </article>
@@ -48,23 +61,22 @@ const entries = await getCollection("caseStudies");
   </section>
 
   <section>
-    <SectionHeading title="Comparison Criteria">
+    <SectionHeading title="Comparison criteria">
       <Microscope slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
     <p>
-      Pages are compared consistently across architecture clarity, data model quality, reproducibility,
-      and evidence strength. Claims are expected to map to code paths, query outputs, tests, or
-      diagrams.
+      Pages are compared across architecture clarity, data model quality, reproducibility, and evidence
+      strength. Claims map to code paths, query outputs, tests, or diagrams.
     </p>
   </section>
 
   <section>
-    <SectionHeading title="Reproducibility Standards">
+    <SectionHeading title="Reproducibility standards">
       <Target slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
     <p>
       Each case study includes runnable commands, assumptions, limitations, and explicit evidence links.
-      Planned capability areas are labelled as planned until supported by published artefacts.
+      Planned capability areas are labelled clearly until supported by published artefacts.
     </p>
   </section>
 </BaseLayout>

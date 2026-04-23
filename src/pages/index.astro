@@ -1,202 +1,221 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
-import EvidenceCallout from "../components/EvidenceCallout.astro";
-import ClientPainPoints from "../components/ClientPainPoints";
-import DeliveryOutcomeCards from "../components/DeliveryOutcomeCards";
 import SectionHeading from "../components/SectionHeading.astro";
+import ProofStrip from "../components/ProofStrip.astro";
+import OutcomeHighlights from "../components/OutcomeHighlights.astro";
+import CaseStudyPreviewGrid from "../components/CaseStudyPreviewGrid.astro";
+import ReportingShowcase from "../components/ReportingShowcase.astro";
+import ProcessSteps from "../components/ProcessSteps.astro";
 import heroImage from "../../assets/hero-image.webp";
-import type { LucideIcon } from "lucide-react";
-import {
-  ArrowRight,
-  BriefcaseBusiness,
-  CheckCircle2,
-  Lightbulb,
-  Microscope,
-  Sparkles,
-  Target
-} from "lucide-react";
-
-interface TextSection {
-  title: string;
-  Icon: LucideIcon;
-  paragraphs: string[];
-}
+import { ArrowRight, Layers3, Network, SearchCheck } from "lucide-react";
 
 const primaryCta = {
   label: "Book a discovery call",
   href: "/about#contact"
 };
 
-const sectionCopy = {
-  discovery: {
-    title: "Start with a discovery call",
-    Icon: BriefcaseBusiness,
-    paragraphs: [
-      "If you are planning a new analytics stack or trying to stabilise an existing one, I can scope a commercial delivery plan with clear milestones, ownership boundaries, and measurable technical outcomes."
-    ]
-  } satisfies TextSection,
-  outcomes: {
-    title: "Delivery outcomes",
-    Icon: CheckCircle2,
-    paragraphs: [
-      "I implement end-to-end ingestion and transformation with explicit orchestration boundaries, then model clean star schemas so reporting tools can be used immediately without extra reshaping work."
-    ]
-  } satisfies TextSection,
-  crossSource: {
-    title: "Cross-source insights, not single-source dashboards",
-    Icon: Lightbulb,
-    paragraphs: [
-      "Pipeline design can combine multiple operational systems into one analytical model. A representative example is joining commerce and marketing data (for example Shopify plus Google Ads) to understand revenue, acquisition efficiency, and product performance in one trusted view."
-    ]
-  } satisfies TextSection,
-  proof: {
-    title: "Technical proof",
-    Icon: Microscope,
-    paragraphs: [
-      "Claims on this site are linked to implementation artefacts, architecture notes, and full architecture decision records."
-    ]
-  } satisfies TextSection,
-  comingSoon: {
-    title: "Coming soon",
-    Icon: Sparkles,
-    paragraphs: [
-      "MCP server support and an optional semantic API layer are planned to improve AI-assisted analysis consistency while retaining governed model logic."
-    ]
-  } satisfies TextSection,
-  closing: {
-    title: "Ready to scope your pipeline?",
-    Icon: BriefcaseBusiness,
-    paragraphs: [
-      "Book a discovery call to discuss sources, target warehouse, delivery timeline, and ownership model."
-    ]
-  } satisfies TextSection
-};
+const caseStudies = await getCollection("caseStudies");
 
 const crossSourceMermaid = `flowchart LR
-  shopifySource["Shopify sales data"] --> unifiedModel["Unified reporting model"]
-  googleAdsSource["Google Ads performance data"] --> unifiedModel
-  productSource["Product and catalogue data"] --> unifiedModel
-  unifiedModel --> biTools["BI tools and dashboards"]
+  shopifySource["Shopify sales"] --> unifiedModel["Unified analytical model"]
+  googleAdsSource["Google Ads"] --> unifiedModel
+  productSource["Product catalogue"] --> unifiedModel
+  unifiedModel --> biTools["BI dashboards"]
   unifiedModel --> aiAssistant["AI-assisted analysis"]`;
 
-const evidenceItems = [
+const proofChips = [
+  { label: "Published ADR set" },
+  { label: "1 reproducible case study" },
+  { label: "Open engine architecture documentation" },
+  { label: "Public implementation notes" },
+  { label: "Client-owned delivery model" }
+];
+
+const proofCards = [
   {
-    label: "Engine architecture and implementation scope",
-    path: "https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/architecture.md",
-    type: "code" as const,
-    note: "Runtime boundaries and implemented capability."
+    title: "Engine architecture",
+    description: "Runtime boundaries, capabilities, and implementation scope.",
+    href: "/engine",
+    cta: "Open engine overview"
   },
   {
-    label: "Reference case study with reproducibility notes",
-    path: "src/content/caseStudies/fake-store.mdx",
-    type: "code" as const,
-    note: "End-to-end medallion pipeline example."
+    title: "Reference case study",
+    description: "End-to-end pipeline walkthrough with reproducibility notes.",
+    href: "/case-studies/fake-store",
+    cta: "Open fake store case study"
   },
   {
-    label: "Full architecture decision records",
-    path: "https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr",
-    type: "code" as const,
-    note: "Canonical engine ADR set."
+    title: "Architecture decisions",
+    description: "Decision records behind engine and delivery approach.",
+    href: "https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr",
+    cta: "View ADR repository"
   }
 ];
 
-const proofLinks = [
-  { href: "/engine", label: "Engine Overview" },
-  { href: "/case-studies/fake-store", label: "Fake Store Case Study" }
+const outcomeCards = [
+  { title: "Faster delivery", description: "Reusable patterns reduce setup time." },
+  { title: "Clear handover", description: "Documentation makes the stack easier to run." },
+  { title: "Cross-source visibility", description: "Multiple systems aligned in one reporting model." }
 ];
+
+const caseStudyCards = caseStudies.map((entry) => ({
+  href: `/case-studies/${entry.slug}`,
+  title: entry.data.title,
+  problem: "Reporting relied on fragmented source outputs and manual process checks.",
+  change: "Built a reproducible pipeline and modelled layered analytical tables.",
+  result: "Clear rerun behaviour and faster route from ingestion to decision-ready reporting."
+}));
+
+const processSteps = [
+  { title: "Discovery", caption: "Scope sources, constraints, ownership, and reporting priorities before build." },
+  { title: "Build", caption: "Implement ingestion, modelling, and reporting foundations with explicit boundaries." },
+  { title: "Validate", caption: "Confirm quality, reproducibility, and confidence signals before handover." },
+  { title: "Handover", caption: "Transfer documentation, run guidance, and operating ownership to your team." }
+];
+
+const heroHighlights = ["Reporting-ready models", "Client-owned handover", "Reusable delivery patterns"];
 ---
 
 <BaseLayout
-  title="Data Pipeline Delivery"
-  description="Client-focused data pipeline delivery with automation, ownership, and trustworthy modelling outcomes."
+  title="Premium Data and BI Delivery"
+  description="Analytics engineering and reporting delivery with visible proof, clear ownership, and structured handover."
   enableMermaid={true}
 >
-  <PageHeader
-    eyebrow="Home"
-    title="Build an AI-ready and analyst-ready data pipeline your team actually owns"
-    lede="I deliver automated, source-agnostic pipelines with clear star schemas that keep SQL and DAX simpler, improve reporting trust, and support more consistent AI-assisted analysis."
-  >
-    <img
-      slot="visual"
-      class="hero-visual-image"
-      src={heroImage.src}
-      alt="Abstract glowing pipeline core with connected data flow lanes."
-      width="1024"
-      height="1024"
-      loading="eager"
-      decoding="async"
-    />
-  </PageHeader>
+  <div class="full-bleed hero-scene">
+    <div class="band-inner">
+      <PageHeader
+        eyebrow="Home"
+        title="Reporting systems your team can trust and run."
+        lede="I design and deliver reporting systems that reduce manual work, improve confidence in the numbers, and leave your team with something they can run confidently."
+      >
+        <img
+          slot="visual"
+          class="hero-visual-image"
+          src={heroImage.src}
+          alt="Abstract glowing pipeline core with connected data flow lanes."
+          width="1024"
+          height="1024"
+          loading="eager"
+          decoding="async"
+        />
+      </PageHeader>
+      <p class="hero-actions">
+        <a class="button button-primary" href={primaryCta.href}>
+          {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
+        </a>
+        <a class="button button-secondary" href="/case-studies">
+          View case studies
+        </a>
+      </p>
+      <p class="hero-proofline">Client-owned delivery. Clear handover. Built for reporting and AI-assisted analysis.</p>
+      <ul class="hero-highlight-list" role="list" aria-label="Delivery highlights">
+        {heroHighlights.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </div>
 
-  <section>
-    <SectionHeading title={sectionCopy.discovery.title}>
-      <sectionCopy.discovery.Icon slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    {sectionCopy.discovery.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-    <p>
-      <a class="button button-primary" href={primaryCta.href}>
-        {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
-      </a>
-    </p>
+  <ProofStrip
+    title="Proof"
+    intro="Review the architecture, delivery notes, and implementation decisions behind the work."
+    items={proofChips}
+  />
+
+  <section class="problem-section" aria-labelledby="problem-heading">
+    <p class="section-label">Where teams usually get stuck</p>
+    <h2 id="problem-heading">The data stack works until reporting depends on fragile workarounds</h2>
+    <p class="section-intro">Most clients arrive with one of these recurring constraints.</p>
+    <div class="problem-grid">
+      <article class="problem-card problem-card-featured">
+        <span class="problem-icon" aria-hidden="true"><Network size={18} strokeWidth={2} /></span>
+        <h3>Manual operations</h3>
+        <p>Pipelines depend on brittle scripts or one person remembering each run.</p>
+      </article>
+      <article class="problem-card">
+        <span class="problem-icon" aria-hidden="true"><SearchCheck size={18} strokeWidth={2} /></span>
+        <h3>Low-trust reporting</h3>
+        <p>Teams see different numbers because data quality and modelling standards drift.</p>
+      </article>
+      <article class="problem-card">
+        <span class="problem-icon" aria-hidden="true"><Layers3 size={18} strokeWidth={2} /></span>
+        <h3>Vendor lock-in</h3>
+        <p>Ownership is unclear and analytical layers are not designed for reuse.</p>
+      </article>
+    </div>
   </section>
 
-  <section>
-    <SectionHeading title="What clients typically need solved">
-      <Target slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <ClientPainPoints />
-  </section>
+  <OutcomeHighlights
+    featuredTitle="Trusted reporting foundation"
+    featuredDescription="Clean models and stable pipelines that make reporting easier to trust and extend."
+    items={outcomeCards}
+  />
 
-  <section>
-    <SectionHeading title={sectionCopy.outcomes.title}>
-      <sectionCopy.outcomes.Icon slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    {sectionCopy.outcomes.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-    <DeliveryOutcomeCards />
-  </section>
-
-  <section>
-    <SectionHeading title={sectionCopy.crossSource.title}>
-      <sectionCopy.crossSource.Icon slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    {sectionCopy.crossSource.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+  <section class="engine-overview" aria-labelledby="engine-overview-heading">
+    <div>
+      <p class="section-label">How the work stays fast and structured</p>
+      <SectionHeading title="A structured delivery model behind each engagement">
+        <Layers3 slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <p id="engine-overview-heading">
+        I use a repeatable delivery framework to speed up implementation, keep technical decisions
+        explicit, and make handover easier. The result is tailored delivery without improvised architecture.
+      </p>
+    </div>
     <div class="mermaid">{crossSourceMermaid}</div>
   </section>
 
-  <section>
-    <SectionHeading title={sectionCopy.proof.title}>
-      <sectionCopy.proof.Icon slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    {sectionCopy.proof.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-    <EvidenceCallout items={evidenceItems} />
-    <p>
+  <section class="proof-grid-section" aria-labelledby="proof-grid-heading">
+    <p class="section-label">Evidence</p>
+    <h2 id="proof-grid-heading">Implementation detail linked to artefacts</h2>
+    <div class="proof-grid">
       {
-        proofLinks.map((link) => (
-          <span style="display:inline-block; margin-right:0.45rem;">
-            <a class="button button-secondary" href={link.href}>{link.label}</a>
-          </span>
+        proofCards.map((item) => (
+          <article class="proof-card">
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+            <a
+              class="button button-secondary"
+              href={item.href}
+              target={item.href.startsWith("http") ? "_blank" : undefined}
+              rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+            >
+              {item.cta}
+            </a>
+          </article>
         ))
       }
-    </p>
+    </div>
   </section>
 
-  <section>
-    <SectionHeading title={sectionCopy.comingSoon.title}>
-      <sectionCopy.comingSoon.Icon slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    {sectionCopy.comingSoon.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+  <CaseStudyPreviewGrid items={caseStudyCards} />
+
+  <ReportingShowcase />
+
+  <ProcessSteps steps={processSteps} />
+
+  <section class="roadmap-callout" aria-label="Roadmap">
+    <p class="section-label">Roadmap</p>
+    <h2>Planned next: semantic access and MCP support</h2>
+    <p>Optional agent-facing layers are planned to support consistent analysis on governed models.</p>
   </section>
 
-  <section>
-    <SectionHeading title={sectionCopy.closing.title}>
-      <sectionCopy.closing.Icon slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    {sectionCopy.closing.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-    <p>
-      <a class="button button-primary" href={primaryCta.href}>
-        {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
-      </a>
-    </p>
-  </section>
+  <div class="full-bleed cta-band">
+    <section class="final-cta" aria-label="Final call to action">
+      <div class="final-cta-inner">
+        <SectionHeading title="Ready to scope the right reporting foundation?">
+          <ArrowRight slot="icon" size={18} strokeWidth={2} />
+        </SectionHeading>
+        <p>
+          If you need a cleaner pipeline, more reliable reporting, or a stack your team can genuinely own,
+          let&rsquo;s scope the right next step.
+        </p>
+        <p>
+          <a class="button button-primary" href={primaryCta.href}>
+            {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
+          </a>
+        </p>
+      </div>
+    </section>
+  </div>
 </BaseLayout>

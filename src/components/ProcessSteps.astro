@@ -1,0 +1,28 @@
+---
+interface Step {
+  title: string;
+  caption: string;
+}
+
+interface Props {
+  steps: Step[];
+}
+
+const { steps } = Astro.props;
+---
+
+<section class="process-steps" aria-labelledby="process-steps-heading">
+  <p class="section-label">How delivery works</p>
+  <h2 id="process-steps-heading">Structured delivery from discovery to handover</h2>
+  <div class="process-grid">
+    {
+      steps.map((step, index) => (
+        <article class="process-card">
+          <p class="process-index">Step {index + 1}</p>
+          <h3>{step.title}</h3>
+          <p>{step.caption}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>

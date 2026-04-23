@@ -1,0 +1,45 @@
+---
+interface OutcomeItem {
+  title: string;
+  description: string;
+}
+
+interface Props {
+  featuredTitle: string;
+  featuredDescription: string;
+  items: OutcomeItem[];
+}
+
+const { featuredTitle, featuredDescription, items } = Astro.props;
+---
+
+<section class="outcomes" aria-labelledby="outcomes-heading">
+  <p class="section-label">What clients get</p>
+  <h2 id="outcomes-heading">A reporting foundation built for trust and ownership</h2>
+  <p class="section-intro">
+    The focus is simple: reliable reporting, faster delivery, and a stack your team can actually own.
+  </p>
+  <div class="outcome-grid">
+    <article class="outcome-card outcome-card-featured">
+      <h3>{featuredTitle}</h3>
+      <p>{featuredDescription}</p>
+    </article>
+    <div class="outcome-card-stack">
+      {
+        items.map((item) => (
+          <article class="outcome-card">
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+  <ul class="deliverable-tags" role="list" aria-label="Delivery scope">
+    <li>Ingestion pipelines</li>
+    <li>Analytical models</li>
+    <li>Reporting layer</li>
+    <li>Documentation</li>
+    <li>Handover</li>
+  </ul>
+</section>

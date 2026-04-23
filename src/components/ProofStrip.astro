@@ -1,0 +1,30 @@
+---
+interface ProofItem {
+  label: string;
+}
+
+interface Props {
+  title?: string;
+  intro: string;
+  items: ProofItem[];
+}
+
+const { title = "Proof", intro, items } = Astro.props;
+---
+
+<section class="proof-strip" aria-labelledby="proof-heading">
+  <div class="proof-strip-copy">
+    <p class="section-label">{title}</p>
+    <h2 id="proof-heading">Evidence you can inspect</h2>
+    <p>{intro}</p>
+  </div>
+  <ul class="proof-chip-list" role="list">
+    {
+      items.map((item) => (
+        <li class="proof-chip" role="listitem">
+          {item.label}
+        </li>
+      ))
+    }
+  </ul>
+</section>
