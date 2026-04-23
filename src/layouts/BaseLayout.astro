@@ -758,6 +758,13 @@ function isActive(href: string): boolean {
         max-width: 100%;
         height: auto;
       }
+      :global(.mermaid .node rect),
+      :global(.mermaid .node polygon),
+      :global(.mermaid .node path),
+      :global(.mermaid .cluster rect) {
+        rx: 10px;
+        ry: 10px;
+      }
       .site-footer {
         border-top: 1px solid var(--border);
       }
@@ -832,6 +839,7 @@ function isActive(href: string): boolean {
                   primaryColor: "#162136",
                   secondaryColor: "#111a2c",
                   tertiaryColor: "#0b1220",
+                  borderRadius: 10,
                   primaryTextColor: "#e6edf7",
                   secondaryTextColor: "#e6edf7",
                   tertiaryTextColor: "#e6edf7",
@@ -847,6 +855,7 @@ function isActive(href: string): boolean {
                   primaryColor: "#eff6ff",
                   secondaryColor: "#f8fafc",
                   tertiaryColor: "#ffffff",
+                  borderRadius: 10,
                   primaryTextColor: "#0f172a",
                   secondaryTextColor: "#0f172a",
                   tertiaryTextColor: "#0f172a",
