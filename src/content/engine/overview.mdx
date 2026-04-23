@@ -109,8 +109,3 @@ ResourceLoadHints
 
 Engine orchestration is exercised here through a project runner rather than a standalone engine CLI.  
 Future semantic and MCP orchestration standards remain explicitly `planned` until implementation artefacts are published.
-
-<div class="mermaid">{`flowchart TD
-  sourceNode[SourceProtocols] --> ingestNode[IngestorDLTStage]
-  ingestNode --> warehouseNode[WarehouseAdapter]
-  warehouseNode --> transformNode[DbtTransformationAdapter]`}</div>

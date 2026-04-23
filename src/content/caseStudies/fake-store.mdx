@@ -31,13 +31,15 @@ evidence:
     sourcePath: docs/media/placeholder-mcp-demo.md
     status: planned
 reproducibility:
-  - command: python run_pipeline.py
-    assumption: Run from the Fake Store project root with a configured local .env file.
-  - command: ../../.venv/Scripts/python.exe run_pipeline.py --force-reload --skip-transforms
-    assumption: Local virtual environment exists and dbt stage is intentionally bypassed.
+  - command: cd examples/fake_store && uv sync
+    assumption: Python 3.10+ with uv installed; run from the repository root.
+  - command: cd examples/fake_store && uv run python run_pipeline.py --skip-transforms
+    assumption: .env is copied from .env.example and AXIOMATIC_* values are configured.
+  - command: cd examples/fake_store && uv run python run_pipeline.py --run-transforms
+    assumption: dbt profile/target settings are valid for your selected warehouse.
 assumptions:
   - Environment values are loaded from local non-committed files.
-  - Warehouse and transform settings follow AXIOMATIC_* contracts.
+  - Dependencies can also be installed with pip via requirements.txt when uv is unavailable.
 limitations:
   - Metrics and screenshots will be added once execution artefacts are captured for publication.
 ---
@@ -88,9 +90,3 @@ Analytical insight metrics will be added once query result snapshots are capture
 
 Resource-level policy control improves operational clarity but requires deliberate per-endpoint configuration choices.  
 The case study currently prioritises reproducibility and explicit boundaries over broad feature scope claims.
-
-<div class="mermaid">{`flowchart TD
-  apiNode[FakeStoreAPI] --> bronzeNode[BronzeLoad]
-  bronzeNode --> silverNode[SilverModels]
-  silverNode --> goldNode[GoldModels]
-  goldNode --> analyticsNode[AnalyticsViews]`}</div>

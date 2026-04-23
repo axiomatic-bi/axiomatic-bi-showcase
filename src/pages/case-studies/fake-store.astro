@@ -6,10 +6,15 @@ import PageHeader from "../../components/PageHeader.astro";
 import EvidenceCallout from "../../components/EvidenceCallout.astro";
 import ReproSteps from "../../components/ReproSteps.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
-import { ArrowLeft, CheckCircle2, ExternalLink, FileCode2, Lightbulb, Microscope, Sparkles, Target } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ExternalLink, FileCode2, Lightbulb, Microscope, Target } from "lucide-react";
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
 const fakeStoreExampleRepoUrl = "https://github.com/axiomatic-bi/axiomatic-bi-showcase/tree/main/examples/fake_store";
+const fakeStoreArchitectureMermaid = `flowchart TD
+  apiNode[FakeStoreAPI] --> bronzeNode[BronzeLoad]
+  bronzeNode --> silverNode[SilverModels]
+  silverNode --> goldNode[GoldModels]
+  goldNode --> analyticsNode[AnalyticsViews]`;
 
 if (!fakeStoreEntry) {
   throw new Error("Missing case study entry: fake-store");
@@ -57,39 +62,25 @@ const { Content } = await fakeStoreEntry.render();
       gold analytical models. Ingestion and transformation are coordinated by the engine, while project
       resources and normalisation stay in project scope.
     </p>
-  </section>
-
-  <section>
-    <SectionHeading title="Data model">
-      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <h3>Data model</h3>
     <p>
       Current documentation confirms analytical modelling intent and medallion layering. As model-level
       artefacts are published, this section will link dimensional structures and grain choices directly
       to dbt model files.
     </p>
-  </section>
-
-  <section>
-    <SectionHeading title="Transform logic">
-      <Sparkles slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <h3>Transform logic</h3>
     <p>
       Transformation follows a dbt-first approach, triggered after ingestion when enabled. The
       <code>run_pipeline.py</code> entrypoint applies CLI-over-env settings and delegates stage execution
       to engine orchestration.
     </p>
-  </section>
-
-  <section>
-    <SectionHeading title="Data quality/tests">
-      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <h3>Data quality/tests</h3>
     <p>
       Validation responsibilities are aligned to dbt and pipeline contracts. The project notes include
       idempotent and deterministic rerun expectations, with test and query artefacts to be expanded as
       publication-ready outputs are captured.
     </p>
+    <div class="mermaid">{fakeStoreArchitectureMermaid}</div>
   </section>
 
   <section>
@@ -114,27 +105,38 @@ const { Content } = await fakeStoreEntry.render();
     </p>
   </section>
 
-  <ReproSteps
-    steps={fakeStoreEntry.data.reproducibility.map((item) => item.command)}
-    assumptions={fakeStoreEntry.data.assumptions}
-    limitations={fakeStoreEntry.data.limitations}
-  />
+  <section>
+    <SectionHeading title="Reproducibility Notes">
+      <Target slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    <ReproSteps
+      steps={fakeStoreEntry.data.reproducibility.map((item) => item.command)}
+      assumptions={fakeStoreEntry.data.assumptions}
+      limitations={fakeStoreEntry.data.limitations}
+    />
+  </section>
 
-  <EvidenceCallout
-    title="Evidence map"
-    items={fakeStoreEntry.data.evidence.map((item) => ({
-      label: item.claim,
-      path: item.sourcePath,
-      note: item.status,
-      type: item.type
-    }))}
-  />
+  <section>
+    <SectionHeading title="Evidence map">
+      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    <EvidenceCallout
+      items={fakeStoreEntry.data.evidence.map((item) => ({
+        label: item.claim,
+        path: item.sourcePath,
+        note: item.status,
+        type: item.type
+      }))}
+    />
+  </section>
 
   <section>
     <SectionHeading title="Source Narrative">
       <FileCode2 slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
-    <Content />
+    <div class="source-narrative-content">
+      <Content />
+    </div>
   </section>
 </BaseLayout>
 
@@ -152,5 +154,14 @@ const { Content } = await fakeStoreEntry.render();
       flex-direction: column;
       align-items: stretch;
     }
+  }
+
+  .source-narrative-content :global(h2) {
+    font-size: clamp(1.02rem, 1.7vw, 1.16rem);
+    margin-top: 1rem;
+  }
+
+  .source-narrative-content :global(h3) {
+    font-size: clamp(0.94rem, 1.5vw, 1.05rem);
   }
 </style>

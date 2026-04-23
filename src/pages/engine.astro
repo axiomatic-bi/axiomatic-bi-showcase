@@ -7,13 +7,18 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
 import ReproSteps from "../components/ReproSteps.astro";
 import DecisionLog from "../components/DecisionLog.astro";
 import SectionHeading from "../components/SectionHeading.astro";
-import { ArrowRight, CheckCircle2, FileCode2, Lightbulb, Microscope, Sparkles, Target } from "lucide-react";
+import { CheckCircle2, FileCode2, Lightbulb, Microscope, Target } from "lucide-react";
 
 const engineEntry = await getEntry("engine", "overview");
 if (!engineEntry) {
   throw new Error("Engine overview entry not found.");
 }
 const { Content } = await engineEntry.render();
+const fakeStoreExampleRepoUrl = "https://github.com/axiomatic-bi/axiomatic-bi-showcase/tree/main/examples/fake_store";
+const engineArchitectureMermaid = `flowchart TD
+  sourceNode[SourceProtocols] --> ingestNode[IngestorDLTStage]
+  ingestNode --> warehouseNode[WarehouseAdapter]
+  warehouseNode --> transformNode[DbtTransformationAdapter]`;
 ---
 
 <BaseLayout
@@ -49,50 +54,31 @@ const { Content } = await engineEntry.render();
       and transformation is delegated through a transformation adapter. This keeps pipeline flow
       centralised while backend specifics remain isolated.
     </p>
-  </section>
-
-  <section>
-    <SectionHeading title="Core Contracts">
-      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <h3>Core Contracts</h3>
     <p>
       Source, storage, warehouse, and transformation protocols define extension points. Literal kinds
       constrain available options, so unsupported backends fail explicitly instead of degrading
       silently. This helps keep project code domain-aware and engine code domain-agnostic.
     </p>
-  </section>
-
-  <section>
-    <SectionHeading title="Execution Flow">
-      <ArrowRight slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <h3>Execution Flow</h3>
     <p>
       Runtime flow is consistent: resources are wrapped and enriched, dlt performs ingestion into the
       configured warehouse destination, and the transformation stage runs only when enabled. Settings
       are loaded from <code>AXIOMATIC_*</code> variables with CLI override support.
     </p>
-  </section>
-
-  <section>
-    <SectionHeading title="Transformation Strategy">
-      <Sparkles slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <h3>Transformation Strategy</h3>
     <p>
       The transformation stage is dbt-first by design. Dependency graphing, model ordering, and tests
       stay with dbt, while orchestration stays with the engine. This avoids reimplementing mature dbt
       capabilities in engine internals and keeps CI execution straightforward.
     </p>
-  </section>
-
-  <section>
-    <SectionHeading title="Warehouse Strategy">
-      <Microscope slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <h3>Warehouse Strategy</h3>
     <p>
       DuckDB and MotherDuck share a Duck-compatible base for common behaviour, with concrete adapters
       handling backend-specific validation. MotherDuck token handling remains environment-driven and is
       kept out of URI paths to reduce accidental credential exposure.
     </p>
+    <div class="mermaid">{engineArchitectureMermaid}</div>
   </section>
 
   <section>
@@ -124,37 +110,66 @@ const { Content } = await engineEntry.render();
     </SectionHeading>
     <ReproSteps
       steps={[
-        "python examples/fake_store/run_pipeline.py --skip-transforms",
-        "python examples/fake_store/run_pipeline.py --run-transforms"
+        "cd examples/fake_store",
+        "uv sync",
+        "uv run python run_pipeline.py --skip-transforms",
+        "uv run python run_pipeline.py --run-transforms",
+        "# pip alternative: python -m pip install -r requirements.txt"
       ]}
       assumptions={[
-        "Environment variables are set via AXIOMATIC_* entries.",
-        "Secrets are loaded from local uncommitted env files."
+        "Python 3.10+ is available and dependencies are installed from examples/fake_store.",
+        "Copy .env.example to .env and set AXIOMATIC_* values for your chosen warehouse.",
+        "Network access is available for Fake Store API calls."
       ]}
       limitations={[
-        "Engine-level commands are demonstrated through project runners in this repository.",
-        "Non-MotherDuck warehouse transform paths are intentionally scoped for future work."
+        "Engine-level execution is demonstrated through the Fake Store project runner rather than a standalone engine CLI.",
+        "Transformation coverage depends on local dbt profile/target settings."
       ]}
     />
+    <p>
+      <a class="button button-secondary" href={fakeStoreExampleRepoUrl} target="_blank" rel="noreferrer">
+        Open Fake Store example project
+      </a>
+    </p>
   </section>
 
-  <EvidenceCallout items={engineEntry.data.evidence.map((item) => ({ label: item.claim, path: item.sourcePath, type: item.type }))} />
-  <DecisionLog decisions={engineEntry.data.decisions} />
-  <p>
-    <a
-      class="button button-secondary"
-      href="https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr"
-      target="_blank"
-      rel="noreferrer"
-    >
-      See all ADRs
-    </a>
-  </p>
+  <section>
+    <SectionHeading title="Evidence and Decision Log">
+      <Microscope slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    <EvidenceCallout
+      items={engineEntry.data.evidence.map((item) => ({ label: item.claim, path: item.sourcePath, type: item.type }))}
+    />
+    <DecisionLog decisions={engineEntry.data.decisions} />
+    <p>
+      <a
+        class="button button-secondary"
+        href="https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr"
+        target="_blank"
+        rel="noreferrer"
+      >
+        See all ADRs
+      </a>
+    </p>
+  </section>
 
   <section>
     <SectionHeading title="Source Narrative">
       <FileCode2 slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
-    <Content />
+    <div class="source-narrative-content">
+      <Content />
+    </div>
   </section>
 </BaseLayout>
+
+<style>
+  .source-narrative-content :global(h2) {
+    font-size: clamp(1.02rem, 1.7vw, 1.16rem);
+    margin-top: 1rem;
+  }
+
+  .source-narrative-content :global(h3) {
+    font-size: clamp(0.94rem, 1.5vw, 1.05rem);
+  }
+</style>
