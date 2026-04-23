@@ -1,8 +1,0 @@
-fake_store:
-  target: dev
-  outputs:
-    dev:
-      type: duckdb
-      path: "{{ env_var('AXIOMATIC_WAREHOUSE_PATH', './data/warehouse.duckdb') }}"
-      schema: "{{ env_var('AXIOMATIC_SCHEMA_BRONZE', 'bronze') }}"
-      threads: 4

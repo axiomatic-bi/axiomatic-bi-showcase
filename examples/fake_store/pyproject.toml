@@ -1,0 +1,13 @@
+[project]
+name = "axiomatic-fake-store-example"
+version = "0.1.0"
+description = "Runnable Fake Store pipeline example using axiomatic-engine."
+requires-python = ">=3.10"
+dependencies = [
+  "axiomatic-engine",
+  "python-dotenv",
+  "dbt-duckdb",
+]
+
+[tool.uv]
+package = false

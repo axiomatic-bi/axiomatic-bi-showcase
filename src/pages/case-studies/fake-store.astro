@@ -6,9 +6,10 @@ import PageHeader from "../../components/PageHeader.astro";
 import EvidenceCallout from "../../components/EvidenceCallout.astro";
 import ReproSteps from "../../components/ReproSteps.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
-import { CheckCircle2, FileCode2, Lightbulb, Microscope, Sparkles, Target } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ExternalLink, FileCode2, Lightbulb, Microscope, Sparkles, Target } from "lucide-react";
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
+const fakeStoreExampleRepoUrl = "https://github.com/axiomatic-bi/axiomatic-bi-showcase/tree/main/examples/fake_store";
 
 if (!fakeStoreEntry) {
   throw new Error("Missing case study entry: fake-store");
@@ -27,6 +28,14 @@ const { Content } = await fakeStoreEntry.render();
     title="Fake Store Case Study"
     lede="A reference pipeline demonstrating ingestion policies, transformation orchestration, and reproducible outcomes."
   />
+  <div class="case-study-actions">
+    <a class="button button-secondary" href="/case-studies">
+      <ArrowLeft size={16} strokeWidth={2} /> Back to case studies
+    </a>
+    <a class="button button-primary" href={fakeStoreExampleRepoUrl} target="_blank" rel="noreferrer">
+      View example code <ExternalLink size={16} strokeWidth={2} />
+    </a>
+  </div>
 
   <section>
     <SectionHeading title="Problem">
@@ -128,3 +137,20 @@ const { Content } = await fakeStoreEntry.render();
     <Content />
   </section>
 </BaseLayout>
+
+<style>
+  .case-study-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    margin: 0 0 1rem;
+  }
+
+  @media (max-width: 680px) {
+    .case-study-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>
