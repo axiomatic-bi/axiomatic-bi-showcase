@@ -8,9 +8,11 @@ interface Props {
 const { title, description, enableMermaid = false } = Astro.props;
 const currentPath = Astro.url.pathname;
 const basePath = import.meta.env.BASE_URL;
+const basePrefix = basePath.endsWith("/") ? basePath : `${basePath}/`;
 
 function withBase(path: string): string {
-  return `${basePath}${path.replace(/^\//, "")}`;
+  const cleanPath = path.replace(/^\/+/, "");
+  return `${basePrefix}${cleanPath}`;
 }
 
 function stripBase(pathname: string): string {

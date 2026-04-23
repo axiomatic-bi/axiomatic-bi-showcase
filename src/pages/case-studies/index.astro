@@ -7,7 +7,10 @@ import SectionHeading from "../../components/SectionHeading.astro";
 import { ArrowRight, CheckCircle2, Microscope, Target } from "lucide-react";
 
 const entries = await getCollection("caseStudies");
-const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+const basePrefix = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const withBase = (path: string) => `${basePrefix}${path.replace(/^\/+/, "")}`;
 ---
 
 <BaseLayout title="Case Studies" description="Portfolio case studies with evidence and reproducibility notes.">

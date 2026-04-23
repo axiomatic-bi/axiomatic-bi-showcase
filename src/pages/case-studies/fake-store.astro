@@ -10,7 +10,10 @@ import { ArrowLeft, CheckCircle2, ExternalLink, FileCode2, Lightbulb, Microscope
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
 const fakeStoreExampleRepoUrl = "https://github.com/axiomatic-bi/axiomatic-bi-showcase/tree/main/examples/fake_store";
-const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+const basePrefix = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const withBase = (path: string) => `${basePrefix}${path.replace(/^\/+/, "")}`;
 const fakeStoreArchitectureMermaid = `flowchart TD
   apiNode[FakeStoreAPI] --> bronzeNode[BronzeLoad]
   bronzeNode --> silverNode[SilverModels]
