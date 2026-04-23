@@ -32,8 +32,8 @@ const capabilityMaturitySchema = z.object({
 const engineCollection = defineCollection({
   type: "content",
   schema: z.object({
-    title: z.string(),
-    summary: z.string(),
+    title: z.string().default("Engine documentation"),
+    summary: z.string().default(""),
     evidence: z.array(evidenceItemSchema).default([]),
     decisions: z
       .array(
@@ -45,7 +45,11 @@ const engineCollection = defineCollection({
         })
       )
       .default([]),
-    capabilityMaturity: capabilityMaturitySchema
+    capabilityMaturity: capabilityMaturitySchema.default({
+      ingestion: "planned",
+      transformation: "planned",
+      semantic_mcp: "planned"
+    })
   })
 });
 

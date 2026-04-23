@@ -3,6 +3,8 @@ import { getCollection } from "astro:content";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/PageHeader.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { CheckCircle2, Microscope, Target } from "lucide-react";
 
 const entries = await getCollection("caseStudies");
 ---
@@ -15,7 +17,9 @@ const entries = await getCollection("caseStudies");
   />
 
   <section>
-    <h2>Case Studies</h2>
+    <SectionHeading title="Case Studies">
+      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Case studies document implementation choices end to end: problem framing, architecture, modelling
       decisions, validation approach, measured outcomes, and trade-offs.
@@ -23,14 +27,18 @@ const entries = await getCollection("caseStudies");
   </section>
 
   <section>
-    <h2>Fake Store Pipeline</h2>
+    <SectionHeading title="Fake Store Pipeline">
+      <Target slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <ul>
       {entries.map((entry) => <li><a href={`/case-studies/${entry.slug}`}>{entry.data.title}</a></li>)}
     </ul>
   </section>
 
   <section>
-    <h2>Comparison Criteria</h2>
+    <SectionHeading title="Comparison Criteria">
+      <Microscope slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Pages are compared consistently across architecture clarity, data model quality, reproducibility,
       and evidence strength. Claims are expected to map to code paths, query outputs, tests, or
@@ -39,7 +47,9 @@ const entries = await getCollection("caseStudies");
   </section>
 
   <section>
-    <h2>Reproducibility Standards</h2>
+    <SectionHeading title="Reproducibility Standards">
+      <Target slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Each case study includes runnable commands, assumptions, limitations, and explicit evidence links.
       Planned capability areas are labelled as planned until supported by published artefacts.

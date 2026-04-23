@@ -1,6 +1,6 @@
 ---
 title: Engine Overview
-summary: Contract-first orchestration with typed settings and adapter isolation.
+summary: Contract-first orchestration with typed settings, adapter isolation, and package-grade release discipline.
 capabilityMaturity:
   ingestion: implemented
   transformation: implemented
@@ -8,23 +8,23 @@ capabilityMaturity:
 evidence:
   - type: code
     claim: Engine purpose, boundaries, and current package structure
-    sourcePath: context_docs/axiomatic_engine/architecture.md
+    sourcePath: docs/engine/architecture.md
     status: implemented
   - type: code
-    claim: Ingestion hints, schema evolution policy, and rerun semantics
-    sourcePath: context_docs/axiomatic_engine/README.md
+    claim: Package install path, runtime configuration contract, and operational defaults
+    sourcePath: docs/engine/README.md
     status: implemented
   - type: code
     claim: Core execution flow and stage responsibilities across ingestion and transformation
-    sourcePath: context_docs/axiomatic_engine/architecture.md
+    sourcePath: docs/engine/architecture.md
     status: implemented
   - type: code
     claim: Implemented versus declared extension points and current runtime scope
-    sourcePath: context_docs/axiomatic_engine/architecture.md
+    sourcePath: docs/engine/architecture.md
     status: implemented
   - type: code
     claim: CLI-over-env runtime override pattern used by the project runner
-    sourcePath: context_docs/project_fake_store/run_pipeline.py
+    sourcePath: examples/fake_store/run_pipeline.py
     status: implemented
 decisions:
   - id: ADR 001
@@ -71,6 +71,14 @@ decisions:
     status: accepted
     summary: Harden dbt runtime invocation with PATH fallback and MotherDuck token propagation safeguards.
     sourcePath: src/content/adr/011-dbt-runtime-invocation-and-motherduck-token-propagation.md
+  - id: ADR 012
+    status: accepted
+    summary: Standardise package quality gates with uv groups to protect distribution readiness before release.
+    sourcePath: src/content/adr/012-package-readiness-and-uv-quality-gate.md
+  - id: ADR 013
+    status: accepted
+    summary: Introduce explicit source kinds and factory routing to keep project source definitions typed and extensible.
+    sourcePath: src/content/adr/013-specific-source-kinds-and-source-factory-routing.md
 ---
 
 This page anchors engine claims to architectural and ADR evidence, rather than framework-level marketing statements.
@@ -80,7 +88,7 @@ This page anchors engine claims to architectural and ADR evidence, rather than f
 - Protocol boundary areas: source, storage, warehouse, transformation.
 - Implemented transformation backend: `dbt` (dbt-first orchestration path).
 - Implemented warehouse adapters: `duckdb` and `motherduck` with shared Duck-compatible base behaviour.
-- dbt transformation compatibility is currently MotherDuck-first; unsupported kinds are expected to fail explicitly.
+- Runtime configuration is loaded from `AXIOMATIC_*` variables with CLI-over-env override support in project runners.
 - Declared-but-unimplemented examples: storage `gcs`/`s3`, warehouse `bigquery`, and additional transformation backends.
 
 ## Operational behaviour already evidenced

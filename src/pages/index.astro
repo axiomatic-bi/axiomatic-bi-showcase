@@ -5,6 +5,7 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
 import ClientPainPoints from "../components/ClientPainPoints";
 import DeliveryOutcomeCards from "../components/DeliveryOutcomeCards";
 import SectionHeading from "../components/SectionHeading.astro";
+import heroImage from "../../assets/hero-image.webp";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
@@ -82,13 +83,13 @@ const crossSourceMermaid = `flowchart LR
 const evidenceItems = [
   {
     label: "Engine architecture and implementation scope",
-    path: "context_docs/axiomatic_engine/architecture.md",
+    path: "docs/engine/architecture.md",
     type: "code" as const,
     note: "Runtime boundaries and implemented capability."
   },
   {
     label: "Reference case study with reproducibility notes",
-    path: "context_docs/project_fake_store/README.md",
+    path: "src/content/caseStudies/fake-store.mdx",
     type: "code" as const,
     note: "End-to-end medallion pipeline example."
   },
@@ -116,7 +117,16 @@ const proofLinks = [
     title="Build an AI-ready and analyst-ready data pipeline your team actually owns"
     lede="I deliver automated, source-agnostic pipelines with clear star schemas that keep SQL and DAX simpler, improve reporting trust, and support more consistent AI-assisted analysis."
   >
-    <div slot="visual" class="hero-visual-placeholder" aria-hidden="true"></div>
+    <img
+      slot="visual"
+      class="hero-visual-image"
+      src={heroImage.src}
+      alt="Abstract glowing pipeline core with connected data flow lanes."
+      width="1024"
+      height="1024"
+      loading="eager"
+      decoding="async"
+    />
   </PageHeader>
 
   <section>

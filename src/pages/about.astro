@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { BriefcaseBusiness, CheckCircle2, Microscope, Target, UserRound } from "lucide-react";
 ---
 
 <BaseLayout title="About" description="Background and technical approach for this portfolio.">
@@ -11,7 +13,9 @@ import PageHeader from "../components/PageHeader.astro";
   />
 
   <section>
-    <h2>Background</h2>
+    <SectionHeading title="Background">
+      <UserRound slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       This showcase documents practical data engineering work centred on pipeline orchestration,
       modelling discipline, and transparent technical decision-making.
@@ -19,7 +23,9 @@ import PageHeader from "../components/PageHeader.astro";
   </section>
 
   <section>
-    <h2>Technical Principles</h2>
+    <SectionHeading title="Technical Principles">
+      <Microscope slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Claims are evidence-backed, workflows are reproducible where possible, and limitations are stated
       directly. Content prioritises clarity and maintainability over marketing language.
@@ -27,7 +33,9 @@ import PageHeader from "../components/PageHeader.astro";
   </section>
 
   <section>
-    <h2>How I Evaluate Trade-offs</h2>
+    <SectionHeading title="How I Evaluate Trade-offs">
+      <Target slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Trade-offs are assessed across reliability, maintainability, operational risk, and implementation
       complexity. Decisions are considered stronger when they are testable and explainable in code.
@@ -35,7 +43,9 @@ import PageHeader from "../components/PageHeader.astro";
   </section>
 
   <section>
-    <h2>What This Showcase Is and Is Not</h2>
+    <SectionHeading title="What This Showcase Is and Is Not">
+      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       This is a technical portfolio, not a production platform. It emphasises demonstrable patterns and
       lessons, and marks planned capability areas clearly rather than overstating maturity.
@@ -43,7 +53,9 @@ import PageHeader from "../components/PageHeader.astro";
   </section>
 
   <section id="contact">
-    <h2>Contact and Links</h2>
+    <SectionHeading title="Contact and Links">
+      <BriefcaseBusiness slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       This section is the current contact point for discovery calls. Add your preferred booking link,
       email address, or calendar URL here once publication metadata is finalised.

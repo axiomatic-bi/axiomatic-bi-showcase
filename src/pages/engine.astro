@@ -1,13 +1,18 @@
 ---
-import { getCollection } from "astro:content";
+import { getEntry } from "astro:content";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import EvidenceCallout from "../components/EvidenceCallout.astro";
 import ReproSteps from "../components/ReproSteps.astro";
 import DecisionLog from "../components/DecisionLog.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { ArrowRight, CheckCircle2, FileCode2, Lightbulb, Microscope, Sparkles, Target } from "lucide-react";
 
-const [engineEntry] = await getCollection("engine");
+const engineEntry = await getEntry("engine", "overview");
+if (!engineEntry) {
+  throw new Error("Engine overview entry not found.");
+}
 const { Content } = await engineEntry.render();
 ---
 
@@ -23,7 +28,9 @@ const { Content } = await engineEntry.render();
   />
 
   <section>
-    <h2>Problem</h2>
+    <SectionHeading title="Problem">
+      <Target slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Data projects often blur orchestration, source logic, warehouse behaviour, and transformation
       execution. This increases maintenance cost and makes rerun behaviour harder to reason about.
@@ -33,7 +40,9 @@ const { Content } = await engineEntry.render();
   </section>
 
   <section>
-    <h2>Architecture</h2>
+    <SectionHeading title="Architecture">
+      <Microscope slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       The engine is organised into contracts, adapters, and core stages. Sources expose resources
       through protocol boundaries, ingestion is executed with dlt into a selected warehouse adapter,
@@ -43,7 +52,9 @@ const { Content } = await engineEntry.render();
   </section>
 
   <section>
-    <h2>Core Contracts</h2>
+    <SectionHeading title="Core Contracts">
+      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Source, storage, warehouse, and transformation protocols define extension points. Literal kinds
       constrain available options, so unsupported backends fail explicitly instead of degrading
@@ -52,7 +63,9 @@ const { Content } = await engineEntry.render();
   </section>
 
   <section>
-    <h2>Execution Flow</h2>
+    <SectionHeading title="Execution Flow">
+      <ArrowRight slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Runtime flow is consistent: resources are wrapped and enriched, dlt performs ingestion into the
       configured warehouse destination, and the transformation stage runs only when enabled. Settings
@@ -61,7 +74,9 @@ const { Content } = await engineEntry.render();
   </section>
 
   <section>
-    <h2>Transformation Strategy</h2>
+    <SectionHeading title="Transformation Strategy">
+      <Sparkles slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       The transformation stage is dbt-first by design. Dependency graphing, model ordering, and tests
       stay with dbt, while orchestration stays with the engine. This avoids reimplementing mature dbt
@@ -70,7 +85,9 @@ const { Content } = await engineEntry.render();
   </section>
 
   <section>
-    <h2>Warehouse Strategy</h2>
+    <SectionHeading title="Warehouse Strategy">
+      <Microscope slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       DuckDB and MotherDuck share a Duck-compatible base for common behaviour, with concrete adapters
       handling backend-specific validation. MotherDuck token handling remains environment-driven and is
@@ -79,7 +96,9 @@ const { Content } = await engineEntry.render();
   </section>
 
   <section>
-    <h2>Implemented Scope and Declared Extensions</h2>
+    <SectionHeading title="Implemented Scope and Declared Extensions">
+      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Implemented scope includes REST and file-based ingestion paths, DuckDB-compatible warehouse
       execution, typed settings, and dbt-first transformation orchestration. Declared extension points
@@ -88,7 +107,9 @@ const { Content } = await engineEntry.render();
   </section>
 
   <section>
-    <h2>Trade-offs and Lessons</h2>
+    <SectionHeading title="Trade-offs and Lessons">
+      <Lightbulb slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       The current design favours clear boundaries and predictable execution over broad backend coverage.
       This reduces ambiguity for early adopters, but it also means some integrations remain planned.
@@ -98,11 +119,13 @@ const { Content } = await engineEntry.render();
   </section>
 
   <section>
-    <h2>Reproducibility Notes</h2>
+    <SectionHeading title="Reproducibility Notes">
+      <Target slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <ReproSteps
       steps={[
-        "python context_docs/project_fake_store/run_pipeline.py --skip-transforms",
-        "python context_docs/project_fake_store/run_pipeline.py --run-transforms"
+        "python examples/fake_store/run_pipeline.py --skip-transforms",
+        "python examples/fake_store/run_pipeline.py --run-transforms"
       ]}
       assumptions={[
         "Environment variables are set via AXIOMATIC_* entries.",
@@ -119,7 +142,9 @@ const { Content } = await engineEntry.render();
   <DecisionLog decisions={engineEntry.data.decisions} />
 
   <section>
-    <h2>Source Narrative</h2>
+    <SectionHeading title="Source Narrative">
+      <FileCode2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <Content />
   </section>
 </BaseLayout>
