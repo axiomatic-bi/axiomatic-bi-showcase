@@ -68,6 +68,9 @@ function isActive(href: string): boolean {
         --space-14: 3.5rem;
         --space-16: 4rem;
         --section-gap: clamp(4.5rem, 7vw, 6.5rem);
+        --content-max-width: 1140px;
+        --band-max-width: 1140px;
+        --hero-max-width: 1280px;
         --shadow-soft: 0 18px 34px rgba(2, 8, 20, 0.38);
       }
       @media (prefers-color-scheme: light) {
@@ -99,7 +102,7 @@ function isActive(href: string): boolean {
         color: var(--text);
       }
       .container {
-        max-width: 1040px;
+        max-width: var(--content-max-width);
         margin: 0 auto;
         padding: var(--space-4) var(--space-5);
       }
@@ -110,6 +113,9 @@ function isActive(href: string): boolean {
         backdrop-filter: blur(10px);
         background: color-mix(in srgb, var(--bg) 84%, transparent);
         border-bottom: 1px solid var(--border);
+      }
+      .site-header .container {
+        max-width: var(--hero-max-width);
       }
       .site-header-inner {
         display: flex;
@@ -165,7 +171,7 @@ function isActive(href: string): boolean {
         margin-right: calc(50% - 50vw);
       }
       :global(.band-inner) {
-        max-width: 1140px;
+        max-width: var(--band-max-width);
         margin: 0 auto;
         padding: var(--space-14) var(--space-5);
       }
@@ -357,6 +363,7 @@ function isActive(href: string): boolean {
         margin-bottom: 0;
       }
       :global(.hero-scene .band-inner) {
+        max-width: var(--hero-max-width);
         padding-top: var(--space-16);
         padding-bottom: var(--space-12);
       }
@@ -654,7 +661,7 @@ function isActive(href: string): boolean {
         margin-top: var(--space-14);
       }
       :global(.final-cta-inner) {
-        max-width: 1140px;
+        max-width: var(--band-max-width);
         margin: 0 auto;
         padding: var(--space-12) var(--space-5);
       }
