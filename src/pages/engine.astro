@@ -140,6 +140,16 @@ const { Content } = await engineEntry.render();
 
   <EvidenceCallout items={engineEntry.data.evidence.map((item) => ({ label: item.claim, path: item.sourcePath, type: item.type }))} />
   <DecisionLog decisions={engineEntry.data.decisions} />
+  <p>
+    <a
+      class="button button-secondary"
+      href="https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr"
+      target="_blank"
+      rel="noreferrer"
+    >
+      See all ADRs
+    </a>
+  </p>
 
   <section>
     <SectionHeading title="Source Narrative">
