@@ -2,13 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import { withBase } from "../utils/urls";
 import heroImage from "../../assets/hero-image.webp";
 import { ArrowRight, Check, CircleAlert, Layers3 } from "lucide-react";
-
-const basePrefix = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-const withBase = (path: string) => `${basePrefix}${path.replace(/^\/+/, "")}`;
 
 const primaryCta = {
   label: "Book a discovery call",

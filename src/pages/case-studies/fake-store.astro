@@ -6,14 +6,11 @@ import PageHeader from "../../components/PageHeader.astro";
 import EvidenceCallout from "../../components/EvidenceCallout.astro";
 import ReproSteps from "../../components/ReproSteps.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
+import { withBase } from "../../utils/urls";
 import { ArrowLeft, CheckCircle2, ExternalLink, FileCode2, Lightbulb, Microscope, Target } from "lucide-react";
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
 const fakeStoreExampleRepoUrl = "https://github.com/axiomatic-bi/axiomatic-bi-showcase/tree/main/examples/fake_store";
-const basePrefix = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-const withBase = (path: string) => `${basePrefix}${path.replace(/^\/+/, "")}`;
 const fakeStoreArchitectureMermaid = `flowchart TD
   apiNode[FakeStoreAPI] --> bronzeNode[BronzeLoad]
   bronzeNode --> silverNode[SilverModels]

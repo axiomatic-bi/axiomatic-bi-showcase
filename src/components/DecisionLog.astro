@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../utils/urls";
+
 interface Decision {
   id: string;
   status: "accepted" | "proposed" | "superseded";
@@ -11,10 +13,6 @@ interface Props {
 }
 
 const { decisions } = Astro.props;
-const basePrefix = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-const withBase = (path: string) => `${basePrefix}${path.replace(/^\/+/, "")}`;
 
 function toAdrHref(path: string): string | null {
   const match = path.match(/^src\/content\/adr\/(.+)\.md$/);

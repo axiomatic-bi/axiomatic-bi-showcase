@@ -1,4 +1,6 @@
 ---
+import { stripBasePath, withBase } from "../utils/urls";
+
 interface Props {
   title: string;
   description: string;
@@ -7,26 +9,7 @@ interface Props {
 
 const { title, description, enableMermaid = false } = Astro.props;
 const currentPath = Astro.url.pathname;
-const basePath = import.meta.env.BASE_URL;
-const basePrefix = basePath.endsWith("/") ? basePath : `${basePath}/`;
-
-function withBase(path: string): string {
-  const cleanPath = path.replace(/^\/+/, "");
-  return `${basePrefix}${cleanPath}`;
-}
-
-function stripBase(pathname: string): string {
-  if (basePath === "/") {
-    return pathname;
-  }
-  if (!pathname.startsWith(basePath)) {
-    return pathname;
-  }
-  const stripped = `/${pathname.slice(basePath.length)}`;
-  return stripped === "//" ? "/" : stripped;
-}
-
-const routePathname = stripBase(currentPath);
+const routePathname = stripBasePath(currentPath);
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/engine", label: "Engine" },
