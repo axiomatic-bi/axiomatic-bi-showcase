@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { BriefcaseBusiness, CheckCircle2, Link2, Mail, Phone } from "lucide-react";
+---
+
+<BaseLayout title="Contact" description="Contact options for discovery calls and project conversations.">
+  <div class="full-bleed hero-scene">
+    <div class="band-inner">
+      <PageHeader
+        eyebrow="Contact"
+        title="Contact"
+        lede="Use this page for discovery calls, project enquiries, and publication-safe contact links."
+      />
+    </div>
+  </div>
+
+  <section>
+    <SectionHeading title="Contact and Links">
+      <BriefcaseBusiness slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    <p>
+      This page is the primary contact point for discovery calls. Add your preferred booking link,
+      email address, or calendar URL here once publication metadata is finalised.
+    </p>
+  </section>
+
+  <section>
+    <SectionHeading title="Suggested contact methods">
+      <Mail slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    <p>
+      Add one direct email contact, one scheduling link, and one professional profile link so outreach is
+      clear and low-friction.
+    </p>
+    <p>Keep all details current and include response expectations where possible.</p>
+  </section>
+
+  <section>
+    <SectionHeading title="Public safety and hygiene">
+      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    <p>
+      Keep all contact artefacts public-safe and free of sensitive identifiers. Do not publish personal
+      phone numbers, private addresses, or tokens.
+    </p>
+  </section>
+
+  <section>
+    <SectionHeading title="Placeholders to replace before launch">
+      <Link2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    <ul>
+      <li>Email link (for example: hello@your-domain.com)</li>
+      <li>Booking URL (for example: Calendly or equivalent)</li>
+      <li>Professional profile URL (for example: LinkedIn or GitHub)</li>
+      <li>Optional project enquiry form URL</li>
+    </ul>
+  </section>
+
+  <section>
+    <SectionHeading title="Phone and region notes">
+      <Phone slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
+    <p>
+      If you publish a phone number, include timezone and acceptable contact hours so inbound requests are
+      easier to triage.
+    </p>
+  </section>
+</BaseLayout>

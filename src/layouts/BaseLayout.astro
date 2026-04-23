@@ -12,7 +12,7 @@ const navItems = [
   { href: "/engine", label: "Engine" },
   { href: "/case-studies", label: "Case Studies" },
   { href: "/about", label: "About" },
-  { href: "/about#contact", label: "Contact" }
+  { href: "/contact", label: "Contact" }
 ];
 
 function isActive(href: string): boolean {
@@ -67,6 +67,7 @@ function isActive(href: string): boolean {
         --space-12: 3rem;
         --space-14: 3.5rem;
         --space-16: 4rem;
+        --section-gap: clamp(4.5rem, 7vw, 6.5rem);
         --shadow-soft: 0 18px 34px rgba(2, 8, 20, 0.38);
       }
       @media (prefers-color-scheme: light) {
@@ -155,7 +156,7 @@ function isActive(href: string): boolean {
         border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
       }
       main.container {
-        padding-top: var(--space-2);
+        padding-top: 0;
         padding-bottom: var(--space-12);
       }
       :global(.full-bleed) {
@@ -220,13 +221,14 @@ function isActive(href: string): boolean {
         font-size: clamp(2.8rem, 7vw, 5rem);
         line-height: 1.02;
         letter-spacing: -0.03em;
+        margin-bottom: var(--space-4);
       }
       :global(.hero-scene .page-header-copy p) {
         max-width: 52ch;
       }
       :global(.page-header-content) {
         display: grid;
-        grid-template-columns: 1.5fr minmax(150px, 0.8fr);
+        grid-template-columns: 1.35fr minmax(220px, 1fr);
         gap: var(--space-6);
         align-items: center;
       }
@@ -242,14 +244,52 @@ function isActive(href: string): boolean {
         align-items: center;
       }
       :global(.hero-visual-image) {
-        width: clamp(140px, 28vw, 210px);
+        width: clamp(420px, 50vw, 680px);
+        max-width: 100%;
         height: auto;
-        aspect-ratio: 1 / 1;
-        object-fit: contain;
+        aspect-ratio: auto;
+        object-fit: initial;
         display: block;
         border-radius: var(--radius-md);
         border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border));
         box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 24%, transparent), var(--shadow-soft);
+      }
+      :global(.hero-visual-frame) {
+        width: clamp(220px, 32vw, 360px);
+        aspect-ratio: 1 / 1;
+        border-radius: var(--radius-md);
+        border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--border));
+        background:
+          radial-gradient(circle at 20% 18%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 40%),
+          linear-gradient(165deg, color-mix(in srgb, var(--surface) 86%, var(--accent-soft)), var(--surface));
+        position: relative;
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent), var(--shadow-soft);
+        overflow: hidden;
+      }
+      :global(.hero-visual-node) {
+        position: absolute;
+        border-radius: var(--radius-sm);
+        border: 1px solid color-mix(in srgb, var(--border) 74%, transparent);
+        background: color-mix(in srgb, var(--surface-soft) 72%, transparent);
+      }
+      :global(.hero-visual-node-source) {
+        width: 42%;
+        height: 20%;
+        left: 9%;
+        top: 18%;
+      }
+      :global(.hero-visual-node-model) {
+        width: 54%;
+        height: 26%;
+        right: 10%;
+        top: 38%;
+        background: color-mix(in srgb, var(--surface-soft) 62%, var(--accent-soft));
+      }
+      :global(.hero-visual-node-report) {
+        width: 36%;
+        height: 18%;
+        left: 18%;
+        bottom: 14%;
       }
       :global(.page-header .eyebrow) {
         display: inline-flex;
@@ -286,7 +326,7 @@ function isActive(href: string): boolean {
         border-radius: 0;
         box-shadow: none;
         padding: 0;
-        margin: 0 0 var(--space-12);
+        margin: 0 0 var(--section-gap);
       }
       :global(section:last-of-type) {
         margin-bottom: 0;
@@ -295,10 +335,10 @@ function isActive(href: string): boolean {
         display: flex;
         flex-wrap: wrap;
         gap: var(--space-3);
-        margin: var(--space-6) 0 var(--space-2);
+        margin: var(--space-6) 0 var(--space-3);
       }
       :global(.hero-proofline) {
-        margin-bottom: var(--space-5);
+        margin-bottom: var(--space-6);
         color: var(--text-soft);
       }
       :global(.hero-scene) {
@@ -307,11 +347,11 @@ function isActive(href: string): boolean {
           radial-gradient(circle at 85% 5%, rgba(123, 141, 255, 0.18), transparent 32%),
           linear-gradient(180deg, #0b1220 0%, #0a0f1b 60%, #090d17 100%);
         border-bottom: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
-        margin-bottom: var(--space-14);
+        margin-bottom: var(--section-gap);
       }
       :global(.hero-scene .band-inner) {
         padding-top: var(--space-16);
-        padding-bottom: var(--space-16);
+        padding-bottom: var(--space-12);
       }
       :global(.hero-highlight-list) {
         list-style: none;
@@ -322,13 +362,14 @@ function isActive(href: string): boolean {
         padding: 0;
       }
       :global(.hero-highlight-list li) {
-        background: color-mix(in srgb, var(--surface) 62%, transparent);
-        border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
-        color: var(--text);
+        background: transparent;
+        border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+        color: var(--text-muted);
         border-radius: 999px;
-        padding: 0.35rem 0.7rem;
-        backdrop-filter: blur(4px);
+        padding: 0.35rem 0.72rem;
         font-size: 0.82rem;
+        line-height: 1.2;
+        font-weight: 500;
       }
       :global(.proof-band) {
         background: color-mix(in srgb, var(--surface) 48%, transparent);
@@ -338,7 +379,7 @@ function isActive(href: string): boolean {
         border-radius: 0;
         border: 0;
         background: transparent;
-        margin-bottom: var(--space-12);
+        margin-bottom: var(--space-14);
       }
       :global(.proof-chip-list) {
         list-style: none;
@@ -349,12 +390,13 @@ function isActive(href: string): boolean {
         padding: 0;
       }
       :global(.proof-chip) {
-        padding: 0.42rem 0.64rem;
+        padding: 0.35rem 0.7rem;
         border-radius: 999px;
-        border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
-        background: color-mix(in srgb, var(--surface) 65%, transparent);
-        color: var(--text);
-        font-size: 0.85rem;
+        border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        font-weight: 500;
       }
       :global(.tonal-band) {
         background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--surface-soft) 56%, transparent));
@@ -412,12 +454,13 @@ function isActive(href: string): boolean {
         padding: 0;
       }
       :global(.deliverable-tags li) {
-        color: var(--text);
-        border: 1px solid color-mix(in srgb, var(--border) 76%, transparent);
+        color: var(--text-muted);
+        border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
         border-radius: 999px;
-        padding: 0.3rem 0.62rem;
-        font-size: 0.84rem;
-        background: color-mix(in srgb, var(--surface-soft) 58%, transparent);
+        padding: 0.3rem 0.66rem;
+        font-size: 0.82rem;
+        font-weight: 500;
+        background: transparent;
       }
       :global(.engine-band) {
         background:
@@ -724,9 +767,11 @@ function isActive(href: string): boolean {
           margin-top: 0.35rem;
         }
         :global(.hero-visual-image) {
-          width: min(220px, 70vw);
+          width: min(520px, 92vw);
         }
-        :global(.discovery-band),
+        :global(.hero-visual-frame) {
+          width: min(280px, 72vw);
+        }
         :global(.engine-overview),
         :global(.reporting-layout),
         :global(.outcome-grid) {

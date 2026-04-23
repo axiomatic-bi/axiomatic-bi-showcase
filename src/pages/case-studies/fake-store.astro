@@ -28,18 +28,22 @@ const { Content } = await fakeStoreEntry.render();
   description="End-to-end Fake Store analytics case study on Axiomatic Engine."
   enableMermaid={true}
 >
-  <PageHeader
-    eyebrow="Case Study"
-    title="Fake Store Case Study"
-    lede="A reference pipeline demonstrating ingestion policies, transformation orchestration, and reproducible outcomes."
-  />
-  <div class="case-study-actions">
-    <a class="button button-secondary" href="/case-studies">
-      <ArrowLeft size={16} strokeWidth={2} /> Back to case studies
-    </a>
-    <a class="button button-primary" href={fakeStoreExampleRepoUrl} target="_blank" rel="noreferrer">
-      View example code <ExternalLink size={16} strokeWidth={2} />
-    </a>
+  <div class="full-bleed hero-scene">
+    <div class="band-inner">
+      <PageHeader
+        eyebrow="Case Study"
+        title="Fake Store Case Study"
+        lede="A reference pipeline demonstrating ingestion policies, transformation orchestration, and reproducible outcomes."
+      />
+      <div class="case-study-actions">
+        <a class="button button-secondary" href="/case-studies">
+          <ArrowLeft size={16} strokeWidth={2} /> Back to case studies
+        </a>
+        <a class="button button-primary" href={fakeStoreExampleRepoUrl} target="_blank" rel="noreferrer">
+          View example code <ExternalLink size={16} strokeWidth={2} />
+        </a>
+      </div>
+    </div>
   </div>
 
   <section>

@@ -13,7 +13,7 @@ import { ArrowRight, Layers3, Network, SearchCheck } from "lucide-react";
 
 const primaryCta = {
   label: "Book a discovery call",
-  href: "/about#contact"
+  href: "/contact"
 };
 
 const caseStudies = await getCollection("caseStudies");
@@ -75,7 +75,7 @@ const processSteps = [
   { title: "Handover", caption: "Transfer documentation, run guidance, and operating ownership to your team." }
 ];
 
-const heroHighlights = ["Reporting-ready models", "Client-owned handover", "Reusable delivery patterns"];
+const heroHighlights = ["Reporting-ready models", "Client-owned handover", "Reusable delivery patterns", "AI-ready"];
 ---
 
 <BaseLayout
@@ -101,6 +101,10 @@ const heroHighlights = ["Reporting-ready models", "Client-owned handover", "Reus
           decoding="async"
         />
       </PageHeader>
+      <p class="hero-proofline">Client-owned delivery. Clear handover. Built for reporting and AI-assisted analysis.</p>
+      <ul class="hero-highlight-list" role="list" aria-label="Delivery highlights">
+        {heroHighlights.map((item) => <li>{item}</li>)}
+      </ul>
       <p class="hero-actions">
         <a class="button button-primary" href={primaryCta.href}>
           {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
@@ -109,10 +113,6 @@ const heroHighlights = ["Reporting-ready models", "Client-owned handover", "Reus
           View case studies
         </a>
       </p>
-      <p class="hero-proofline">Client-owned delivery. Clear handover. Built for reporting and AI-assisted analysis.</p>
-      <ul class="hero-highlight-list" role="list" aria-label="Delivery highlights">
-        {heroHighlights.map((item) => <li>{item}</li>)}
-      </ul>
     </div>
   </div>
 
@@ -124,7 +124,7 @@ const heroHighlights = ["Reporting-ready models", "Client-owned handover", "Reus
 
   <section class="problem-section" aria-labelledby="problem-heading">
     <p class="section-label">Where teams usually get stuck</p>
-    <h2 id="problem-heading">The data stack works until reporting depends on fragile workarounds</h2>
+    <h2 id="problem-heading">Facing these problems?</h2>
     <p class="section-intro">Most clients arrive with one of these recurring constraints.</p>
     <div class="problem-grid">
       <article class="problem-card problem-card-featured">

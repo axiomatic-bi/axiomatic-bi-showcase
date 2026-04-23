@@ -2,15 +2,19 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
-import { BriefcaseBusiness, CheckCircle2, Microscope, Target, UserRound } from "lucide-react";
+import { CheckCircle2, Microscope, Target, UserRound } from "lucide-react";
 ---
 
 <BaseLayout title="About" description="Background and technical approach for this portfolio.">
-  <PageHeader
-    eyebrow="About"
-    title="About"
-    lede="Background, principles, and scope boundaries behind the Axiomatic BI Showcase."
-  />
+  <div class="full-bleed hero-scene">
+    <div class="band-inner">
+      <PageHeader
+        eyebrow="About"
+        title="About"
+        lede="Background, principles, and scope boundaries behind the Axiomatic BI Showcase."
+      />
+    </div>
+  </div>
 
   <section>
     <SectionHeading title="Background">
@@ -52,14 +56,4 @@ import { BriefcaseBusiness, CheckCircle2, Microscope, Target, UserRound } from "
     </p>
   </section>
 
-  <section id="contact">
-    <SectionHeading title="Contact and Links">
-      <BriefcaseBusiness slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      This section is the current contact point for discovery calls. Add your preferred booking link,
-      email address, or calendar URL here once publication metadata is finalised.
-    </p>
-    <p>Keep all contact artefacts public-safe and free of sensitive identifiers.</p>
-  </section>
 </BaseLayout>
