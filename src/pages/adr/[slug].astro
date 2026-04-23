@@ -3,7 +3,6 @@ import { getCollection, getEntry, render } from "astro:content";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/PageHeader.astro";
-import { FileCode2 } from "lucide-react";
 
 export async function getStaticPaths() {
   const adrs = await getCollection("adr");
@@ -32,9 +31,7 @@ const title = heading.replace(/^#\s+/, "").trim();
     eyebrow="ADR"
     title={title}
     lede="Full architecture decision record from repository content."
-  >
-    <FileCode2 slot="visual" className="page-header-visual-icon" aria-hidden="true" strokeWidth={1.8} />
-  </PageHeader>
+  />
   <p><a href="/engine">Back to Engine Overview</a></p>
   <article>
     <Content />

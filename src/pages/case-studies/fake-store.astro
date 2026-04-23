@@ -5,7 +5,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import EvidenceCallout from "../../components/EvidenceCallout.astro";
 import ReproSteps from "../../components/ReproSteps.astro";
-import { ShoppingCart } from "lucide-react";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { CheckCircle2, FileCode2, Lightbulb, Microscope, Sparkles, Target } from "lucide-react";
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
 
@@ -25,12 +26,12 @@ const { Content } = await fakeStoreEntry.render();
     eyebrow="Case Study"
     title="Fake Store Case Study"
     lede="A reference pipeline demonstrating ingestion policies, transformation orchestration, and reproducible outcomes."
-  >
-    <ShoppingCart slot="visual" className="page-header-visual-icon" aria-hidden="true" strokeWidth={1.8} />
-  </PageHeader>
+  />
 
   <section>
-    <h2>Problem</h2>
+    <SectionHeading title="Problem">
+      <Target slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       The objective is to turn Fake Store API records into reliable analytics tables with deterministic
       reruns. The case study demonstrates how project-specific logic sits outside engine internals while
@@ -39,7 +40,9 @@ const { Content } = await fakeStoreEntry.render();
   </section>
 
   <section>
-    <h2>Architecture</h2>
+    <SectionHeading title="Architecture">
+      <Microscope slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       The pipeline follows a medallion flow: bronze ingestion via dlt, silver typed staging models, and
       gold analytical models. Ingestion and transformation are coordinated by the engine, while project
@@ -48,7 +51,9 @@ const { Content } = await fakeStoreEntry.render();
   </section>
 
   <section>
-    <h2>Data model</h2>
+    <SectionHeading title="Data model">
+      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Current documentation confirms analytical modelling intent and medallion layering. As model-level
       artefacts are published, this section will link dimensional structures and grain choices directly
@@ -57,7 +62,9 @@ const { Content } = await fakeStoreEntry.render();
   </section>
 
   <section>
-    <h2>Transform logic</h2>
+    <SectionHeading title="Transform logic">
+      <Sparkles slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Transformation follows a dbt-first approach, triggered after ingestion when enabled. The
       <code>run_pipeline.py</code> entrypoint applies CLI-over-env settings and delegates stage execution
@@ -66,7 +73,9 @@ const { Content } = await fakeStoreEntry.render();
   </section>
 
   <section>
-    <h2>Data quality/tests</h2>
+    <SectionHeading title="Data quality/tests">
+      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Validation responsibilities are aligned to dbt and pipeline contracts. The project notes include
       idempotent and deterministic rerun expectations, with test and query artefacts to be expanded as
@@ -75,7 +84,9 @@ const { Content } = await fakeStoreEntry.render();
   </section>
 
   <section>
-    <h2>Results/insights</h2>
+    <SectionHeading title="Results/insights">
+      <Lightbulb slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Current evidence demonstrates repeatable load behaviour and clear runtime boundaries. Outcome
       metrics and analytical findings are intentionally held until query result snapshots and visuals are
@@ -84,7 +95,9 @@ const { Content } = await fakeStoreEntry.render();
   </section>
 
   <section>
-    <h2>Trade-offs/lessons</h2>
+    <SectionHeading title="Trade-offs/lessons">
+      <Target slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <p>
       Resource-level load hints improve rerun reliability, but they introduce additional configuration
       decisions per endpoint. The scope is intentionally narrow and transparent, favouring reproducible
@@ -109,7 +122,9 @@ const { Content } = await fakeStoreEntry.render();
   />
 
   <section>
-    <h2>Source Narrative</h2>
+    <SectionHeading title="Source Narrative">
+      <FileCode2 slot="icon" size={18} strokeWidth={2} />
+    </SectionHeading>
     <Content />
   </section>
 </BaseLayout>
