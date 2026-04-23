@@ -328,6 +328,13 @@ function isActive(href: string): boolean {
         padding: 0;
         margin: 0 0 var(--section-gap);
       }
+      :global(.full-bleed + section) {
+        padding-top: clamp(1.5rem, 3vw, 2.25rem);
+      }
+      :global(.section-before-band) {
+        margin-bottom: 0;
+        padding-bottom: clamp(1.5rem, 2.8vw, 2.25rem);
+      }
       :global(section:last-of-type) {
         margin-bottom: 0;
       }
@@ -347,7 +354,7 @@ function isActive(href: string): boolean {
           radial-gradient(circle at 85% 5%, rgba(123, 141, 255, 0.18), transparent 32%),
           linear-gradient(180deg, #0b1220 0%, #0a0f1b 60%, #090d17 100%);
         border-bottom: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
-        margin-bottom: var(--section-gap);
+        margin-bottom: 0;
       }
       :global(.hero-scene .band-inner) {
         padding-top: var(--space-16);
@@ -373,6 +380,13 @@ function isActive(href: string): boolean {
       }
       :global(.proof-band) {
         background: color-mix(in srgb, var(--surface) 48%, transparent);
+      }
+      :global(.proof-band .band-inner) {
+        padding-block: clamp(2.5rem, 5vw, 4rem);
+      }
+      :global(.proof-band .proof-strip) {
+        padding-top: 0;
+        margin-bottom: 0;
       }
       :global(.proof-strip) {
         padding: var(--space-2) 0 0;

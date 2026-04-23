@@ -2,7 +2,6 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
-import ProofStrip from "../components/ProofStrip.astro";
 import heroImage from "../../assets/hero-image.webp";
 import { ArrowRight, Check, CircleAlert, Layers3 } from "lucide-react";
 
@@ -18,15 +17,12 @@ const crossSourceMermaid = `flowchart LR
   sharedModel --> biReports["Dashboards"]
   sharedModel --> aiContext["AI context"]`;
 
-const proofChips = [
-  { label: "Python orchestration" },
-  { label: "dlt ingestion" },
-  { label: "dbt transformation" },
-  { label: "REST API sources" },
-  { label: "DuckDB + MotherDuck" },
-  { label: "Published ADRs" },
-  { label: "Reproducible case study" },
-  { label: "Client-owned code and data" }
+const proofLinks = [
+  { label: "Examples to get started", href: "/case-studies" },
+  { label: "Fake store implementation", href: "/case-studies/fake-store" },
+  { label: "Published ADRs", href: "https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr" },
+  { label: "Engine documentation", href: "https://github.com/axiomatic-bi/axiomatic-engine#readme" },
+  { label: "Code you can see", href: "https://github.com/axiomatic-bi/axiomatic-engine" }
 ];
 
 ---
@@ -64,16 +60,33 @@ const proofChips = [
   </div>
 
   <div class="full-bleed proof-band">
-    <div class="band-inner proof-band-inner">
-      <ProofStrip
-        title="Technology and delivery proof"
-        intro="Engine orchestration combines dlt ingestion and dbt transformation with client-owned delivery assets. Planned next adapters include GraphQL API and SharePoint files."
-        items={proofChips}
-      />
+    <div class="band-inner">
+      <section class="proof-strip proof-links-strip" aria-labelledby="proof-links-heading">
+        <p class="section-label">Technology and delivery proof</p>
+        <h2 id="proof-links-heading">Evidence you can inspect</h2>
+        <p>
+          Engine orchestration combines dlt ingestion and dbt transformation with client-owned delivery assets.
+          Planned next adapters include GraphQL API and SharePoint files.
+        </p>
+        <p class="proof-actions">
+          {
+            proofLinks.map((item) => (
+              <a
+                class="button button-secondary"
+                href={item.href}
+                target={item.href.startsWith("http") ? "_blank" : undefined}
+                rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </p>
+      </section>
     </div>
   </div>
 
-  <section class="problem-section" aria-labelledby="problem-heading">
+  <section aria-labelledby="problem-heading">
     <div class="problem-columns">
       <div class="problem-column-intro">
         <p class="section-label">Why reporting breaks</p>
@@ -116,7 +129,7 @@ const proofChips = [
     </div>
   </section>
 
-  <section class="engine-overview" aria-labelledby="engine-overview-heading">
+  <section class="engine-overview section-before-band" aria-labelledby="engine-overview-heading">
     <div class="engine-copy">
       <p class="section-label">Service architecture</p>
       <SectionHeading title="From source data to trusted reporting">
@@ -137,7 +150,8 @@ const proofChips = [
   <div class="full-bleed example-band">
     <section class="proof-grid-section band-inner" aria-labelledby="proof-grid-heading">
       <p class="section-label">Example engagement</p>
-      <h2 id="proof-grid-heading">Fake Store reference build: reproducible pipeline, modelled reporting, explicit reruns.</h2>
+      <h2 id="proof-grid-heading">Fake Store reference build</h2>
+      <p class="section-intro">Reproducible pipeline, modelled reporting, explicit reruns.</p>
       <div class="proof-grid">
         <article class="proof-card">
           <h3>What changed</h3>
@@ -165,14 +179,6 @@ const proofChips = [
 </BaseLayout>
 
 <style>
-  :global(.hero-scene) {
-    margin-bottom: 0;
-  }
-
-  .problem-section {
-    padding-top: clamp(1.5rem, 3vw, 2.25rem);
-  }
-
   .problem-columns {
     display: grid;
     gap: 1rem;
@@ -226,14 +232,15 @@ const proofChips = [
     background: color-mix(in srgb, var(--background, #050c1a) 90%, #13294d 10%);
   }
 
-  .proof-band-inner {
-    padding-top: clamp(1.5rem, 3vw, 2.25rem);
-    padding-bottom: clamp(1.25rem, 2.2vw, 2rem);
+  .proof-links-strip {
+    margin-bottom: 0;
   }
 
-  .proof-band :global(.proof-strip) {
-    padding-top: 0;
-    margin-bottom: 0;
+  .proof-actions {
+    margin: var(--space-4) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
 
   :global(.engine-overview) {
@@ -241,7 +248,6 @@ const proofChips = [
     grid-template-columns: 1fr !important;
     gap: 1rem;
     align-items: start;
-    padding-bottom: clamp(1rem, 2vw, 1.5rem);
   }
 
   .engine-copy {
