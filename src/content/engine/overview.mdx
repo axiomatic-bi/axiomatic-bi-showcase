@@ -8,19 +8,19 @@ capabilityMaturity:
 evidence:
   - type: code
     claim: Engine purpose, boundaries, and current package structure
-    sourcePath: docs/engine/architecture.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/architecture.md
     status: implemented
   - type: code
     claim: Package install path, runtime configuration contract, and operational defaults
-    sourcePath: docs/engine/README.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/README.md
     status: implemented
   - type: code
     claim: Core execution flow and stage responsibilities across ingestion and transformation
-    sourcePath: docs/engine/architecture.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/architecture.md
     status: implemented
   - type: code
     claim: Implemented versus declared extension points and current runtime scope
-    sourcePath: docs/engine/architecture.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/architecture.md
     status: implemented
   - type: code
     claim: CLI-over-env runtime override pattern used by the project runner
@@ -30,55 +30,55 @@ decisions:
   - id: ADR 001
     status: accepted
     summary: Keep shared Duck behaviour in a base class while isolating DuckDB and MotherDuck semantics in concrete adapters.
-    sourcePath: src/content/adr/001-warehouse-adapter-hierarchy.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/001-warehouse-adapter-hierarchy.md
   - id: ADR 002
     status: accepted
     summary: Keep orchestration in engine, delegate model planning/testing to dbt, and enforce explicit warehouse compatibility checks.
-    sourcePath: src/content/adr/002-dbt-first-transformation-orchestration.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/002-dbt-first-transformation-orchestration.md
   - id: ADR 003
     status: accepted
     summary: Treat SourceProtocol and ResourceProtocol as the stable boundary between domain extraction logic and engine orchestration.
-    sourcePath: src/content/adr/003-source-contract-boundary.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/003-source-contract-boundary.md
   - id: ADR 004
     status: accepted
     summary: Inject a uniform _axiomatic_extracted_at_utc lineage field in BaseResource before load normalisation.
-    sourcePath: src/content/adr/004-axiomatic-extraction-metadata-injection.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/004-axiomatic-extraction-metadata-injection.md
   - id: ADR 005
     status: accepted
     summary: Gate ingestion on landing outcome with explicit force_reload override for deterministic full reruns.
-    sourcePath: src/content/adr/005-pipeline-stage-gating-and-force-reload.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/005-pipeline-stage-gating-and-force-reload.md
   - id: ADR 006
     status: accepted
     summary: Use environment-first typed settings with explicit CLI override precedence for runtime control.
-    sourcePath: src/content/adr/006-environment-first-configuration-with-cli-overrides.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/006-environment-first-configuration-with-cli-overrides.md
   - id: ADR 007
     status: accepted
     summary: Resolve dbt project and profiles paths to absolute directories before subprocess invocation.
-    sourcePath: src/content/adr/007-dbt-project-and-profiles-path-resolution.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/007-dbt-project-and-profiles-path-resolution.md
   - id: ADR 008
     status: accepted
     summary: Establish a logging-first observability baseline for pipeline stage progress and diagnostics.
-    sourcePath: src/content/adr/008-observability-baseline-for-pipeline-execution.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/008-observability-baseline-for-pipeline-execution.md
   - id: ADR 009
     status: accepted
     summary: Add typed resource load hints and map them in the source bridge with merge primary-key guardrails.
-    sourcePath: src/content/adr/009-resource-load-hints-contract-and-bridge-mapping.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/009-resource-load-hints-contract-and-bridge-mapping.md
   - id: ADR 010
     status: accepted
     summary: Adopt hybrid schema evolution modes (auto, strict, discard) with source-bridge mapping to dlt semantics.
-    sourcePath: src/content/adr/010-hybrid-schema-evolution-policy.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/010-hybrid-schema-evolution-policy.md
   - id: ADR 011
     status: accepted
     summary: Harden dbt runtime invocation with PATH fallback and MotherDuck token propagation safeguards.
-    sourcePath: src/content/adr/011-dbt-runtime-invocation-and-motherduck-token-propagation.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/011-dbt-runtime-invocation-and-motherduck-token-propagation.md
   - id: ADR 012
     status: accepted
     summary: Standardise package quality gates with uv groups to protect distribution readiness before release.
-    sourcePath: src/content/adr/012-package-readiness-and-uv-quality-gate.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/012-package-readiness-and-uv-quality-gate.md
   - id: ADR 013
     status: accepted
     summary: Introduce explicit source kinds and factory routing to keep project source definitions typed and extensible.
-    sourcePath: src/content/adr/013-specific-source-kinds-and-source-factory-routing.md
+    sourcePath: https://github.com/axiomatic-bi/axiomatic-engine/blob/main/docs/adr/013-specific-source-kinds-and-source-factory-routing.md
 ---
 
 This page anchors engine claims to architectural and ADR evidence, rather than framework-level marketing statements.

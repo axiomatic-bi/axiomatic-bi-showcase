@@ -19,6 +19,10 @@ function toAdrHref(path: string): string | null {
   }
   return `/adr/${match[1]}`;
 }
+
+function toExternalHref(path: string): string | null {
+  return /^https?:\/\//.test(path) ? path : null;
+}
 ---
 
 <section aria-label="Decision log">
@@ -33,6 +37,12 @@ function toAdrHref(path: string): string | null {
             <>
               {" "}
               - <a href={toAdrHref(decision.sourcePath) ?? "#"}>Read full ADR</a>
+            </>
+          )}
+          {toExternalHref(decision.sourcePath) && (
+            <>
+              {" "}
+              - <a href={toExternalHref(decision.sourcePath) ?? "#"} target="_blank" rel="noreferrer">Read source ADR</a>
             </>
           )}
         </li>

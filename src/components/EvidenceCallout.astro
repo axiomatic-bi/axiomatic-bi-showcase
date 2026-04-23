@@ -20,6 +20,10 @@ function toAdrHref(path: string): string | null {
   }
   return `/adr/${match[1]}`;
 }
+
+function toExternalHref(path: string): string | null {
+  return /^https?:\/\//.test(path) ? path : null;
+}
 ---
 
 <aside aria-label={title}>
@@ -34,6 +38,11 @@ function toAdrHref(path: string): string | null {
           {toAdrHref(item.path) && (
             <>
               - <a href={toAdrHref(item.path) ?? "#"}>Open ADR</a>
+            </>
+          )}
+          {toExternalHref(item.path) && (
+            <>
+              - <a href={toExternalHref(item.path) ?? "#"} target="_blank" rel="noreferrer">Open source</a>
             </>
           )}
           {item.note && <> - {item.note}</>}
