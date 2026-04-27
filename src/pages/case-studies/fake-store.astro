@@ -10,7 +10,7 @@ import { withBase } from "../../utils/urls";
 import { fakeStoreLinks } from "../../utils/externalLinks";
 import fakeStoreSalesPageImage from "../../../assets/fake-store-sales-page.webp";
 import fakeStorePbiModelImage from "../../../assets/fake-store-pbi-model.webp";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
 const fakeStoreTransformationMermaid = `flowchart TB
@@ -61,11 +61,12 @@ const { Content } = await fakeStoreEntry.render();
 >
   <div class="full-bleed hero-scene">
     <div class="band-inner">
-      <p class="hero-back-link">
-        <a href={withBase("/case-studies")}><ArrowLeft size={16} strokeWidth={2} /> Back to case studies</a>
-      </p>
       <PageHeader
-        eyebrow="Case Study"
+        breadcrumbs={[
+          { label: "Home", href: withBase("/") },
+          { label: "Case Studies", href: withBase("/case-studies") },
+          { label: "Fake Store" }
+        ]}
         title="Fake Store Case Study"
         lede="A complete reference implementation showing how API extraction, warehouse modelling, and Power BI delivery fit into one reproducible analytics workflow."
       >
@@ -100,56 +101,58 @@ const { Content } = await fakeStoreEntry.render();
     </p>
   </section>
 
-  <section>
-    <SectionHeading title="Architecture" />
-    <div class="architecture-flow-layout">
-      <div class="architecture-flow-left">
-        <p>
-          The solution uses an engine-orchestrated medallion pipeline. dlt resources ingest source entities to
-          bronze, dbt stages and normalises those entities in silver, and gold models provide reporting-ready
-          dimensions and facts.
-        </p>
-        <h3>Data model</h3>
-        <p>
-          The gold star schema is the primary analytical contract for downstream tools. Semantic models in tools such
-          as Power BI can consume it directly, while optional marts can be added where a specific front end needs
-          denormalised serving structures.
-        </p>
-        <h3>Transform logic</h3>
-        <p>
-          Transformation is dbt-first. The <code>run_pipeline.py</code> entrypoint applies CLI-over-environment
-          settings, executes extraction, and optionally runs dbt to produce consistent silver and gold outputs.
-          Optional marts are derived from the gold schema only when a consumption surface has specialised shape
-          requirements.
-        </p>
-        <p>
-          The gold star schema remains the default contract for all consumption tools. Optional marts are additive and
-          consumer-specific, not a replacement for the core analytical model.
-        </p>
-        <h3>Data quality/tests</h3>
-        <p>
-          Data quality is governed in dbt and pipeline contracts. Expected rerun behaviour is deterministic, and
-          validation checks are designed to fail early when schema or grain assumptions drift.
-        </p>
-        <p>
-          This case study demonstrates modelling and rerun behaviour; production refresh scheduling, observability, and
-          access controls are documented as next-step hardening work.
-        </p>
-        <h3>Consumption</h3>
-        <p>
-          The default consumption path is the gold star schema, which supports semantic BI tools directly. Optional
-          marts remain consumer-specific serving layers for scenarios that require tailored query shapes.
-        </p>
-        <p>
-          This allows Power BI, Tableau, Evidence, Dash, and MCP-driven experiences to evolve independently while
-          staying aligned to one core analytical contract.
-        </p>
+  <div class="full-bleed architecture-band">
+    <section class="band-inner band-inner-wide architecture-section">
+      <SectionHeading title="Architecture" />
+      <div class="architecture-flow-layout">
+        <div class="architecture-flow-left">
+          <p>
+            The solution uses an engine-orchestrated medallion pipeline. dlt resources ingest source entities to
+            bronze, dbt stages and normalises those entities in silver, and gold models provide reporting-ready
+            dimensions and facts.
+          </p>
+          <h3>Data model</h3>
+          <p>
+            The gold star schema is the primary analytical contract for downstream tools. Semantic models in tools such
+            as Power BI can consume it directly, while optional marts can be added where a specific front end needs
+            denormalised serving structures.
+          </p>
+          <h3>Transform logic</h3>
+          <p>
+            Transformation is dbt-first. The <code>run_pipeline.py</code> entrypoint applies CLI-over-environment
+            settings, executes extraction, and optionally runs dbt to produce consistent silver and gold outputs.
+            Optional marts are derived from the gold schema only when a consumption surface has specialised shape
+            requirements.
+          </p>
+          <p>
+            The gold star schema remains the default contract for all consumption tools. Optional marts are additive and
+            consumer-specific, not a replacement for the core analytical model.
+          </p>
+          <h3>Data quality/tests</h3>
+          <p>
+            Data quality is governed in dbt and pipeline contracts. Expected rerun behaviour is deterministic, and
+            validation checks are designed to fail early when schema or grain assumptions drift.
+          </p>
+          <p>
+            This case study demonstrates modelling and rerun behaviour; production refresh scheduling, observability, and
+            access controls are documented as next-step hardening work.
+          </p>
+          <h3>Consumption</h3>
+          <p>
+            The default consumption path is the gold star schema, which supports semantic BI tools directly. Optional
+            marts remain consumer-specific serving layers for scenarios that require tailored query shapes.
+          </p>
+          <p>
+            This allows Power BI, Tableau, Evidence, Dash, and MCP-driven experiences to evolve independently while
+            staying aligned to one core analytical contract.
+          </p>
+        </div>
+        <div class="architecture-flow-right">
+          <div class="mermaid">{fakeStoreTransformationMermaid}</div>
+        </div>
       </div>
-      <div class="architecture-flow-right">
-        <div class="mermaid">{fakeStoreTransformationMermaid}</div>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <section>
     <SectionHeading title="BI implementation" />
@@ -307,24 +310,6 @@ const { Content } = await fakeStoreEntry.render();
 </script>
 
 <style>
-  .hero-back-link {
-    margin: 0 0 0.8rem;
-  }
-
-  .hero-back-link a {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: inherit;
-    text-decoration: none;
-    opacity: 0.9;
-  }
-
-  .hero-back-link a:hover {
-    opacity: 1;
-    text-decoration: underline;
-  }
-
   .case-study-actions {
     display: flex;
     align-items: center;
@@ -369,6 +354,18 @@ const { Content } = await fakeStoreEntry.render();
     align-items: start;
     margin-top: 0.6rem;
     margin-bottom: 1.1rem;
+  }
+
+  .architecture-band {
+    background: color-mix(in srgb, var(--background, #050c1a) 88%, #13294d 12%);
+    border-top: 1px solid color-mix(in srgb, var(--border, #2a344a) 72%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--border, #2a344a) 72%, transparent);
+  }
+
+  .architecture-section {
+    margin-bottom: 0;
+    padding-top: clamp(2.75rem, 4.5vw, 4rem);
+    padding-bottom: clamp(2.75rem, 4.5vw, 4rem);
   }
 
   .architecture-flow-left,

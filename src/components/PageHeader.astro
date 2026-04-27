@@ -1,18 +1,30 @@
 ---
 interface Props {
-  eyebrow?: string;
+  breadcrumbs?: Array<{ label: string; href?: string }>;
   title: string;
   lede: string;
   updatedAt?: string;
 }
 
-const { eyebrow, title, lede, updatedAt } = Astro.props;
+const { breadcrumbs = [], title, lede, updatedAt } = Astro.props;
 ---
 
 <header class="page-header">
   <div class="page-header-content">
     <div class="page-header-copy">
-      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      {
+        breadcrumbs.length > 0 && (
+          <nav class="page-breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              {breadcrumbs.map((crumb, index) => (
+                <li>
+                  {crumb.href && index < breadcrumbs.length - 1 ? <a href={crumb.href}>{crumb.label}</a> : <span>{crumb.label}</span>}
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
       <h1>{title}</h1>
       <p>{lede}</p>
       {updatedAt && <p><small>Updated: {updatedAt}</small></p>}

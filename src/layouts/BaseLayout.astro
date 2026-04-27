@@ -73,6 +73,7 @@ function isActive(href: string): boolean {
         --section-gap: clamp(4.5rem, 7vw, 6.5rem);
         --content-max-width: 1140px;
         --band-max-width: 1140px;
+        --band-wide-max-width: 1216px;
         --hero-max-width: 1280px;
         --shadow-soft: 0 18px 34px rgba(2, 8, 20, 0.38);
       }
@@ -177,6 +178,9 @@ function isActive(href: string): boolean {
         max-width: var(--band-max-width);
         margin: 0 auto;
         padding: var(--space-14) var(--space-5);
+      }
+      :global(.band-inner-wide) {
+        max-width: var(--band-wide-max-width);
       }
       :global(.band-inner-tight) {
         padding-top: var(--space-8);
@@ -287,16 +291,41 @@ function isActive(href: string): boolean {
         bottom: 14%;
       }
       :global(.page-header .eyebrow) {
-        display: inline-flex;
+        display: none;
+      }
+      :global(.page-breadcrumbs) {
+        margin: 0 0 var(--space-3);
+      }
+      :global(.page-breadcrumbs ol) {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
         margin: 0;
-        padding: 0.22rem 0.55rem;
-        border-radius: 999px;
-        background: var(--accent-soft);
-        border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--border));
-        color: var(--text);
+        padding: 0;
+      }
+      :global(.page-breadcrumbs li) {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        color: color-mix(in srgb, var(--text-soft) 86%, var(--text-muted));
         font-size: 0.82rem;
+      }
+      :global(.page-breadcrumbs li + li::before) {
+        content: "›";
+        color: color-mix(in srgb, var(--text-soft) 75%, transparent);
+      }
+      :global(.page-breadcrumbs a) {
+        color: color-mix(in srgb, var(--text-soft) 88%, var(--text-muted));
+        text-decoration: none;
+      }
+      :global(.page-breadcrumbs a:hover) {
+        color: var(--text);
+        text-decoration: underline;
+      }
+      :global(.page-breadcrumbs li:last-child span) {
+        color: var(--text);
         font-weight: 600;
-        letter-spacing: 0.02em;
       }
       :global(.section-label) {
         margin: 0 0 var(--space-2);

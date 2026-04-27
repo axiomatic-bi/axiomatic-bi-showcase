@@ -14,7 +14,10 @@ const entries = await getCollection("caseStudies");
   <div class="full-bleed hero-scene">
     <div class="band-inner">
       <PageHeader
-        eyebrow="Case Studies"
+        breadcrumbs={[
+          { label: "Home", href: withBase("/") },
+          { label: "Case Studies" }
+        ]}
         title="Case studies and Examples"
         lede="Each walkthrough links challenge, implementation choices, and measurable improvements in one scannable format."
       />

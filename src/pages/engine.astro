@@ -8,6 +8,7 @@ import ReproSteps from "../components/ReproSteps.astro";
 import DecisionLog from "../components/DecisionLog.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import { fakeStoreLinks } from "../utils/externalLinks";
+import { withBase } from "../utils/urls";
 import { CheckCircle2, FileCode2, Lightbulb, Microscope, Target } from "lucide-react";
 
 const engineEntry = await getEntry("engine", "overview");
@@ -29,7 +30,10 @@ const engineArchitectureMermaid = `flowchart TD
   <div class="full-bleed hero-scene">
     <div class="band-inner">
       <PageHeader
-        eyebrow="Engine"
+        breadcrumbs={[
+          { label: "Home", href: withBase("/") },
+          { label: "Engine" }
+        ]}
         title="Engine Overview"
         lede="Contract-first orchestration design for ingestion, transformation, and warehouse execution."
       />
