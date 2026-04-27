@@ -10,22 +10,22 @@ import { ArrowRight, CheckCircle2, Microscope, Target } from "lucide-react";
 const entries = await getCollection("caseStudies");
 ---
 
-<BaseLayout title="Case Studies" description="Portfolio case studies with evidence and reproducibility notes.">
+<BaseLayout title="Examples" description="Portfolio examples with evidence and reproducibility notes.">
   <div class="full-bleed hero-scene">
     <div class="band-inner">
       <PageHeader
         breadcrumbs={[
           { label: "Home", href: withBase("/") },
-          { label: "Case Studies" }
+          { label: "Examples" }
         ]}
-        title="Case studies and Examples"
+        title="Examples"
         lede="Each walkthrough links challenge, implementation choices, and measurable improvements in one scannable format."
       />
     </div>
   </div>
 
   <section>
-    <SectionHeading title="How to read these case studies">
+    <SectionHeading title="How to read these examples">
       <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
     <p>
@@ -35,7 +35,7 @@ const entries = await getCollection("caseStudies");
   </section>
 
   <section>
-    <SectionHeading title="Available case studies">
+    <SectionHeading title="Available examples">
       <Target slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
     <div class="case-preview-grid">
@@ -59,7 +59,7 @@ const entries = await getCollection("caseStudies");
             </dl>
             <p>
               <a class="button button-secondary" href={withBase(`/case-studies/${entry.slug}`)}>
-                Read case study <ArrowRight size={16} strokeWidth={2} />
+                Open example <ArrowRight size={16} strokeWidth={2} />
               </a>
             </p>
           </article>
@@ -83,7 +83,7 @@ const entries = await getCollection("caseStudies");
       <Target slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
     <p>
-      Each case study includes runnable commands, assumptions, limitations, and explicit evidence links.
+      Each example includes runnable commands, assumptions, limitations, and explicit evidence links.
       Planned capability areas are labelled clearly until supported by published artefacts.
     </p>
   </section>

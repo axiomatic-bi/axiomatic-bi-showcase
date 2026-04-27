@@ -63,7 +63,7 @@ const { Content } = await fakeStoreEntry.render();
       <PageHeader
         breadcrumbs={[
           { label: "Home", href: withBase("/") },
-          { label: "Case Studies", href: withBase("/case-studies") },
+          { label: "Examples", href: withBase("/case-studies") },
           { label: "Fake Store" }
         ]}
         title="Fake Store Example"
@@ -80,9 +80,6 @@ const { Content } = await fakeStoreEntry.render();
           decoding="async"
         />
       </PageHeader>
-      <p class="hero-context">
-        Built to be readable by stakeholders while exposing the engineering decisions behind delivery quality.
-      </p>
       <div class="case-study-actions">
         <a class="button button-primary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
           View example code <ExternalLink size={16} strokeWidth={2} />
@@ -108,7 +105,7 @@ const { Content } = await fakeStoreEntry.render();
       </article>
       <article class="glance-card" role="listitem">
         <h3>Why it matters</h3>
-        <p>Reporting can evolve without hiding logic in dashboards.</p>
+        <p>Reporting stays consistent because business logic lives in the model, not the dashboard.</p>
       </article>
       <article class="glance-card" role="listitem">
         <h3>Technology</h3>
@@ -281,12 +278,6 @@ const { Content } = await fakeStoreEntry.render();
     flex-wrap: wrap;
     gap: 0.6rem;
     margin: 0 0 1rem;
-  }
-
-  .hero-context {
-    margin: 0 0 0.9rem;
-    color: var(--text-soft);
-    max-width: 72ch;
   }
 
   .glance-grid {
