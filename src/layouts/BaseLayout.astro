@@ -21,7 +21,7 @@ const navItems = [
   { href: "/", label: "Home" },
   { href: "/engine", label: "Engine" },
   { href: "/case-studies", label: "Examples" },
-  { href: "/about", label: "About" },
+  { href: "/about", label: "About Me" },
   { href: "/contact", label: "Contact" }
 ];
 
@@ -56,6 +56,8 @@ function isActive(href: string): boolean {
         --surface-subtle: #1b2436;
         --border: #2a344a;
         --border-strong: #3b4966;
+        --bleed-accent-bg: color-mix(in srgb, var(--border) 50%, transparent);
+        --bleed-band-blue: color-mix(in srgb, var(--background, #050c1a) 90%, #13294d 10%);
         --text: #e8edf7;
         --text-muted: #b9c4d8;
         --text-soft: #96a4c0;
@@ -220,10 +222,14 @@ function isActive(href: string): boolean {
         padding-top: 0;
         padding-bottom: var(--space-12);
       }
+      main.container:has(> .full-bleed:last-child) {
+        padding-bottom: 0;
+      }
       :global(.full-bleed) {
         width: 100vw;
         margin-left: calc(50% - 50vw);
         margin-right: calc(50% - 50vw);
+        background: var(--bleed-accent-bg);
       }
       :global(.band-inner) {
         max-width: var(--band-max-width);
@@ -406,6 +412,9 @@ function isActive(href: string): boolean {
       :global(.full-bleed + section) {
         padding-top: clamp(1.5rem, 3vw, 2.25rem);
       }
+      :global(.full-bleed > section) {
+        margin-bottom: 0;
+      }
       :global(section + .full-bleed) {
         margin-top: clamp(1.25rem, 2.4vw, 2rem);
       }
@@ -458,7 +467,7 @@ function isActive(href: string): boolean {
         font-weight: 500;
       }
       :global(.proof-band) {
-        background: color-mix(in srgb, var(--surface) 48%, transparent);
+        background: var(--bleed-band-blue);
       }
       :global(.proof-band .band-inner) {
         padding-block: clamp(2.5rem, 5vw, 4rem);
@@ -492,7 +501,7 @@ function isActive(href: string): boolean {
         font-weight: 500;
       }
       :global(.tonal-band) {
-        background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--surface-soft) 56%, transparent));
+        background: var(--bleed-band-blue);
       }
       :global(.problem-grid) {
         display: grid;
@@ -502,7 +511,7 @@ function isActive(href: string): boolean {
       :global(.problem-card) {
         padding: var(--space-5);
         border-radius: var(--radius-md);
-        border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+        border: 0;
         background: color-mix(in srgb, var(--surface) 82%, transparent);
       }
       :global(.problem-card-featured) {
@@ -532,7 +541,7 @@ function isActive(href: string): boolean {
       :global(.outcome-card) {
         padding: var(--space-5);
         border-radius: var(--radius-md);
-        border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+        border: 0;
         background: color-mix(in srgb, var(--surface) 76%, transparent);
       }
       :global(.outcome-card-featured) {
@@ -556,9 +565,7 @@ function isActive(href: string): boolean {
         background: transparent;
       }
       :global(.engine-band) {
-        background:
-          radial-gradient(circle at 85% 25%, rgba(123, 141, 255, 0.12), transparent 38%),
-          linear-gradient(180deg, #0b101c, #0c1220);
+        background: var(--bleed-band-blue);
         border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
         border-bottom: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
       }
@@ -576,7 +583,7 @@ function isActive(href: string): boolean {
       :global(.proof-card) {
         padding: var(--space-5);
         border-radius: var(--radius-md);
-        border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+        border: 0;
         background: color-mix(in srgb, var(--surface) 82%, transparent);
       }
       :global(.case-preview-grid) {
@@ -587,7 +594,7 @@ function isActive(href: string): boolean {
       :global(.case-preview-card) {
         padding: var(--space-5);
         border-radius: var(--radius-md);
-        border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+        border: 0;
         background: color-mix(in srgb, var(--surface) 84%, transparent);
       }
       :global(.case-preview-list) {
@@ -615,7 +622,7 @@ function isActive(href: string): boolean {
         gap: var(--space-3);
       }
       :global(.evidence-item) {
-        border: 1px solid var(--border);
+        border: 0;
         border-radius: var(--radius-md);
         background: var(--surface);
         padding: var(--space-4);
@@ -643,12 +650,10 @@ function isActive(href: string): boolean {
         gap: var(--space-4);
       }
       :global(.reporting-band) {
-        background:
-          radial-gradient(circle at 20% 15%, rgba(123, 141, 255, 0.14), transparent 35%),
-          linear-gradient(180deg, #0d1424 0%, #0b1220 100%);
+        background: var(--bleed-band-blue);
       }
       :global(.reporting-visual) {
-        border: 1px solid color-mix(in srgb, var(--border) 66%, transparent);
+        border: 0;
         border-radius: var(--radius-md);
         background: color-mix(in srgb, var(--surface) 84%, transparent);
         padding: var(--space-4);
@@ -682,13 +687,13 @@ function isActive(href: string): boolean {
         gap: var(--space-4);
       }
       :global(.reporting-note) {
-        border: 1px solid color-mix(in srgb, var(--border) 66%, transparent);
+        border: 0;
         border-radius: var(--radius-md);
         background: color-mix(in srgb, var(--surface) 82%, transparent);
         padding: var(--space-5);
       }
       :global(.process-band) {
-        background: color-mix(in srgb, var(--surface-soft) 44%, transparent);
+        background: var(--bleed-band-blue);
       }
       :global(.process-grid) {
         display: grid;
@@ -717,16 +722,12 @@ function isActive(href: string): boolean {
         margin: 0;
       }
       :global(.roadmap-band) {
-        background: linear-gradient(
-          180deg,
-          color-mix(in srgb, var(--surface-soft) 48%, transparent),
-          color-mix(in srgb, var(--surface-soft) 28%, transparent)
-        );
+        background: var(--bleed-band-blue);
         border-top: 1px solid color-mix(in srgb, var(--border) 68%, transparent);
         border-bottom: 1px solid color-mix(in srgb, var(--border) 68%, transparent);
       }
       :global(.cta-band) {
-        background: linear-gradient(180deg, color-mix(in srgb, var(--accent-soft) 50%, transparent), transparent);
+        background: var(--bleed-band-blue);
         border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
         margin-top: var(--space-14);
       }

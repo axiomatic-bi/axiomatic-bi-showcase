@@ -13,11 +13,11 @@ const primaryCta = {
 };
 
 const crossSourceMermaid = `flowchart LR
-  sourceApis["Source APIs"] --> dataLoads["Automated loads"]
-  fileStreams["File streams"] --> dataLoads
-  dataLoads --> sharedModel["Shared model"]
-  sharedModel --> biReports["Dashboards"]
-  sharedModel --> aiContext["AI context"]`;
+  sourceApis["<b>Source APIs</b><br/>Operational systems and service endpoints"] --> dataLoads["<b>Automated loads</b><br/>Scheduled ingestion with governed contracts"]
+  fileStreams["<b>File streams</b><br/>Batch extracts and managed file drops"] --> dataLoads
+  dataLoads --> sharedModel["<b>Shared model</b><br/>Reusable semantic layer for consistent metrics"]
+  sharedModel --> biReports["<b>Dashboards</b><br/>Business reporting for operational decisions"]
+  sharedModel --> aiContext["<b>AI context</b><br/>Structured inputs for assistant and agent workflows"]`;
 
 const proofLinks = [
   { label: "Examples to get started", href: "/case-studies" },
@@ -147,7 +147,7 @@ const proofLinks = [
     </div>
   </section>
 
-  <div class="full-bleed example-band">
+  <div class="full-bleed">
     <section class="proof-grid-section band-inner" aria-labelledby="proof-grid-heading">
       <p class="section-label">Example engagement</p>
       <h2 id="proof-grid-heading">Fake Store reference build</h2>
@@ -284,24 +284,8 @@ const proofLinks = [
     opacity: 0.8;
   }
 
-  .engine-diagram-card .mermaid {
-    min-width: 0;
-    width: 100%;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .engine-diagram-card .mermaid :global(svg) {
-    width: 100% !important;
-    max-width: 100%;
-    height: auto !important;
-  }
-
-  .example-band {
+  .full-bleed .proof-grid-section {
     padding-block: clamp(2.5rem, 5vw, 4rem);
-    background: color-mix(in srgb, var(--background, #050c1a) 86%, #0f1c34 14%);
   }
 
   .example-feature {

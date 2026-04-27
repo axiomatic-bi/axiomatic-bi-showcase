@@ -12,39 +12,38 @@ import fakeStorePbiModelImage from "../../../assets/fake-store-pbi-model.webp";
 import { ExternalLink } from "lucide-react";
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
-const fakeStoreTransformationMermaid = `flowchart LR
+const fakeStoreTransformationMermaid = `flowchart TB
   subgraph ingestGroup["Ingestion"]
-    direction TB
-    apiNode["<b>API extraction</b><br/>Products, users, carts loaded via dlt resources"]
-    bronzeNode["<b>Bronze load</b><br/>Raw endpoint outputs persisted to warehouse tables"]
-    apiNode --> bronzeNode
+    direction LR
+    apiNode["<b>API extraction</b><br/>Products, users, carts via dlt resources"]
+    bronzeNode["<b>Bronze load</b><br/>Raw outputs persisted to warehouse tables"]
+    ingestOut[" "]
+    apiNode --> bronzeNode --> ingestOut
   end
   subgraph transformGroup["Transformation"]
-    direction TB
-    silverNode["<b>Silver staging</b><br/>Typed and normalised dbt staging models"]
+    direction LR
+    transformIn[" "]
+    silverNode["<b>Silver staging</b><br/>Typed and normalised dbt models"]
     goldNode["<b>Gold star schema</b><br/>Conformed dimensions and fact tables for analytics"]
-    martsNode["<b>Mart layer (optional)</b><br/>Derived serving views for specific consumers"]
-    silverNode --> goldNode
+    martsNode["<b>Mart layer (optional)</b><br/>Derived serving views for consumers"]
+    transformOut[" "]
+    transformIn --> silverNode --> goldNode
     goldNode -.-> martsNode
+    goldNode --> transformOut
+    martsNode -.-> transformOut
   end
   subgraph consumeGroup["Consumption"]
     direction LR
+    consumeIn[" "]
     consumeNode["<b>Consumption tools</b><br/>Power BI, Tableau, Evidence, Dash, MCP, or other analytics apps"]
+    consumeIn --> consumeNode
   end
-  bronzeNode --> silverNode
-  goldNode --> consumeNode
-  martsNode -.-> consumeNode
-  style ingestGroup fill:#111b36,stroke:#7B8DFF,stroke-width:1px,stroke-dasharray:5 4,color:#e7ecff
-  style transformGroup fill:#102439,stroke:#33C7B5,stroke-width:1px,stroke-dasharray:5 4,color:#e4fffb
-  style consumeGroup fill:#221b2f,stroke:#8B6DFF,stroke-width:1px,stroke-dasharray:5 4,color:#efe8ff
-  classDef ingest fill:#1a2d59,stroke:#4FA3FF,stroke-width:1px,color:#f6fbff;
-  classDef transform fill:#16354d,stroke:#33C7B5,stroke-width:1px,color:#f2fffd;
-  classDef mart fill:#16354d66,stroke:#33C7B5,stroke-width:1px,color:#e8fffc;
-  classDef consume fill:#2c2440,stroke:#8B6DFF,stroke-width:1px,color:#f8f5ff;
-  class apiNode,bronzeNode ingest;
-  class silverNode,goldNode transform;
-  class martsNode mart;
-  class consumeNode consume;`;
+  ingestOut --> transformIn
+  transformOut --> consumeIn
+  style ingestOut fill:transparent,stroke:transparent,color:transparent
+  style transformIn fill:transparent,stroke:transparent,color:transparent
+  style transformOut fill:transparent,stroke:transparent,color:transparent
+  style consumeIn fill:transparent,stroke:transparent,color:transparent`;
 
 if (!fakeStoreEntry) {
   throw new Error("Missing case study entry: fake-store");
@@ -91,50 +90,50 @@ const { Content } = await fakeStoreEntry.render();
     </div>
   </div>
 
-  <section>
-    <p class="section-label">Quick overview</p>
-    <SectionHeading title="At a glance" />
-    <div class="glance-grid" role="list" aria-label="Case study highlights">
-      <article class="glance-card" role="listitem">
-        <h3>Problem</h3>
-        <p>API data was easy to access but hard to govern and rerun.</p>
-      </article>
-      <article class="glance-card" role="listitem">
-        <h3>What was built</h3>
-        <p>A reusable ingestion and dbt pipeline with a reporting-ready star schema.</p>
-      </article>
-      <article class="glance-card" role="listitem">
-        <h3>Why it matters</h3>
-        <p>Reporting stays consistent because business logic lives in the model, not the dashboard.</p>
-      </article>
-      <article class="glance-card" role="listitem">
-        <h3>Technology</h3>
-        <p>Axiomatic Engine, dlt, dbt, warehouse modelling, and Power BI delivery.</p>
-      </article>
-    </div>
-  </section>
-
-  <div class="full-bleed architecture-band">
-    <section class="band-inner band-inner-wide architecture-section">
-      <p class="section-label">Delivery architecture</p>
-      <SectionHeading title="Architecture" />
-      <div class="architecture-flow-layout">
-        <div class="architecture-flow-left">
-          <p>
-            This diagram summarises the delivery flow from ingestion to warehouse modelling and then BI consumption.
-          </p>
-          <p>
-            For clients, this creates a reliable reporting foundation where pipeline changes and dashboard changes can be managed independently.
-          </p>
-        </div>
-        <div class="architecture-flow-right">
-          <div class="mermaid">{fakeStoreTransformationMermaid}</div>
-        </div>
+  <div class="full-bleed glance-band">
+    <section class="band-inner band-inner-wide glance-section">
+      <p class="section-label">Quick overview</p>
+      <SectionHeading title="At a glance" />
+      <div class="glance-grid" role="list" aria-label="Case study highlights">
+        <article class="glance-card" role="listitem">
+          <h3>Problem</h3>
+          <p>API data was easy to access but hard to govern and rerun.</p>
+        </article>
+        <article class="glance-card" role="listitem">
+          <h3>What was built</h3>
+          <p>A reusable ingestion and dbt pipeline with a reporting-ready star schema.</p>
+        </article>
+        <article class="glance-card" role="listitem">
+          <h3>Why it matters</h3>
+          <p>Reporting stays consistent because business logic lives in the model, not the dashboard.</p>
+        </article>
+        <article class="glance-card" role="listitem">
+          <h3>Technology</h3>
+          <p>Axiomatic Engine, dlt, dbt, warehouse modelling, and Power BI delivery.</p>
+        </article>
       </div>
     </section>
   </div>
 
-  <div class="full-bleed reporting-band">
+  <section class="architecture-section">
+    <p class="section-label">Delivery architecture</p>
+    <SectionHeading title="Architecture" />
+    <div class="architecture-flow-layout">
+      <div class="architecture-flow-left">
+        <p>
+          This diagram summarises the delivery flow from ingestion to warehouse modelling and then BI consumption.
+        </p>
+        <p>
+          For clients, this creates a reliable reporting foundation where pipeline changes and dashboard changes can be managed independently.
+        </p>
+      </div>
+      <div class="architecture-flow-right">
+        <div class="mermaid">{fakeStoreTransformationMermaid}</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="full-bleed">
     <section class="band-inner band-inner-wide reporting-section">
       <p class="section-label">Consumption layer</p>
       <SectionHeading title="Reporting outputs" />
@@ -287,6 +286,10 @@ const { Content } = await fakeStoreEntry.render();
     grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
   }
 
+  .glance-band {
+    background: var(--bleed-band-blue);
+  }
+
   .glance-card {
     background: color-mix(in srgb, var(--surface, #111723) 86%, transparent);
     border-radius: var(--radius-md);
@@ -331,18 +334,8 @@ const { Content } = await fakeStoreEntry.render();
     margin-bottom: 1.1rem;
   }
 
-  .architecture-band {
-    background: color-mix(in srgb, var(--background, #050c1a) 88%, #13294d 12%);
-  }
-
   .architecture-section {
-    margin-bottom: 0;
-    padding-top: clamp(2.75rem, 4.5vw, 4rem);
-    padding-bottom: clamp(2.75rem, 4.5vw, 4rem);
-  }
-
-  .reporting-band {
-    background: color-mix(in srgb, var(--background, #050c1a) 90%, #1f1830 10%);
+    margin-bottom: var(--space-12);
   }
 
   .reporting-section {
@@ -443,42 +436,12 @@ const { Content } = await fakeStoreEntry.render();
     gap: 0.6rem;
   }
 
-  .mermaid :global(.cluster rect) {
-    rx: 12px;
-    ry: 12px;
-    stroke-dasharray: 5 4;
-  }
-
-  .mermaid :global(.nodeLabel) {
-    font-size: 0.92rem !important;
-    line-height: 1.35;
-  }
-
-  .mermaid :global(.cluster-label text),
-  .mermaid :global(.cluster text) {
-    font-size: 0.94rem !important;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-  }
-
   .mermaid {
     padding-top: 0.9rem;
   }
 
   .mermaid :global(svg) {
     overflow: visible;
-  }
-
-  @media (max-width: 680px) {
-    .mermaid :global(.nodeLabel) {
-      font-size: 0.86rem !important;
-    }
-
-    .mermaid :global(.cluster-label text),
-    .mermaid :global(.cluster text) {
-      font-size: 0.88rem !important;
-    }
-
   }
 
   @media (min-width: 64rem) {

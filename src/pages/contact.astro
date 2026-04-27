@@ -1,9 +1,19 @@
 ---
+import { getEntry } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import { withBase } from "../utils/urls";
-import { BriefcaseBusiness, CheckCircle2, Link2, Mail, Phone } from "lucide-react";
+import { BriefcaseBusiness, Download, FileText, Link2, Mail } from "lucide-react";
+import cvPdf from "../../assets/cv-timothy-amison.pdf";
+
+const contactEntry = await getEntry("contact", "main");
+
+if (!contactEntry) {
+  throw new Error("Missing contact content entry: main");
+}
+
+const { Content } = await contactEntry.render();
 ---
 
 <BaseLayout title="Contact" description="Contact options for discovery calls and project conversations.">
@@ -14,62 +24,115 @@ import { BriefcaseBusiness, CheckCircle2, Link2, Mail, Phone } from "lucide-reac
           { label: "Home", href: withBase("/") },
           { label: "Contact" }
         ]}
-        title="Contact"
-        lede="Use this page for discovery calls, project enquiries, and publication-safe contact links."
+        title={contactEntry.data.title}
+        lede={contactEntry.data.summary}
       />
     </div>
   </div>
 
   <section>
-    <SectionHeading title="Contact and Links">
+    <SectionHeading title="Contact methods">
       <BriefcaseBusiness slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
-    <p>
-      This page is the primary contact point for discovery calls. Add your preferred booking link,
-      email address, or calendar URL here once publication metadata is finalised.
-    </p>
+    <div class="contact-grid">
+      <article class="contact-card">
+        <h3>
+          <Mail size={16} strokeWidth={2} />
+          <span>Email</span>
+        </h3>
+        <p>
+          <a href={`mailto:${contactEntry.data.email}`}>{contactEntry.data.email}</a>
+        </p>
+      </article>
+      <article class="contact-card">
+        <h3>
+          <Link2 size={16} strokeWidth={2} />
+          <span>LinkedIn</span>
+        </h3>
+        <p>
+          <a class="button button-secondary" href={contactEntry.data.linkedinUrl} target="_blank" rel="noreferrer">
+            Open LinkedIn profile
+          </a>
+        </p>
+      </article>
+      <article class="contact-card">
+        <h3>
+          <FileText size={16} strokeWidth={2} />
+          <span>About Me and CV</span>
+        </h3>
+        <p class="contact-card-links">
+          <a class="button button-secondary" href={withBase("/about")}>
+            View About Me
+          </a>
+          <a class="button button-secondary" href={cvPdf} download>
+            Download PDF <Download size={14} strokeWidth={2} />
+          </a>
+        </p>
+      </article>
+    </div>
+    <p class="response-window">{contactEntry.data.responseWindow}</p>
   </section>
 
   <section>
-    <SectionHeading title="Suggested contact methods">
-      <Mail slot="icon" size={18} strokeWidth={2} />
+    <SectionHeading title="Enquiry guidance">
+      <BriefcaseBusiness slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
-    <p>
-      Add one direct email contact, one scheduling link, and one professional profile link so outreach is
-      clear and low-friction.
-    </p>
-    <p>Keep all details current and include response expectations where possible.</p>
-  </section>
-
-  <section>
-    <SectionHeading title="Public safety and hygiene">
-      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      Keep all contact artefacts public-safe and free of sensitive identifiers. Do not publish personal
-      phone numbers, private addresses, or tokens.
-    </p>
-  </section>
-
-  <section>
-    <SectionHeading title="Placeholders to replace before launch">
-      <Link2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <ul>
-      <li>Email link (for example: hello@your-domain.com)</li>
-      <li>Booking URL (for example: Calendly or equivalent)</li>
-      <li>Professional profile URL (for example: LinkedIn or GitHub)</li>
-      <li>Optional project enquiry form URL</li>
-    </ul>
-  </section>
-
-  <section>
-    <SectionHeading title="Phone and region notes">
-      <Phone slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      If you publish a phone number, include timezone and acceptable contact hours so inbound requests are
-      easier to triage.
-    </p>
+    <div class="contact-content">
+      <Content />
+    </div>
   </section>
 </BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  }
+
+  .contact-card {
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--surface, #111723) 84%, transparent);
+    padding: 0.85rem 0.95rem;
+  }
+
+  .contact-card h3 {
+    margin: 0 0 0.45rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-card p {
+    margin: 0;
+  }
+
+  .contact-card-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    align-items: center;
+  }
+
+  .contact-card-links .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .response-window {
+    margin-top: 0.8rem;
+    color: var(--text-soft);
+  }
+
+  .contact-content :global(h2) {
+    margin-top: 1.1rem;
+    margin-bottom: 0.45rem;
+    font-size: clamp(1.02rem, 1.7vw, 1.16rem);
+  }
+
+  .contact-content :global(p) {
+    margin-bottom: 0.7rem;
+  }
+</style>

@@ -1,63 +1,143 @@
 ---
+import { getEntry } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import { withBase } from "../utils/urls";
-import { CheckCircle2, Microscope, Target, UserRound } from "lucide-react";
+import { Download, FileText, Layers3 } from "lucide-react";
+import cvPdf from "../../assets/cv-timothy-amison.pdf";
+
+const cvEntry = await getEntry("cv", "main");
+
+if (!cvEntry) {
+  throw new Error("Missing CV content entry: main");
+}
+
+const { Content } = await cvEntry.render();
 ---
 
-<BaseLayout title="About" description="Background and technical approach for this portfolio.">
+<BaseLayout title={cvEntry.data.title} description={cvEntry.data.summary}>
   <div class="full-bleed hero-scene">
     <div class="band-inner">
       <PageHeader
         breadcrumbs={[
           { label: "Home", href: withBase("/") },
-          { label: "About" }
+          { label: "About Me" }
         ]}
-        title="About"
-        lede="Background, principles, and scope boundaries behind the Axiomatic BI Showcase."
+        title={cvEntry.data.title}
+        lede={cvEntry.data.summary}
+        updatedAt={cvEntry.data.updatedAt}
       />
+      <p class="cv-actions">
+        <a class="button button-primary" href={cvPdf} download>
+          Download PDF CV <Download size={16} strokeWidth={2} />
+        </a>
+      </p>
     </div>
   </div>
 
-  <section>
-    <SectionHeading title="Background">
-      <UserRound slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      This showcase documents practical data engineering work centred on pipeline orchestration,
-      modelling discipline, and transparent technical decision-making.
-    </p>
-  </section>
+  <div class="full-bleed cv-focus-band">
+    <section class="band-inner band-inner-wide cv-focus-section">
+      <SectionHeading title="Focus areas">
+        <FileText slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <div class="cv-focus-grid">
+        {cvEntry.data.focusAreas.map((item) => <article class="cv-focus-card">{item}</article>)}
+      </div>
+    </section>
+  </div>
+
+  <div class="full-bleed">
+    <section class="band-inner band-inner-wide cv-skills-section">
+      <SectionHeading title="Skills stack">
+        <Layers3 slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <div class="cv-skills-grid">
+        {cvEntry.data.skillGroups.map((group) => (
+          <article class="cv-skill-card">
+            <h3>{group.label}</h3>
+            <ul>
+              {group.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
 
   <section>
-    <SectionHeading title="Technical Principles">
-      <Microscope slot="icon" size={18} strokeWidth={2} />
+    <SectionHeading title="About me overview">
+      <FileText slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
-    <p>
-      Claims are evidence-backed, workflows are reproducible where possible, and limitations are stated
-      directly. Content prioritises clarity and maintainability over marketing language.
-    </p>
+    <div class="cv-content">
+      <Content />
+    </div>
   </section>
-
-  <section>
-    <SectionHeading title="How I Evaluate Trade-offs">
-      <Target slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      Trade-offs are assessed across reliability, maintainability, operational risk, and implementation
-      complexity. Decisions are considered stronger when they are testable and explainable in code.
-    </p>
-  </section>
-
-  <section>
-    <SectionHeading title="What This Showcase Is and Is Not">
-      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      This is a technical portfolio, not a production platform. It emphasises demonstrable patterns and
-      lessons, and marks planned capability areas clearly rather than overstating maturity.
-    </p>
-  </section>
-
 </BaseLayout>
+
+<style>
+  .cv-actions {
+    margin: 0 0 0.9rem;
+  }
+
+  .cv-focus-band {
+    background: color-mix(in srgb, var(--background, #050c1a) 90%, #13294d 10%);
+  }
+
+  .cv-focus-section {
+    margin-bottom: 0;
+    padding-top: clamp(2.4rem, 4vw, 3.4rem);
+    padding-bottom: clamp(2.4rem, 4vw, 3.4rem);
+  }
+
+  .cv-focus-grid {
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+
+  .cv-focus-card {
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--surface, #111723) 84%, transparent);
+    padding: 0.8rem 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .cv-skills-section {
+    margin-bottom: 0;
+    padding-top: clamp(2.4rem, 4vw, 3.4rem);
+    padding-bottom: clamp(2.4rem, 4vw, 3.4rem);
+  }
+
+  .cv-skills-grid {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  }
+
+  .cv-skill-card {
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--surface, #111723) 84%, transparent);
+    padding: 0.8rem 0.9rem;
+  }
+
+  .cv-skill-card h3 {
+    margin: 0 0 0.45rem;
+    font-size: 0.96rem;
+  }
+
+  .cv-skill-card ul {
+    margin: 0;
+    padding-left: 1rem;
+  }
+
+  .cv-content :global(h2) {
+    margin-top: 1.1rem;
+    margin-bottom: 0.45rem;
+    font-size: clamp(1.02rem, 1.7vw, 1.16rem);
+  }
+
+  .cv-content :global(p) {
+    margin-bottom: 0.7rem;
+  }
+</style>

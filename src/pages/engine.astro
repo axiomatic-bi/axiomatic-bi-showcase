@@ -9,17 +9,50 @@ import DecisionLog from "../components/DecisionLog.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import { fakeStoreLinks } from "../utils/externalLinks";
 import { withBase } from "../utils/urls";
-import { CheckCircle2, FileCode2, Lightbulb, Microscope, Target } from "lucide-react";
+import { CheckCircle2, ExternalLink, FileCode2, Lightbulb, Microscope, Target } from "lucide-react";
 
 const engineEntry = await getEntry("engine", "overview");
 if (!engineEntry) {
   throw new Error("Engine overview entry not found.");
 }
 const { Content } = await engineEntry.render();
-const engineArchitectureMermaid = `flowchart TD
-  sourceNode[SourceProtocols] --> ingestNode[IngestorDLTStage]
-  ingestNode --> warehouseNode[WarehouseAdapter]
-  warehouseNode --> transformNode[DbtTransformationAdapter]`;
+const engineArchitectureMermaid = `flowchart LR
+  sourceNode["<b>Source protocols</b><br/>Typed source contracts expose extraction resources"] --> ingestNode["<b>Ingestion stage</b><br/>dlt orchestration handles extraction and load execution"]
+  ingestNode --> warehouseNode["<b>Warehouse adapter</b><br/>Backend-specific load behaviour remains isolated"]
+  warehouseNode --> transformNode["<b>Transformation adapter</b><br/>dbt execution applies model contracts and quality checks"]`;
+
+const engineScopeMermaid = `flowchart LR
+  subgraph sourceGroup["Sources currently supported"]
+    direction TB
+    restNode["REST API source"]
+    fileNode["File source"]
+  end
+
+  subgraph storageGroup["Storage currently supported"]
+    direction TB
+    dltNode["dlt-managed landing/load"]
+  end
+
+  subgraph warehouseGroup["Warehouses currently supported"]
+    direction TB
+    duckdbNode["DuckDB"]
+    motherduckNode["MotherDuck"]
+  end
+
+  subgraph plannedGroup["Planned extensions"]
+    direction TB
+    s3Node["S3 storage"]
+    gcsNode["GCS storage"]
+    bigqueryNode["BigQuery warehouse"]
+  end
+
+  restNode --> dltNode
+  fileNode --> dltNode
+  dltNode --> duckdbNode
+  dltNode --> motherduckNode
+  dltNode -. planned .-> s3Node
+  dltNode -. planned .-> gcsNode
+  dltNode -. planned .-> bigqueryNode`;
 ---
 
 <BaseLayout
@@ -37,82 +70,96 @@ const engineArchitectureMermaid = `flowchart TD
         title="Engine Overview"
         lede="Contract-first orchestration design for ingestion, transformation, and warehouse execution."
       />
+      <div class="engine-actions">
+        <a class="button button-primary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
+          View example project <ExternalLink size={16} strokeWidth={2} />
+        </a>
+        <a
+          class="button button-secondary"
+          href="https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr"
+          target="_blank"
+          rel="noreferrer"
+        >
+          View ADRs <ExternalLink size={16} strokeWidth={2} />
+        </a>
+      </div>
     </div>
   </div>
 
   <section>
+    <p class="section-label">Quick overview</p>
+    <SectionHeading title="At a glance" />
+    <div class="glance-grid" role="list" aria-label="Engine overview highlights">
+      {engineEntry.data.highlights.map((item) => (
+        <article class="glance-card" role="listitem">
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Context</p>
     <SectionHeading title="Problem">
       <Target slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
-    <p>
-      Data projects often blur orchestration, source logic, warehouse behaviour, and transformation
-      execution. This increases maintenance cost and makes rerun behaviour harder to reason about.
-      Axiomatic Engine addresses this by separating responsibilities with typed protocols and adapter
-      boundaries.
-    </p>
+    <p>{engineEntry.data.problemStatement}</p>
   </section>
 
+  <div class="full-bleed accent-band">
+    <section class="band-inner band-inner-wide accent-section">
+      <p class="section-label">Delivery architecture</p>
+      <SectionHeading title="Architecture">
+        <Microscope slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <div class="architecture-flow-layout">
+        <div class="architecture-flow-left">
+          {engineEntry.data.architectureIntro.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+        <div class="architecture-flow-right">
+          <div class="mermaid">{engineArchitectureMermaid}</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <section>
-    <SectionHeading title="Architecture">
+    <p class="section-label">Design decisions</p>
+    <SectionHeading title="Execution and backend strategy">
       <Microscope slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
-    <p>
-      The engine is organised into contracts, adapters, and core stages. Sources expose resources
-      through protocol boundaries, ingestion is executed with dlt into a selected warehouse adapter,
-      and transformation is delegated through a transformation adapter. This keeps pipeline flow
-      centralised while backend specifics remain isolated.
-    </p>
-    <h3>Core Contracts</h3>
-    <p>
-      Source, storage, warehouse, and transformation protocols define extension points. Literal kinds
-      constrain available options, so unsupported backends fail explicitly instead of degrading
-      silently. This helps keep project code domain-aware and engine code domain-agnostic.
-    </p>
-    <h3>Execution Flow</h3>
-    <p>
-      Runtime flow is consistent: resources are wrapped and enriched, dlt performs ingestion into the
-      configured warehouse destination, and the transformation stage runs only when enabled. Settings
-      are loaded from <code>AXIOMATIC_*</code> variables with CLI override support.
-    </p>
-    <h3>Transformation Strategy</h3>
-    <p>
-      The transformation stage is dbt-first by design. Dependency graphing, model ordering, and tests
-      stay with dbt, while orchestration stays with the engine. This avoids reimplementing mature dbt
-      capabilities in engine internals and keeps CI execution straightforward.
-    </p>
-    <h3>Warehouse Strategy</h3>
-    <p>
-      DuckDB and MotherDuck share a Duck-compatible base for common behaviour, with concrete adapters
-      handling backend-specific validation. MotherDuck token handling remains environment-driven and is
-      kept out of URI paths to reduce accidental credential exposure.
-    </p>
-    <div class="mermaid">{engineArchitectureMermaid}</div>
+    {engineEntry.data.strategySections.map((section) => (
+      <>
+        <h3>{section.heading}</h3>
+        <p>{section.body}</p>
+      </>
+    ))}
   </section>
 
-  <section>
-    <SectionHeading title="Implemented Scope and Declared Extensions">
-      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      Implemented scope includes REST and file-based ingestion paths, DuckDB-compatible warehouse
-      execution, typed settings, and dbt-first transformation orchestration. Declared extension points
-      remain for additional storage backends and warehouses, with explicit not-implemented signalling.
-    </p>
-  </section>
+  <div class="full-bleed">
+    <section class="band-inner band-inner-wide engine-scope-section">
+      <p class="section-label">Delivery scope</p>
+      <SectionHeading title="Implemented scope and declared extensions">
+        <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <p>{engineEntry.data.scopeSummary}</p>
+      <div class="mermaid">{engineScopeMermaid}</div>
+    </section>
+  </div>
 
   <section>
+    <p class="section-label">Delivery notes</p>
     <SectionHeading title="Trade-offs and Lessons">
       <Lightbulb slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
-    <p>
-      The current design favours clear boundaries and predictable execution over broad backend coverage.
-      This reduces ambiguity for early adopters, but it also means some integrations remain planned.
-      Semantic and MCP standards are tracked as planned capability work until concrete implementation is
-      published.
-    </p>
+    <p>{engineEntry.data.tradeOffs}</p>
   </section>
 
   <section>
+    <p class="section-label">Reproducibility</p>
     <SectionHeading title="Reproducibility Notes">
       <Target slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
@@ -142,6 +189,7 @@ const engineArchitectureMermaid = `flowchart TD
   </section>
 
   <section>
+    <p class="section-label">Evidence</p>
     <SectionHeading title="Evidence and Decision Log">
       <Microscope slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
@@ -162,6 +210,7 @@ const engineArchitectureMermaid = `flowchart TD
   </section>
 
   <section>
+    <p class="section-label">Narrative detail</p>
     <SectionHeading title="Source Narrative">
       <FileCode2 slot="icon" size={18} strokeWidth={2} />
     </SectionHeading>
@@ -172,6 +221,73 @@ const engineArchitectureMermaid = `flowchart TD
 </BaseLayout>
 
 <style>
+  .engine-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0 0 1rem;
+  }
+
+  .glance-grid {
+    display: grid;
+    gap: 0.8rem;
+    margin-top: 0.55rem;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  }
+
+  .glance-card {
+    background: color-mix(in srgb, var(--surface, #111723) 86%, transparent);
+    border-radius: var(--radius-md);
+    padding: 0.8rem 0.85rem;
+  }
+
+  .glance-card h3 {
+    margin: 0 0 0.35rem;
+    font-size: 0.98rem;
+  }
+
+  .glance-card p {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+
+  .accent-band {
+    background: color-mix(in srgb, var(--background, #050c1a) 88%, #2d1b5a 12%);
+  }
+
+  .accent-section {
+    margin-bottom: 0;
+    padding-top: clamp(2.75rem, 4.5vw, 4rem);
+    padding-bottom: clamp(2.75rem, 4.5vw, 4rem);
+  }
+
+  .engine-scope-section {
+    margin-bottom: 0;
+    padding-top: clamp(2.1rem, 3.8vw, 3rem);
+    padding-bottom: clamp(2.1rem, 3.8vw, 3rem);
+  }
+
+  .architecture-flow-layout {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+    margin-top: 0.6rem;
+  }
+
+  .architecture-flow-left,
+  .architecture-flow-right {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+
+  .architecture-flow-left p {
+    margin: 0;
+  }
+
   .source-narrative-content :global(h2) {
     font-size: clamp(1.02rem, 1.7vw, 1.16rem);
     margin-top: 1rem;
@@ -179,5 +295,24 @@ const engineArchitectureMermaid = `flowchart TD
 
   .source-narrative-content :global(h3) {
     font-size: clamp(0.94rem, 1.5vw, 1.05rem);
+  }
+
+  .mermaid :global(.cluster rect) {
+    stroke: none !important;
+    stroke-width: 0 !important;
+  }
+
+  @media (max-width: 680px) {
+    .engine-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .architecture-flow-layout {
+      grid-template-columns: 1fr;
+      gap: 1.1rem;
+    }
   }
 </style>
