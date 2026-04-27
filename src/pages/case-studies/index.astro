@@ -6,6 +6,7 @@ import PageHeader from "../../components/PageHeader.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import { withBase } from "../../utils/urls";
 import { ArrowRight, CheckCircle2, Microscope, Target } from "lucide-react";
+import fakeStoreSalesPageImage from "../../../assets/fake-store-sales-page.webp";
 
 const entries = await getCollection("caseStudies");
 ---
@@ -34,39 +35,59 @@ const entries = await getCollection("caseStudies");
     </p>
   </section>
 
-  <section>
-    <SectionHeading title="Available examples">
-      <Target slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <div class="case-preview-grid">
-      {
-        entries.map((entry) => (
-          <article class="case-preview-card">
-            <h3>{entry.data.title}</h3>
-            <dl class="case-preview-list">
-              <div>
-                <dt>Problem</dt>
-                <dd>Fragmented source outputs and limited confidence in reporting behaviour.</dd>
+  <div class="full-bleed examples-band">
+    <section class="band-inner band-inner-wide examples-section">
+      <SectionHeading title="Available examples">
+        <Target slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <div class="case-preview-grid">
+        {
+          entries.map((entry) => (
+            <article class="case-preview-card">
+              <div class="case-preview-card-layout">
+                <div class="case-preview-card-copy">
+                  <h3>{entry.data.title}</h3>
+                  <dl class="case-preview-list">
+                    <div>
+                      <dt>Problem</dt>
+                      <dd>Fragmented source outputs and limited confidence in reporting behaviour.</dd>
+                    </div>
+                    <div>
+                      <dt>What changed</dt>
+                      <dd>{entry.data.summary}</dd>
+                    </div>
+                    <div>
+                      <dt>What improved</dt>
+                      <dd>Reproducible delivery boundaries and clearer route to decision-ready models.</dd>
+                    </div>
+                  </dl>
+                  <p>
+                    <a class="button button-secondary" href={withBase(`/case-studies/${entry.slug}`)}>
+                      Open example <ArrowRight size={16} strokeWidth={2} />
+                    </a>
+                  </p>
+                </div>
+                {
+                  entry.slug === "fake-store" && (
+                    <figure class="case-preview-card-media">
+                      <img
+                        src={fakeStoreSalesPageImage.src}
+                        alt="Fake Store report screenshot showing sales summary visuals."
+                        width={fakeStoreSalesPageImage.width}
+                        height={fakeStoreSalesPageImage.height}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </figure>
+                  )
+                }
               </div>
-              <div>
-                <dt>What changed</dt>
-                <dd>{entry.data.summary}</dd>
-              </div>
-              <div>
-                <dt>What improved</dt>
-                <dd>Reproducible delivery boundaries and clearer route to decision-ready models.</dd>
-              </div>
-            </dl>
-            <p>
-              <a class="button button-secondary" href={withBase(`/case-studies/${entry.slug}`)}>
-                Open example <ArrowRight size={16} strokeWidth={2} />
-              </a>
-            </p>
-          </article>
-        ))
-      }
-    </div>
-  </section>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </div>
 
   <section>
     <SectionHeading title="Comparison criteria">
@@ -88,3 +109,41 @@ const entries = await getCollection("caseStudies");
     </p>
   </section>
 </BaseLayout>
+
+<style>
+  .examples-band {
+    background: color-mix(in srgb, var(--background, #050c1a) 90%, #13294d 10%);
+  }
+
+  .examples-section {
+    margin-bottom: 0;
+    padding-top: clamp(2.75rem, 4.5vw, 4rem);
+    padding-bottom: clamp(2.75rem, 4.5vw, 4rem);
+  }
+
+  .case-preview-card-layout {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .case-preview-card-media {
+    margin: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--surface, #111723) 84%, transparent);
+  }
+
+  .case-preview-card-media img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (min-width: 72rem) {
+    .case-preview-card-layout {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1.25rem;
+    }
+  }
+</style>
