@@ -67,7 +67,7 @@ const { Content } = await fakeStoreEntry.render();
           { label: "Fake Store" }
         ]}
         title="Fake Store Example"
-        lede="This example proves a repeatable path from API ingestion to governed reporting outputs, with clear boundaries between engine runtime and BI delivery."
+        lede="This example shows a repeatable path from API ingestion to governed reporting outputs, with clear separation between engine runtime and BI delivery."
       >
         <img
           slot="visual"
@@ -81,7 +81,7 @@ const { Content } = await fakeStoreEntry.render();
         />
       </PageHeader>
       <p class="hero-context">
-        Built to be readable for non-technical stakeholders while still exposing the engineering choices and evidence behind delivery quality.
+        Built to be readable by stakeholders while exposing the engineering decisions behind delivery quality.
       </p>
       <div class="case-study-actions">
         <a class="button button-primary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
@@ -100,15 +100,15 @@ const { Content } = await fakeStoreEntry.render();
     <div class="glance-grid" role="list" aria-label="Case study highlights">
       <article class="glance-card" role="listitem">
         <h3>Problem</h3>
-        <p>API data was quick to access but hard to govern, rerun, and trust for consistent reporting.</p>
+        <p>API data was easy to access but hard to govern and rerun.</p>
       </article>
       <article class="glance-card" role="listitem">
         <h3>What was built</h3>
-        <p>Reusable ingestion and dbt contracts with a star-schema model consumed by reporting tools.</p>
+        <p>A reusable ingestion and dbt pipeline with a reporting-ready star schema.</p>
       </article>
       <article class="glance-card" role="listitem">
         <h3>Why it matters</h3>
-        <p>Reporting can evolve quickly without hiding business logic in dashboards.</p>
+        <p>Reporting can evolve without hiding logic in dashboards.</p>
       </article>
       <article class="glance-card" role="listitem">
         <h3>Technology</h3>
@@ -142,12 +142,12 @@ const { Content } = await fakeStoreEntry.render();
       <p class="section-label">Consumption layer</p>
       <SectionHeading title="Reporting outputs" />
       <p>
-        Reporting assets are implemented separately from engine runtime code. This allows Power BI, Tableau, Evidence,
-        Dash, or other front ends to iterate independently while still relying on the same warehouse contract.
+        Reporting assets are versioned separately from engine runtime code, so BI can evolve independently while
+        staying aligned to the same warehouse contract.
       </p>
       <p>
-        The PBIX artefact location, semantic model assets, and report screenshots are grouped in the BI examples
-        repository so implementation evidence remains tied to report versions and reproducible delivery.
+        The PBIX artefact, semantic model assets, and screenshots show how reporting consumes the governed model in
+        practice.
       </p>
       <p>
         <a class="button button-secondary" href={fakeStoreLinks.pbixAsset} target="_blank" rel="noreferrer">

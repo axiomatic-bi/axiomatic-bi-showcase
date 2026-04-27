@@ -7,14 +7,49 @@ alwaysApply: true
 
 ## British English
 - Use British English spelling throughout: optimise, normalise, modelling, organisation, behaviour.
-- Apply this to page copy, comments, and docs.
+- Apply British spelling to page copy, comments, docs, headings, and code comments where applicable.
 
 ## Voice And Tone
 - Write in a professional, concise, technical tone.
-- Prefer clear claims over marketing language.
+- Prefer precise claims over promotional language.
+- Explain decisions, trade-offs, and outcomes before implementation detail.
 - Avoid buzzwords unless they are defined in context.
+- Avoid filler such as "robust", "seamless", "powerful", and "cutting-edge" unless they add specific meaning.
 
 ## Structure
-- Lead with outcomes and decisions, then implementation detail.
-- Explain intent and trade-offs, not obvious mechanics.
-- Keep paragraphs short and scannable.
+- Lead with the conclusion or key decision, then explain supporting detail.
+- Keep paragraphs short: 1–3 sentences maximum.
+- Use bullets for lists, comparisons, evidence, or outcomes that readers should scan quickly.
+- Keep one idea per paragraph.
+- Do not repeat the same point in multiple sections unless the emphasis is intentional.
+- Prefer labelled sub-sections or short blocks over long uninterrupted prose.
+- Write for scanners first, readers second.
+
+## Style Rules
+- Use active voice.
+- Use plain language first, technical terms second.
+- Be specific about who does what, when, and why.
+- Prefer "because", "so", and "therefore" over vague transitions.
+- Avoid rhetorical questions.
+- Avoid hype, self-congratulation, and generic portfolio phrasing.
+- Use sentence case for headings.
+- Keep terminology consistent across the page.
+- Cut any sentence that does not add new information.
+
+## Showcase Content Priorities
+- Outcome: what changed, improved, or was demonstrated.
+- Decision: what was chosen and why.
+- Implementation: only the detail needed to understand the decision.
+- Evidence: link to artefacts, diagrams, screenshots, or code where relevant.
+- Limitation: state what is out of scope or deliberately not included.
+
+## Editing Checks
+- Remove repeated ideas.
+- Prefer fewer, clearer sections over many similar sections.
+- If a paragraph can be turned into 2–4 bullets, do that.
+- If a sentence sounds like a portfolio template, rewrite it.
+- If a section feels like documentation, reduce the prose and increase structure.
+
+## British Terms
+- Use: modelling, artefact, behaviour, fulfil, organisation, optimiser, programme.
+- Avoid American spellings unless they are part of a proper noun or code.

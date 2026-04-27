@@ -42,58 +42,50 @@ reproducibility:
   - command: cd projects/fake_store && uv run python run_pipeline.py --run-transforms
     assumption: dbt profile and target settings are valid for your selected warehouse.
 assumptions:
-  - Environment values are loaded from local non-committed files only.
-  - Warehouse credentials and dataset permissions are configured before running transforms.
+  - Environment values are loaded from local, non-committed files.
+  - Warehouse credentials and dataset permissions are configured before transform runs.
 limitations:
-  - This reference build is demonstration-focused and does not include production scheduling or alerting.
+  - "Demonstration-focused: production scheduling and alerting are not included."
   - Semantic MCP integration remains planned and is not yet published in this example.
 ---
 
 This case study demonstrates a repeatable reporting workflow from API-first source data without embedding business logic in dashboards.
-For clients, this means faster report iteration, fewer hidden assumptions, and clearer ownership between data engineering and BI delivery.
+It provides a clear handover between data engineering and BI delivery while keeping implementation evidence verifiable.
 
 ## At a glance
 
-- **Problem**: source API data was easy to visualise quickly but difficult to govern and rerun reliably.
-- **Delivery**: ingestion and transformation are maintained in engine code and dbt, while reporting assets are versioned separately.
-- **Outcome**: one analytical contract supports multiple BI consumers without duplicating logic.
-- **Stack**: Axiomatic Engine + dlt + dbt + warehouse + Power BI.
+- **Problem**: API data was easy to access but hard to govern and rerun.
+- **What was built**: A reusable ingestion and dbt pipeline with a reporting-ready star schema.
+- **Why it matters**: Reporting can evolve without hiding logic in dashboards.
+- **Technology**: Axiomatic Engine, dlt, dbt, warehouse modelling, and Power BI.
 
-## Delivery split and client impact
+## Engine layer
 
-### Engine layer (ingestion and transformation)
+The engine layer defines ingestion, rerun behaviour, and transform contracts in versioned code.
 
 - Source extraction and rerun policies are defined in [`projects/fake_store/run_pipeline.py`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/run_pipeline.py).
-- Transformation contracts and tests live in dbt, including [`models/gold/schema.yml`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/dbt_project/models/gold/schema.yml).
-- Runtime assumptions for local execution are documented in [`projects/fake_store/.env.example`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/.env.example).
-- **Client impact**: pipeline behaviour is transparent and can be changed safely without editing dashboard logic.
+- dbt contracts and tests are maintained in [`models/gold/schema.yml`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/dbt_project/models/gold/schema.yml).
+- Local runtime assumptions are documented in [`projects/fake_store/.env.example`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/.env.example).
 
-### Reporting layer (semantic and BI outputs)
+## Reporting layer
 
-- The Power BI artefact consumes the same warehouse contract and is published separately from runtime code.
-- Report outputs are implementation evidence, not a place for hidden transformation logic.
-- **Client impact**: reporting teams can iterate on visuals quickly while engineering keeps data contracts stable.
+Reporting assets consume the same contract but are versioned separately from engine runtime code.
 
-## Modelling and transform decisions
+- The PBIX artefact demonstrates report implementation against the governed model.
+- Reporting outputs are evidence of delivery, not a place for hidden transformation logic.
 
-### Model contract
+## Model decisions
 
-Gold models follow a star-schema contract centred on cart-item facts with conformed user, product, and date dimensions.  
-This keeps joins and grain explicit for downstream BI consumers and reduces ambiguity in metric definitions.
+Model choices prioritise explicit grain, predictable reruns, and auditable quality checks.
 
-### Load policy decisions
+- Gold models follow a star schema centred on cart-item facts with conformed user, product, and date dimensions.
+- Resource-level load hints define rerun semantics (`merge` for updates, `replace` for snapshots).
+- dbt schema tests run in the same path as model execution to keep validation aligned with transforms.
 
-Resource-level load hints define rerun semantics at endpoint level (`merge` for entity updates, `replace` for snapshot-style refreshes).  
-This improves operational clarity and supports deterministic behaviour during backfills and routine refreshes.
+## Outcomes and limits
 
-### Validation approach
-
-Quality checks are maintained in dbt schema tests and run in the same transformation path as model execution.  
-This reduces drift between transform logic and validation logic while making data quality expectations auditable.
-
-## Outcomes and limitations
+This example is demonstration-focused but designed to show reproducible and verifiable delivery quality.
 
 - Demonstrates deterministic reruns and reproducible outputs from documented commands.
-- Provides a baseline for adding new source adapters or additional reporting consumers.
-- Demonstration-focused: full production scheduling and alerting are not included.
-- Semantic MCP integration remains planned rather than implemented in this example.
+- Provides a baseline for new source adapters or additional reporting consumers.
+- Production scheduling and alerting are not included in this reference build.
