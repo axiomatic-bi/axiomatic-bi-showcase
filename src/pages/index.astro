@@ -4,6 +4,7 @@ import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import { withBase } from "../utils/urls";
 import heroImage from "../../assets/hero-image.webp";
+import fakeStoreSalesPageImage from "../../assets/fake-store-sales-page.webp";
 import { ArrowRight, Check, CircleAlert, Layers3 } from "lucide-react";
 
 const primaryCta = {
@@ -153,16 +154,16 @@ const proofLinks = [
       <p class="section-label">Example engagement</p>
       <h2 id="proof-grid-heading">Fake Store reference build</h2>
       <p class="section-intro">Reproducible pipeline, modelled reporting, explicit reruns.</p>
-      <div class="proof-grid">
-        <article class="proof-card">
-          <h3>What changed</h3>
+      <div class="example-feature">
+        <div class="example-copy">
+          <h3>From API data to reporting-ready outputs</h3>
           <p>
-            Built a Python orchestration layer around dlt ingestion and dbt-first transformation, with deterministic
-            rerun policies across products, users, and carts.
+            This reference project shows the delivery pattern used in client engagements: scheduled ingestion, dbt-led
+            transformation, and a shared model for reporting.
           </p>
           <p>
-            Evidence includes resource-level merge/replace configuration, reproducible run commands, and implementation
-            artefacts in the published case study.
+            The case study documents architecture, reproducibility commands, and implementation evidence so you can
+            inspect how the warehouse outputs map into Power BI.
           </p>
           <p class="hero-actions">
             <a class="button button-primary" href={withBase("/case-studies/fake-store")}>
@@ -172,8 +173,17 @@ const proofLinks = [
               View all case studies
             </a>
           </p>
-          <p>A report screenshot slot can be added here once a publication-safe image is ready.</p>
-        </article>
+        </div>
+        <figure class="proof-image">
+          <img
+            src={fakeStoreSalesPageImage.src}
+            alt="Fake Store sales dashboard page showing order and category level reporting."
+            width={fakeStoreSalesPageImage.width}
+            height={fakeStoreSalesPageImage.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
       </div>
     </section>
   </div>
@@ -290,10 +300,42 @@ const proofLinks = [
     background: color-mix(in srgb, var(--background, #050c1a) 86%, #0f1c34 14%);
   }
 
+  .example-feature {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .example-copy {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .example-copy h3 {
+    margin: 0;
+  }
+
+  .proof-image {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in srgb, var(--surface-border, #6ba6ff) 36%, transparent);
+  }
+
+  .proof-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
   @media (min-width: 64rem) {
     .problem-columns {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
       gap: 1.25rem;
+    }
+
+    .example-feature {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
     }
   }
 </style>

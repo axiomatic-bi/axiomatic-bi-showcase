@@ -7,6 +7,7 @@ import EvidenceCallout from "../components/EvidenceCallout.astro";
 import ReproSteps from "../components/ReproSteps.astro";
 import DecisionLog from "../components/DecisionLog.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import { fakeStoreLinks } from "../utils/externalLinks";
 import { CheckCircle2, FileCode2, Lightbulb, Microscope, Target } from "lucide-react";
 
 const engineEntry = await getEntry("engine", "overview");
@@ -14,7 +15,6 @@ if (!engineEntry) {
   throw new Error("Engine overview entry not found.");
 }
 const { Content } = await engineEntry.render();
-const fakeStoreExampleRepoUrl = "https://github.com/axiomatic-bi/axiomatic-bi-showcase/tree/main/examples/fake_store";
 const engineArchitectureMermaid = `flowchart TD
   sourceNode[SourceProtocols] --> ingestNode[IngestorDLTStage]
   ingestNode --> warehouseNode[WarehouseAdapter]
@@ -131,7 +131,7 @@ const engineArchitectureMermaid = `flowchart TD
       ]}
     />
     <p>
-      <a class="button button-secondary" href={fakeStoreExampleRepoUrl} target="_blank" rel="noreferrer">
+      <a class="button button-secondary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
         Open Fake Store example project
       </a>
     </p>

@@ -7,15 +7,45 @@ import EvidenceCallout from "../../components/EvidenceCallout.astro";
 import ReproSteps from "../../components/ReproSteps.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import { withBase } from "../../utils/urls";
-import { ArrowLeft, CheckCircle2, ExternalLink, FileCode2, Lightbulb, Microscope, Target } from "lucide-react";
+import { fakeStoreLinks } from "../../utils/externalLinks";
+import fakeStoreSalesPageImage from "../../../assets/fake-store-sales-page.webp";
+import fakeStorePbiModelImage from "../../../assets/fake-store-pbi-model.webp";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
-const fakeStoreExampleRepoUrl = "https://github.com/axiomatic-bi/axiomatic-bi-showcase/tree/main/examples/fake_store";
-const fakeStoreArchitectureMermaid = `flowchart TD
-  apiNode[FakeStoreAPI] --> bronzeNode[BronzeLoad]
-  bronzeNode --> silverNode[SilverModels]
-  silverNode --> goldNode[GoldModels]
-  goldNode --> analyticsNode[AnalyticsViews]`;
+const fakeStoreTransformationMermaid = `flowchart TB
+  subgraph ingestGroup["Ingestion"]
+    direction TB
+    apiNode["<b>API extraction</b><br/>Products, users, carts loaded via dlt resources"]
+    bronzeNode["<b>Bronze load</b><br/>Raw endpoint outputs persisted to warehouse tables"]
+    apiNode --> bronzeNode
+  end
+  subgraph transformGroup["Transformation"]
+    direction TB
+    silverNode["<b>Silver staging</b><br/>Typed and normalised dbt staging models"]
+    goldNode["<b>Gold star schema</b><br/>Conformed dimensions and fact tables for analytics"]
+    martsNode["<b>Mart layer (optional)</b><br/>Derived serving views for specific consumers"]
+    silverNode --> goldNode
+    goldNode -.-> martsNode
+  end
+  subgraph consumeGroup["Consumption"]
+    direction LR
+    consumeNode["<b>Consumption tools</b><br/>Power BI, Tableau, Evidence, Dash, MCP, or other analytics apps"]
+  end
+  bronzeNode --> silverNode
+  goldNode --> consumeNode
+  martsNode -.-> consumeNode
+  style ingestGroup fill:#111b36,stroke:#7B8DFF,stroke-width:1px,stroke-dasharray:5 4,color:#e7ecff
+  style transformGroup fill:#102439,stroke:#33C7B5,stroke-width:1px,stroke-dasharray:5 4,color:#e4fffb
+  style consumeGroup fill:#221b2f,stroke:#8B6DFF,stroke-width:1px,stroke-dasharray:5 4,color:#efe8ff
+  classDef ingest fill:#1a2d59,stroke:#4FA3FF,stroke-width:1px,color:#f6fbff;
+  classDef transform fill:#16354d,stroke:#33C7B5,stroke-width:1px,color:#f2fffd;
+  classDef mart fill:#16354d66,stroke:#33C7B5,stroke-width:1px,color:#e8fffc;
+  classDef consume fill:#2c2440,stroke:#8B6DFF,stroke-width:1px,color:#f8f5ff;
+  class apiNode,bronzeNode ingest;
+  class silverNode,goldNode transform;
+  class martsNode mart;
+  class consumeNode consume;`;
 
 if (!fakeStoreEntry) {
   throw new Error("Missing case study entry: fake-store");
@@ -31,89 +61,178 @@ const { Content } = await fakeStoreEntry.render();
 >
   <div class="full-bleed hero-scene">
     <div class="band-inner">
+      <p class="hero-back-link">
+        <a href={withBase("/case-studies")}><ArrowLeft size={16} strokeWidth={2} /> Back to case studies</a>
+      </p>
       <PageHeader
         eyebrow="Case Study"
         title="Fake Store Case Study"
-        lede="A reference pipeline demonstrating ingestion policies, transformation orchestration, and reproducible outcomes."
-      />
+        lede="A complete reference implementation showing how API extraction, warehouse modelling, and Power BI delivery fit into one reproducible analytics workflow."
+      >
+        <img
+          slot="visual"
+          class="hero-visual-image"
+          src={fakeStoreSalesPageImage.src}
+          alt="Power BI sales dashboard screenshot for the Fake Store case study."
+          width={fakeStoreSalesPageImage.width}
+          height={fakeStoreSalesPageImage.height}
+          loading="eager"
+          decoding="async"
+        />
+      </PageHeader>
       <div class="case-study-actions">
-        <a class="button button-secondary" href={withBase("/case-studies")}>
-          <ArrowLeft size={16} strokeWidth={2} /> Back to case studies
-        </a>
-        <a class="button button-primary" href={fakeStoreExampleRepoUrl} target="_blank" rel="noreferrer">
+        <a class="button button-primary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
           View example code <ExternalLink size={16} strokeWidth={2} />
+        </a>
+        <a class="button button-secondary" href={fakeStoreLinks.pbixAsset} target="_blank" rel="noreferrer">
+          View PBIX artefact <ExternalLink size={16} strokeWidth={2} />
         </a>
       </div>
     </div>
   </div>
 
   <section>
-    <SectionHeading title="Problem">
-      <Target slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <SectionHeading title="Problem" />
     <p>
-      The objective is to turn Fake Store API records into reliable analytics tables with deterministic
-      reruns. The case study demonstrates how project-specific logic sits outside engine internals while
-      still using a common orchestration contract.
+      The core challenge is producing stable reporting outputs from API data that can be rerun confidently.
+      This implementation needs to keep extraction, modelling, and report delivery aligned without introducing
+      hidden logic in downstream dashboards.
     </p>
   </section>
 
   <section>
-    <SectionHeading title="Architecture">
-      <Microscope slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      The pipeline follows a medallion flow: bronze ingestion via dlt, silver typed staging models, and
-      gold analytical models. Ingestion and transformation are coordinated by the engine, while project
-      resources and normalisation stay in project scope.
-    </p>
-    <h3>Data model</h3>
-    <p>
-      Current documentation confirms analytical modelling intent and medallion layering. As model-level
-      artefacts are published, this section will link dimensional structures and grain choices directly
-      to dbt model files.
-    </p>
-    <h3>Transform logic</h3>
-    <p>
-      Transformation follows a dbt-first approach, triggered after ingestion when enabled. The
-      <code>run_pipeline.py</code> entrypoint applies CLI-over-env settings and delegates stage execution
-      to engine orchestration.
-    </p>
-    <h3>Data quality/tests</h3>
-    <p>
-      Validation responsibilities are aligned to dbt and pipeline contracts. The project notes include
-      idempotent and deterministic rerun expectations, with test and query artefacts to be expanded as
-      publication-ready outputs are captured.
-    </p>
-    <div class="mermaid">{fakeStoreArchitectureMermaid}</div>
+    <SectionHeading title="Architecture" />
+    <div class="architecture-flow-layout">
+      <div class="architecture-flow-left">
+        <p>
+          The solution uses an engine-orchestrated medallion pipeline. dlt resources ingest source entities to
+          bronze, dbt stages and normalises those entities in silver, and gold models provide reporting-ready
+          dimensions and facts.
+        </p>
+        <h3>Data model</h3>
+        <p>
+          The gold star schema is the primary analytical contract for downstream tools. Semantic models in tools such
+          as Power BI can consume it directly, while optional marts can be added where a specific front end needs
+          denormalised serving structures.
+        </p>
+        <h3>Transform logic</h3>
+        <p>
+          Transformation is dbt-first. The <code>run_pipeline.py</code> entrypoint applies CLI-over-environment
+          settings, executes extraction, and optionally runs dbt to produce consistent silver and gold outputs.
+          Optional marts are derived from the gold schema only when a consumption surface has specialised shape
+          requirements.
+        </p>
+        <p>
+          The gold star schema remains the default contract for all consumption tools. Optional marts are additive and
+          consumer-specific, not a replacement for the core analytical model.
+        </p>
+        <h3>Data quality/tests</h3>
+        <p>
+          Data quality is governed in dbt and pipeline contracts. Expected rerun behaviour is deterministic, and
+          validation checks are designed to fail early when schema or grain assumptions drift.
+        </p>
+        <p>
+          This case study demonstrates modelling and rerun behaviour; production refresh scheduling, observability, and
+          access controls are documented as next-step hardening work.
+        </p>
+        <h3>Consumption</h3>
+        <p>
+          The default consumption path is the gold star schema, which supports semantic BI tools directly. Optional
+          marts remain consumer-specific serving layers for scenarios that require tailored query shapes.
+        </p>
+        <p>
+          This allows Power BI, Tableau, Evidence, Dash, and MCP-driven experiences to evolve independently while
+          staying aligned to one core analytical contract.
+        </p>
+      </div>
+      <div class="architecture-flow-right">
+        <div class="mermaid">{fakeStoreTransformationMermaid}</div>
+      </div>
+    </div>
   </section>
 
   <section>
-    <SectionHeading title="Results/insights">
-      <Lightbulb slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <SectionHeading title="BI implementation" />
     <p>
-      Current evidence demonstrates repeatable load behaviour and clear runtime boundaries. Outcome
-      metrics and analytical findings are intentionally held until query result snapshots and visuals are
-      added to the public artefact set.
+      Consumption assets are implemented separately from engine runtime code. This allows Power BI, Tableau, Evidence,
+      Dash, or other front ends to iterate independently while still relying on the same warehouse contract.
+    </p>
+    <p>
+      The PBIX artefact location, semantic model assets, and report screenshots are grouped in the BI examples
+      repository so implementation evidence remains tied to report versions.
+    </p>
+    <p>
+      <a class="button button-secondary" href={fakeStoreLinks.pbixAsset} target="_blank" rel="noreferrer">
+        Open PBIX artefact location <ExternalLink size={16} strokeWidth={2} />
+      </a>
+    </p>
+    <div class="gallery-preview">
+      <div class="gallery-grid gallery-grid-4">
+        <button class="gallery-tile" type="button" data-gallery-index="0" aria-label="Open model view screenshot">
+          <img
+            class="gallery-image-cover"
+            src={fakeStorePbiModelImage.src}
+            alt="Power BI model view for the Fake Store case study."
+            width={fakeStorePbiModelImage.width}
+            height={fakeStorePbiModelImage.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </button>
+        <button class="gallery-tile" type="button" data-gallery-index="1" aria-label="Open sales page screenshot">
+          <img
+            class="gallery-image-cover"
+            src={fakeStoreSalesPageImage.src}
+            alt="Power BI sales page for the Fake Store case study."
+            width={fakeStoreSalesPageImage.width}
+            height={fakeStoreSalesPageImage.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </button>
+        <div class="gallery-tile gallery-tile-placeholder" aria-hidden="true">Placeholder</div>
+        <div class="gallery-tile gallery-tile-placeholder" aria-hidden="true">Placeholder</div>
+      </div>
+      <p class="gallery-actions">
+        <button class="button button-secondary bi-gallery-open" type="button" data-open-gallery>
+          View gallery
+        </button>
+      </p>
+    </div>
+    <dialog class="bi-gallery-dialog" data-gallery-dialog aria-label="Power BI image gallery">
+      <form method="dialog" class="bi-gallery-close-row">
+        <button class="button button-secondary" value="cancel">Close</button>
+      </form>
+      <figure class="bi-gallery-frame">
+        <img class="bi-gallery-image" data-gallery-image alt="" />
+        <figcaption class="bi-gallery-caption" data-gallery-caption></figcaption>
+      </figure>
+      <p class="bi-gallery-controls">
+        <button class="button button-secondary" type="button" data-gallery-prev>Previous</button>
+        <button class="button button-secondary" type="button" data-gallery-next>Next</button>
+      </p>
+    </dialog>
+  </section>
+
+  <section>
+    <SectionHeading title="Results and insights" />
+    <p>
+      The reference build demonstrates repeatable extraction and consistent report-serving outputs from the same
+      warehouse model. This provides a clear baseline for comparing future source adapters and BI front ends.
     </p>
   </section>
 
   <section>
-    <SectionHeading title="Trade-offs/lessons">
-      <Target slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <SectionHeading title="Trade-offs and lessons learned" />
     <p>
-      Resource-level load hints improve rerun reliability, but they introduce additional configuration
-      decisions per endpoint. The scope is intentionally narrow and transparent, favouring reproducible
-      behaviour over broad feature claims.
+      Resource-level load hints improve rerun control but add endpoint-level configuration work. Separating BI
+      artefacts from engine code improves maintainability, but it requires disciplined version links between model
+      changes and report updates.
     </p>
   </section>
 
   <section>
-    <SectionHeading title="Reproducibility Notes">
-      <Target slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <SectionHeading title="How to reproduce" />
     <ReproSteps
       steps={fakeStoreEntry.data.reproducibility.map((item) => item.command)}
       assumptions={fakeStoreEntry.data.assumptions}
@@ -122,9 +241,7 @@ const { Content } = await fakeStoreEntry.render();
   </section>
 
   <section>
-    <SectionHeading title="Evidence map">
-      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <SectionHeading title="Evidence map" />
     <EvidenceCallout
       items={fakeStoreEntry.data.evidence.map((item) => ({
         label: item.claim,
@@ -136,20 +253,83 @@ const { Content } = await fakeStoreEntry.render();
   </section>
 
   <section>
-    <SectionHeading title="Source Narrative">
-      <FileCode2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
+    <SectionHeading title="Source narrative" />
     <div class="source-narrative-content">
       <Content />
     </div>
   </section>
 </BaseLayout>
 
+<script is:inline>
+  const dialog = document.querySelector("[data-gallery-dialog]");
+  const imageEl = document.querySelector("[data-gallery-image]");
+  const captionEl = document.querySelector("[data-gallery-caption]");
+  const openButton = document.querySelector("[data-open-gallery]");
+  const tileButtons = document.querySelectorAll("[data-gallery-index]");
+  const prevButton = document.querySelector("[data-gallery-prev]");
+  const nextButton = document.querySelector("[data-gallery-next]");
+  const galleryImages = Array.from(document.querySelectorAll(".gallery-grid [data-gallery-index]")).map((tile) => {
+    const image = tile.querySelector("img");
+    return {
+      src: image?.getAttribute("src") || "",
+      alt: image?.getAttribute("alt") || "",
+      caption: image?.getAttribute("alt") || "BI implementation screenshot"
+    };
+  });
+
+  let galleryIndex = 0;
+
+  function renderGallery(index) {
+    if (!imageEl || !captionEl) return;
+    galleryIndex = (index + galleryImages.length) % galleryImages.length;
+    const selected = galleryImages[galleryIndex];
+    imageEl.src = selected.src;
+    imageEl.alt = selected.alt;
+    captionEl.textContent = selected.caption;
+  }
+
+  function openGallery(index) {
+    if (!dialog) return;
+    renderGallery(index);
+    dialog.showModal();
+  }
+
+  openButton?.addEventListener("click", () => openGallery(0));
+  prevButton?.addEventListener("click", () => renderGallery(galleryIndex - 1));
+  nextButton?.addEventListener("click", () => renderGallery(galleryIndex + 1));
+
+  tileButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.getAttribute("data-gallery-index") || "0");
+      openGallery(index);
+    });
+  });
+</script>
+
 <style>
+  .hero-back-link {
+    margin: 0 0 0.8rem;
+  }
+
+  .hero-back-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.9;
+  }
+
+  .hero-back-link a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
   .case-study-actions {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     gap: 0.6rem;
     margin: 0 0 1rem;
   }
@@ -169,4 +349,161 @@ const { Content } = await fakeStoreEntry.render();
   .source-narrative-content :global(h3) {
     font-size: clamp(0.94rem, 1.5vw, 1.05rem);
   }
+
+  .visual-card {
+    margin: 0.8rem 0 0;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in srgb, var(--surface-border, #6ba6ff) 36%, transparent);
+  }
+
+  .visual-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .architecture-flow-layout {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+    margin-top: 0.6rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .architecture-flow-left,
+  .architecture-flow-right {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+
+  .data-model-image {
+    margin-top: 0;
+  }
+
+  .data-model-image figcaption {
+    margin: 0;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.84rem;
+    color: var(--text-soft);
+    border-top: 1px solid color-mix(in srgb, var(--surface-border, #6ba6ff) 34%, transparent);
+    background: color-mix(in srgb, var(--surface, #111723) 82%, transparent);
+  }
+
+  .architecture-flow-left p {
+    margin: 0;
+  }
+
+  .architecture-flow-left h3 {
+    margin: 1rem 0 0;
+  }
+
+  .architecture-flow-left h3:first-of-type {
+    margin-top: 0.2rem;
+  }
+
+  .gallery-preview {
+    margin-top: 0.5rem;
+  }
+
+  .bi-gallery-dialog {
+    width: min(92vw, 1100px);
+    border: 1px solid color-mix(in srgb, var(--surface-border, #6ba6ff) 40%, transparent);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--surface, #111723) 96%, #000);
+    color: var(--text);
+    padding: 0.9rem;
+  }
+
+  .bi-gallery-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .bi-gallery-close-row {
+    margin: 0 0 0.6rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .bi-gallery-frame {
+    margin: 0;
+    min-height: min(70vh, 760px);
+    border: 1px solid color-mix(in srgb, var(--surface-border, #6ba6ff) 35%, transparent);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--surface, #111723) 88%, transparent);
+    display: grid;
+    place-items: center;
+    padding: 0.85rem;
+    gap: 0.6rem;
+  }
+
+  .bi-gallery-image {
+    max-width: 100%;
+    max-height: min(62vh, 680px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .bi-gallery-caption {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .bi-gallery-controls {
+    margin: 0.75rem 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .mermaid :global(.cluster rect) {
+    rx: 12px;
+    ry: 12px;
+    stroke-dasharray: 5 4;
+  }
+
+  .mermaid :global(.nodeLabel) {
+    font-size: 0.92rem !important;
+    line-height: 1.35;
+  }
+
+  .mermaid :global(.cluster-label text),
+  .mermaid :global(.cluster text) {
+    font-size: 0.94rem !important;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .mermaid {
+    padding-top: 0.9rem;
+  }
+
+  .mermaid :global(svg) {
+    overflow: visible;
+  }
+
+  @media (max-width: 680px) {
+    .mermaid :global(.nodeLabel) {
+      font-size: 0.86rem !important;
+    }
+
+    .mermaid :global(.cluster-label text),
+    .mermaid :global(.cluster text) {
+      font-size: 0.88rem !important;
+    }
+
+  }
+
+  @media (min-width: 64rem) {
+    .architecture-flow-layout {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+  }
+
 </style>

@@ -202,21 +202,7 @@ function isActive(href: string): boolean {
         line-height: 1.35;
       }
       :global(.section-heading) {
-        display: flex;
-        align-items: center;
-        gap: var(--space-2);
-      }
-      :global(.section-heading-icon) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 2rem;
-        height: 2rem;
-        border-radius: var(--radius-sm);
-        background: var(--accent-soft);
-        color: var(--accent-strong);
-        border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
-        flex: 0 0 auto;
+        margin-bottom: var(--space-3);
       }
       :global(.page-header) {
         background: none;
@@ -756,6 +742,53 @@ function isActive(href: string): boolean {
       :global(.button-secondary:hover) {
         background: color-mix(in srgb, var(--surface-soft) 85%, var(--accent-soft));
       }
+      :global(.gallery-preview) {
+        border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+        border-radius: var(--radius-md);
+        background: color-mix(in srgb, var(--surface) 84%, transparent);
+        padding: var(--space-3);
+        display: grid;
+        gap: var(--space-3);
+      }
+      :global(.gallery-grid) {
+        display: grid;
+        gap: var(--space-2);
+      }
+      :global(.gallery-grid-4) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      :global(.gallery-tile) {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+        border-radius: var(--radius-sm);
+        background: color-mix(in srgb, var(--surface-soft) 88%, transparent);
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        padding: 0;
+      }
+      :global(button.gallery-tile) {
+        cursor: pointer;
+      }
+      :global(.gallery-image-cover) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      :global(.gallery-tile-placeholder) {
+        color: var(--text-soft);
+        font-size: 0.76rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        border-style: dashed;
+      }
+      :global(.gallery-actions) {
+        margin: 0;
+        display: flex;
+        justify-content: flex-end;
+      }
       .mermaid {
         background: color-mix(in srgb, var(--surface) 85%, transparent);
         border: 1px solid color-mix(in srgb, var(--border) 66%, transparent);
@@ -833,6 +866,9 @@ function isActive(href: string): boolean {
         }
         :global(.process-grid) {
           grid-template-columns: 1fr;
+        }
+        :global(.gallery-grid-4) {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
     </style>
