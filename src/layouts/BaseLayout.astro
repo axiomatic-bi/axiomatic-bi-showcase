@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import { stripBasePath, withBase } from "../utils/urls";
 
 interface Props {
@@ -10,6 +11,12 @@ interface Props {
 const { title, description, enableMermaid = false } = Astro.props;
 const currentPath = Astro.url.pathname;
 const routePathname = stripBasePath(currentPath);
+const caseStudyEntries = (await getCollection("caseStudies"))
+  .map((entry) => ({
+    href: `/case-studies/${entry.slug}`,
+    label: entry.data.title
+  }))
+  .sort((a, b) => a.label.localeCompare(b.label));
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/engine", label: "Engine" },
@@ -135,6 +142,50 @@ function isActive(href: string): boolean {
         padding: 0;
         margin: 0;
         flex-wrap: wrap;
+      }
+      .nav-item-dropdown {
+        position: relative;
+      }
+      .nav-dropdown {
+        position: absolute;
+        top: calc(100% + 0.35rem);
+        left: 0;
+        min-width: 240px;
+        padding: var(--space-2);
+        margin: 0;
+        border-radius: var(--radius-md);
+        border: 1px solid color-mix(in srgb, var(--border) 74%, transparent);
+        background: color-mix(in srgb, var(--surface) 94%, var(--bg));
+        box-shadow: var(--shadow-soft);
+        display: grid;
+        gap: var(--space-1);
+        list-style: none;
+        z-index: 20;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-4px);
+        transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+      }
+      .nav-item-dropdown:hover .nav-dropdown,
+      .nav-item-dropdown:focus-within .nav-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .nav-dropdown-link {
+        display: block;
+        width: 100%;
+        border-radius: var(--radius-sm);
+        padding: 0.42rem 0.55rem;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+      .nav-dropdown-link:hover,
+      .nav-dropdown-link:focus-visible {
+        color: var(--text);
+        background: var(--surface-soft);
+        outline: none;
       }
       a {
         color: var(--accent);
@@ -354,6 +405,9 @@ function isActive(href: string): boolean {
       }
       :global(.full-bleed + section) {
         padding-top: clamp(1.5rem, 3vw, 2.25rem);
+      }
+      :global(section + .full-bleed) {
+        margin-top: clamp(1.25rem, 2.4vw, 2rem);
       }
       :global(.section-before-band) {
         margin-bottom: 0;
@@ -592,8 +646,6 @@ function isActive(href: string): boolean {
         background:
           radial-gradient(circle at 20% 15%, rgba(123, 141, 255, 0.14), transparent 35%),
           linear-gradient(180deg, #0d1424 0%, #0b1220 100%);
-        border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
-        border-bottom: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
       }
       :global(.reporting-visual) {
         border: 1px solid color-mix(in srgb, var(--border) 66%, transparent);
@@ -762,14 +814,17 @@ function isActive(href: string): boolean {
         border-color: color-mix(in srgb, var(--accent) 46%, var(--border));
       }
       :global(.button-primary:hover) {
-        background: var(--accent-strong);
+        background: color-mix(in srgb, var(--accent) 72%, #ffffff 28%);
+        color: #0b1020;
       }
       :global(.button:focus-visible) {
         outline: 2px solid var(--accent);
         outline-offset: 2px;
       }
       :global(.button-secondary:hover) {
-        background: color-mix(in srgb, var(--surface-soft) 85%, var(--accent-soft));
+        background: color-mix(in srgb, var(--accent-soft) 42%, var(--surface-soft) 58%);
+        color: var(--text);
+        border-color: color-mix(in srgb, var(--accent) 62%, var(--border));
       }
       :global(.gallery-preview) {
         border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
@@ -957,11 +1012,30 @@ function isActive(href: string): boolean {
           <ul>
             {
               navItems.map((item) => (
-                <li>
-                  <a class="nav-link" href={withBase(item.href)} aria-current={isActive(item.href) ? "page" : undefined}>
-                    {item.label}
-                  </a>
-                </li>
+                item.href === "/case-studies" ? (
+                  <li class="nav-item-dropdown">
+                    <a class="nav-link" href={withBase(item.href)} aria-current={isActive(item.href) ? "page" : undefined}>
+                      {item.label}
+                    </a>
+                    {caseStudyEntries.length > 0 && (
+                      <ul class="nav-dropdown" aria-label="Case study pages">
+                        {caseStudyEntries.map((entry) => (
+                          <li>
+                            <a class="nav-dropdown-link" href={withBase(entry.href)}>
+                              {entry.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ) : (
+                  <li>
+                    <a class="nav-link" href={withBase(item.href)} aria-current={isActive(item.href) ? "page" : undefined}>
+                      {item.label}
+                    </a>
+                  </li>
+                )
               ))
             }
           </ul>

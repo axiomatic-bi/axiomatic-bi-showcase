@@ -49,42 +49,51 @@ limitations:
   - Semantic MCP integration remains planned and is not yet published in this example.
 ---
 
-The objective is to prove a repeatable reporting workflow from API-first source data, without embedding business logic in dashboards.  
-This example shows that ingestion, transformation, and BI delivery can be versioned independently while still producing one consistent analytical contract.
+This case study demonstrates a repeatable reporting workflow from API-first source data without embedding business logic in dashboards.
+For clients, this means faster report iteration, fewer hidden assumptions, and clearer ownership between data engineering and BI delivery.
 
-## Responsibility split
+## At a glance
+
+- **Problem**: source API data was easy to visualise quickly but difficult to govern and rerun reliably.
+- **Delivery**: ingestion and transformation are maintained in engine code and dbt, while reporting assets are versioned separately.
+- **Outcome**: one analytical contract supports multiple BI consumers without duplicating logic.
+- **Stack**: Axiomatic Engine + dlt + dbt + warehouse + Power BI.
+
+## Delivery split and client impact
 
 ### Engine layer (ingestion and transformation)
 
-- Source extraction and load policies are defined in [`projects/fake_store/run_pipeline.py`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/run_pipeline.py).
-- Transformation contracts live in dbt model files and tests, including [`models/gold/schema.yml`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/dbt_project/models/gold/schema.yml).
-- Runtime and local execution assumptions are documented in [`projects/fake_store/.env.example`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/.env.example).
+- Source extraction and rerun policies are defined in [`projects/fake_store/run_pipeline.py`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/run_pipeline.py).
+- Transformation contracts and tests live in dbt, including [`models/gold/schema.yml`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/dbt_project/models/gold/schema.yml).
+- Runtime assumptions for local execution are documented in [`projects/fake_store/.env.example`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/.env.example).
+- **Client impact**: pipeline behaviour is transparent and can be changed safely without editing dashboard logic.
 
 ### Reporting layer (semantic and BI outputs)
 
 - The Power BI artefact consumes the same warehouse contract and is published separately from runtime code.
-- Report outputs are implementation evidence, not a place for hidden pipeline logic.
+- Report outputs are implementation evidence, not a place for hidden transformation logic.
+- **Client impact**: reporting teams can iterate on visuals quickly while engineering keeps data contracts stable.
 
 ## Modelling and transform decisions
 
 ### Model contract
 
 Gold models follow a star-schema contract centred on cart-item facts with conformed user, product, and date dimensions.  
-This keeps joins and grain explicit for downstream BI consumers.
+This keeps joins and grain explicit for downstream BI consumers and reduces ambiguity in metric definitions.
 
 ### Load policy decisions
 
 Resource-level load hints define rerun semantics at endpoint level (`merge` for entity updates, `replace` for snapshot-style refreshes).  
-This improves operational clarity and supports deterministic behaviour.
+This improves operational clarity and supports deterministic behaviour during backfills and routine refreshes.
 
 ### Validation approach
 
 Quality checks are maintained in dbt schema tests and run in the same transformation path as model execution.  
-This reduces drift between transform logic and validation logic.
+This reduces drift between transform logic and validation logic while making data quality expectations auditable.
 
 ## Outcomes and limitations
 
-- The current example proves deterministic rerun expectations and reproducible outputs from documented commands.
-- It provides a baseline for comparing future source adapters and front-end reporting consumers.
-- It is demonstration-focused and does not include full production scheduling or alerting.
+- Demonstrates deterministic reruns and reproducible outputs from documented commands.
+- Provides a baseline for adding new source adapters or additional reporting consumers.
+- Demonstration-focused: full production scheduling and alerting are not included.
 - Semantic MCP integration remains planned rather than implemented in this example.

@@ -80,6 +80,9 @@ const { Content } = await fakeStoreEntry.render();
           decoding="async"
         />
       </PageHeader>
+      <p class="hero-context">
+        Built to be readable for non-technical stakeholders while still exposing the engineering choices and evidence behind delivery quality.
+      </p>
       <div class="case-study-actions">
         <a class="button button-primary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
           View example code <ExternalLink size={16} strokeWidth={2} />
@@ -92,10 +95,25 @@ const { Content } = await fakeStoreEntry.render();
   </div>
 
   <section>
-    <p class="section-label">Why this example exists</p>
-    <SectionHeading title="Delivery intent and design decisions" />
-    <div class="case-narrative-content">
-      <Content />
+    <p class="section-label">Quick overview</p>
+    <SectionHeading title="At a glance" />
+    <div class="glance-grid" role="list" aria-label="Case study highlights">
+      <article class="glance-card" role="listitem">
+        <h3>Problem</h3>
+        <p>API data was quick to access but hard to govern, rerun, and trust for consistent reporting.</p>
+      </article>
+      <article class="glance-card" role="listitem">
+        <h3>What was built</h3>
+        <p>Reusable ingestion and dbt contracts with a star-schema model consumed by reporting tools.</p>
+      </article>
+      <article class="glance-card" role="listitem">
+        <h3>Why it matters</h3>
+        <p>Reporting can evolve quickly without hiding business logic in dashboards.</p>
+      </article>
+      <article class="glance-card" role="listitem">
+        <h3>Technology</h3>
+        <p>Axiomatic Engine, dlt, dbt, warehouse modelling, and Power BI delivery.</p>
+      </article>
     </div>
   </section>
 
@@ -106,12 +124,10 @@ const { Content } = await fakeStoreEntry.render();
       <div class="architecture-flow-layout">
         <div class="architecture-flow-left">
           <p>
-            This diagram summarises the delivery flow described in the narrative section: ingestion to bronze,
-            transformation through silver and gold, then downstream BI consumption.
+            This diagram summarises the delivery flow from ingestion to warehouse modelling and then BI consumption.
           </p>
           <p>
-            The visual view is intentionally compact here; detailed model, transform, quality, and trade-off context is
-            maintained in MDX so page content stays reusable and easier to maintain.
+            For clients, this creates a reliable reporting foundation where pipeline changes and dashboard changes can be managed independently.
           </p>
         </div>
         <div class="architecture-flow-right">
@@ -121,69 +137,69 @@ const { Content } = await fakeStoreEntry.render();
     </section>
   </div>
 
-  <section>
-    <p class="section-label">Consumption layer</p>
-    <SectionHeading title="Reporting outputs" />
-    <p>
-      Consumption assets are implemented separately from engine runtime code. This allows Power BI, Tableau, Evidence,
-      Dash, or other front ends to iterate independently while still relying on the same warehouse contract.
-    </p>
-    <p>
-      The PBIX artefact location, semantic model assets, and report screenshots are grouped in the BI examples
-      repository so implementation evidence remains tied to report versions.
-    </p>
-    <p>
-      <a class="button button-secondary" href={fakeStoreLinks.pbixAsset} target="_blank" rel="noreferrer">
-        Open PBIX artefact location <ExternalLink size={16} strokeWidth={2} />
-      </a>
-    </p>
-    <div class="gallery-preview">
-      <div class="gallery-grid gallery-grid-4">
-        <button class="gallery-tile" type="button" data-gallery-index="0" aria-label="Open model view screenshot">
-          <img
-            class="gallery-image-cover"
-            src={fakeStorePbiModelImage.src}
-            alt="Power BI model view for the Fake Store case study."
-            width={fakeStorePbiModelImage.width}
-            height={fakeStorePbiModelImage.height}
-            loading="lazy"
-            decoding="async"
-          />
-        </button>
-        <button class="gallery-tile" type="button" data-gallery-index="1" aria-label="Open sales page screenshot">
-          <img
-            class="gallery-image-cover"
-            src={fakeStoreSalesPageImage.src}
-            alt="Power BI sales page for the Fake Store case study."
-            width={fakeStoreSalesPageImage.width}
-            height={fakeStoreSalesPageImage.height}
-            loading="lazy"
-            decoding="async"
-          />
-        </button>
-        <div class="gallery-tile gallery-tile-placeholder" aria-hidden="true">Placeholder</div>
-        <div class="gallery-tile gallery-tile-placeholder" aria-hidden="true">Placeholder</div>
+  <div class="full-bleed reporting-band">
+    <section class="band-inner band-inner-wide reporting-section">
+      <p class="section-label">Consumption layer</p>
+      <SectionHeading title="Reporting outputs" />
+      <p>
+        Reporting assets are implemented separately from engine runtime code. This allows Power BI, Tableau, Evidence,
+        Dash, or other front ends to iterate independently while still relying on the same warehouse contract.
+      </p>
+      <p>
+        The PBIX artefact location, semantic model assets, and report screenshots are grouped in the BI examples
+        repository so implementation evidence remains tied to report versions and reproducible delivery.
+      </p>
+      <p>
+        <a class="button button-secondary" href={fakeStoreLinks.pbixAsset} target="_blank" rel="noreferrer">
+          Open PBIX artefact location <ExternalLink size={16} strokeWidth={2} />
+        </a>
+      </p>
+      <div class="gallery-preview">
+        <div class="gallery-grid gallery-grid-4">
+          <button class="gallery-tile" type="button" data-gallery-index="0" aria-label="Open model view screenshot">
+            <img
+              class="gallery-image-cover"
+              src={fakeStorePbiModelImage.src}
+              alt="Power BI model view for the Fake Store case study."
+              width={fakeStorePbiModelImage.width}
+              height={fakeStorePbiModelImage.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
+          <button class="gallery-tile" type="button" data-gallery-index="1" aria-label="Open sales page screenshot">
+            <img
+              class="gallery-image-cover"
+              src={fakeStoreSalesPageImage.src}
+              alt="Power BI sales page for the Fake Store case study."
+              width={fakeStoreSalesPageImage.width}
+              height={fakeStoreSalesPageImage.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
+        </div>
+        <p class="gallery-actions">
+          <button class="button button-secondary bi-gallery-open" type="button" data-open-gallery>
+            View gallery
+          </button>
+        </p>
       </div>
-      <p class="gallery-actions">
-        <button class="button button-secondary bi-gallery-open" type="button" data-open-gallery>
-          View gallery
-        </button>
-      </p>
-    </div>
-    <dialog class="bi-gallery-dialog" data-gallery-dialog aria-label="Power BI image gallery">
-      <form method="dialog" class="bi-gallery-close-row">
-        <button class="button button-secondary" value="cancel">Close</button>
-      </form>
-      <figure class="bi-gallery-frame">
-        <img class="bi-gallery-image" data-gallery-image alt="" />
-        <figcaption class="bi-gallery-caption" data-gallery-caption></figcaption>
-      </figure>
-      <p class="bi-gallery-controls">
-        <button class="button button-secondary" type="button" data-gallery-prev>Previous</button>
-        <button class="button button-secondary" type="button" data-gallery-next>Next</button>
-      </p>
-    </dialog>
-  </section>
+      <dialog class="bi-gallery-dialog" data-gallery-dialog aria-label="Power BI image gallery">
+        <form method="dialog" class="bi-gallery-close-row">
+          <button class="button button-secondary" value="cancel">Close</button>
+        </form>
+        <figure class="bi-gallery-frame">
+          <img class="bi-gallery-image" data-gallery-image alt="" />
+          <figcaption class="bi-gallery-caption" data-gallery-caption></figcaption>
+        </figure>
+        <p class="bi-gallery-controls">
+          <button class="button button-secondary" type="button" data-gallery-prev>Previous</button>
+          <button class="button button-secondary" type="button" data-gallery-next>Next</button>
+        </p>
+      </dialog>
+    </section>
+  </div>
 
   <section>
     <p class="section-label">Reproducibility</p>
@@ -194,10 +210,19 @@ const { Content } = await fakeStoreEntry.render();
       </a>
     </p>
     <ReproSteps
+      title="Execution details"
       steps={fakeStoreEntry.data.reproducibility.map((item) => item.command)}
       assumptions={fakeStoreEntry.data.assumptions}
       limitations={fakeStoreEntry.data.limitations}
     />
+  </section>
+
+  <section>
+    <p class="section-label">Technical delivery detail</p>
+    <SectionHeading title="Delivery intent, modelling, and transform decisions" />
+    <div class="case-narrative-content">
+      <Content />
+    </div>
   </section>
 
 </BaseLayout>
@@ -258,6 +283,36 @@ const { Content } = await fakeStoreEntry.render();
     margin: 0 0 1rem;
   }
 
+  .hero-context {
+    margin: 0 0 0.9rem;
+    color: var(--text-soft);
+    max-width: 72ch;
+  }
+
+  .glance-grid {
+    display: grid;
+    gap: 0.8rem;
+    margin-top: 0.55rem;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  }
+
+  .glance-card {
+    background: color-mix(in srgb, var(--surface, #111723) 86%, transparent);
+    border-radius: var(--radius-md);
+    padding: 0.8rem 0.85rem;
+  }
+
+  .glance-card h3 {
+    margin: 0 0 0.35rem;
+    font-size: 0.98rem;
+  }
+
+  .glance-card p {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+
   @media (max-width: 680px) {
     .case-study-actions {
       flex-direction: column;
@@ -269,7 +324,6 @@ const { Content } = await fakeStoreEntry.render();
     margin: 0.8rem 0 0;
     overflow: hidden;
     border-radius: var(--radius-lg);
-    border: 1px solid color-mix(in srgb, var(--surface-border, #6ba6ff) 36%, transparent);
   }
 
   .visual-card img {
@@ -296,6 +350,16 @@ const { Content } = await fakeStoreEntry.render();
     padding-bottom: clamp(2.75rem, 4.5vw, 4rem);
   }
 
+  .reporting-band {
+    background: color-mix(in srgb, var(--background, #050c1a) 90%, #1f1830 10%);
+  }
+
+  .reporting-section {
+    margin-bottom: 0;
+    padding-top: clamp(2.4rem, 4vw, 3.4rem);
+    padding-bottom: clamp(2.4rem, 4vw, 3.4rem);
+  }
+
   .architecture-flow-left,
   .architecture-flow-right {
     display: grid;
@@ -312,7 +376,6 @@ const { Content } = await fakeStoreEntry.render();
     padding: 0.6rem 0.75rem;
     font-size: 0.84rem;
     color: var(--text-soft);
-    border-top: 1px solid color-mix(in srgb, var(--surface-border, #6ba6ff) 34%, transparent);
     background: color-mix(in srgb, var(--surface, #111723) 82%, transparent);
   }
 
@@ -340,7 +403,6 @@ const { Content } = await fakeStoreEntry.render();
 
   .bi-gallery-dialog {
     width: min(92vw, 1100px);
-    border: 1px solid color-mix(in srgb, var(--surface-border, #6ba6ff) 40%, transparent);
     border-radius: var(--radius-lg);
     background: color-mix(in srgb, var(--surface, #111723) 96%, #000);
     color: var(--text);
@@ -360,7 +422,6 @@ const { Content } = await fakeStoreEntry.render();
   .bi-gallery-frame {
     margin: 0;
     min-height: min(70vh, 760px);
-    border: 1px solid color-mix(in srgb, var(--surface-border, #6ba6ff) 35%, transparent);
     border-radius: var(--radius-md);
     background: color-mix(in srgb, var(--surface, #111723) 88%, transparent);
     display: grid;
@@ -434,7 +495,6 @@ const { Content } = await fakeStoreEntry.render();
       grid-template-columns: 1fr;
       gap: 1.1rem;
     }
-
   }
 
 </style>
