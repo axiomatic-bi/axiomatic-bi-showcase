@@ -9,7 +9,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "assets:webp": "powershell -ExecutionPolicy Bypass -File ./scripts/convert-assets-to-webp.ps1"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
