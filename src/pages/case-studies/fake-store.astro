@@ -3,7 +3,6 @@ import { getEntry } from "astro:content";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/PageHeader.astro";
-import EvidenceCallout from "../../components/EvidenceCallout.astro";
 import ReproSteps from "../../components/ReproSteps.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import { withBase } from "../../utils/urls";
@@ -13,7 +12,7 @@ import fakeStorePbiModelImage from "../../../assets/fake-store-pbi-model.webp";
 import { ExternalLink } from "lucide-react";
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
-const fakeStoreTransformationMermaid = `flowchart TB
+const fakeStoreTransformationMermaid = `flowchart LR
   subgraph ingestGroup["Ingestion"]
     direction TB
     apiNode["<b>API extraction</b><br/>Products, users, carts loaded via dlt resources"]
@@ -55,7 +54,7 @@ const { Content } = await fakeStoreEntry.render();
 ---
 
 <BaseLayout
-  title="Fake Store Case Study"
+  title="Fake Store Example"
   description="End-to-end Fake Store analytics case study on Axiomatic Engine."
   enableMermaid={true}
 >
@@ -67,8 +66,8 @@ const { Content } = await fakeStoreEntry.render();
           { label: "Case Studies", href: withBase("/case-studies") },
           { label: "Fake Store" }
         ]}
-        title="Fake Store Case Study"
-        lede="A complete reference implementation showing how API extraction, warehouse modelling, and Power BI delivery fit into one reproducible analytics workflow."
+        title="Fake Store Example"
+        lede="This example proves a repeatable path from API ingestion to governed reporting outputs, with clear boundaries between engine runtime and BI delivery."
       >
         <img
           slot="visual"
@@ -93,58 +92,26 @@ const { Content } = await fakeStoreEntry.render();
   </div>
 
   <section>
-    <SectionHeading title="Problem" />
-    <p>
-      The core challenge is producing stable reporting outputs from API data that can be rerun confidently.
-      This implementation needs to keep extraction, modelling, and report delivery aligned without introducing
-      hidden logic in downstream dashboards.
-    </p>
+    <p class="section-label">Why this example exists</p>
+    <SectionHeading title="Delivery intent and design decisions" />
+    <div class="case-narrative-content">
+      <Content />
+    </div>
   </section>
 
   <div class="full-bleed architecture-band">
     <section class="band-inner band-inner-wide architecture-section">
+      <p class="section-label">Delivery architecture</p>
       <SectionHeading title="Architecture" />
       <div class="architecture-flow-layout">
         <div class="architecture-flow-left">
           <p>
-            The solution uses an engine-orchestrated medallion pipeline. dlt resources ingest source entities to
-            bronze, dbt stages and normalises those entities in silver, and gold models provide reporting-ready
-            dimensions and facts.
-          </p>
-          <h3>Data model</h3>
-          <p>
-            The gold star schema is the primary analytical contract for downstream tools. Semantic models in tools such
-            as Power BI can consume it directly, while optional marts can be added where a specific front end needs
-            denormalised serving structures.
-          </p>
-          <h3>Transform logic</h3>
-          <p>
-            Transformation is dbt-first. The <code>run_pipeline.py</code> entrypoint applies CLI-over-environment
-            settings, executes extraction, and optionally runs dbt to produce consistent silver and gold outputs.
-            Optional marts are derived from the gold schema only when a consumption surface has specialised shape
-            requirements.
+            This diagram summarises the delivery flow described in the narrative section: ingestion to bronze,
+            transformation through silver and gold, then downstream BI consumption.
           </p>
           <p>
-            The gold star schema remains the default contract for all consumption tools. Optional marts are additive and
-            consumer-specific, not a replacement for the core analytical model.
-          </p>
-          <h3>Data quality/tests</h3>
-          <p>
-            Data quality is governed in dbt and pipeline contracts. Expected rerun behaviour is deterministic, and
-            validation checks are designed to fail early when schema or grain assumptions drift.
-          </p>
-          <p>
-            This case study demonstrates modelling and rerun behaviour; production refresh scheduling, observability, and
-            access controls are documented as next-step hardening work.
-          </p>
-          <h3>Consumption</h3>
-          <p>
-            The default consumption path is the gold star schema, which supports semantic BI tools directly. Optional
-            marts remain consumer-specific serving layers for scenarios that require tailored query shapes.
-          </p>
-          <p>
-            This allows Power BI, Tableau, Evidence, Dash, and MCP-driven experiences to evolve independently while
-            staying aligned to one core analytical contract.
+            The visual view is intentionally compact here; detailed model, transform, quality, and trade-off context is
+            maintained in MDX so page content stays reusable and easier to maintain.
           </p>
         </div>
         <div class="architecture-flow-right">
@@ -155,7 +122,8 @@ const { Content } = await fakeStoreEntry.render();
   </div>
 
   <section>
-    <SectionHeading title="BI implementation" />
+    <p class="section-label">Consumption layer</p>
+    <SectionHeading title="Reporting outputs" />
     <p>
       Consumption assets are implemented separately from engine runtime code. This allows Power BI, Tableau, Evidence,
       Dash, or other front ends to iterate independently while still relying on the same warehouse contract.
@@ -218,24 +186,13 @@ const { Content } = await fakeStoreEntry.render();
   </section>
 
   <section>
-    <SectionHeading title="Results and insights" />
-    <p>
-      The reference build demonstrates repeatable extraction and consistent report-serving outputs from the same
-      warehouse model. This provides a clear baseline for comparing future source adapters and BI front ends.
-    </p>
-  </section>
-
-  <section>
-    <SectionHeading title="Trade-offs and lessons learned" />
-    <p>
-      Resource-level load hints improve rerun control but add endpoint-level configuration work. Separating BI
-      artefacts from engine code improves maintainability, but it requires disciplined version links between model
-      changes and report updates.
-    </p>
-  </section>
-
-  <section>
+    <p class="section-label">Reproducibility</p>
     <SectionHeading title="How to reproduce" />
+    <p>
+      <a class="button button-secondary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
+        Open engine project repository <ExternalLink size={16} strokeWidth={2} />
+      </a>
+    </p>
     <ReproSteps
       steps={fakeStoreEntry.data.reproducibility.map((item) => item.command)}
       assumptions={fakeStoreEntry.data.assumptions}
@@ -243,24 +200,6 @@ const { Content } = await fakeStoreEntry.render();
     />
   </section>
 
-  <section>
-    <SectionHeading title="Evidence map" />
-    <EvidenceCallout
-      items={fakeStoreEntry.data.evidence.map((item) => ({
-        label: item.claim,
-        path: item.sourcePath,
-        note: item.status,
-        type: item.type
-      }))}
-    />
-  </section>
-
-  <section>
-    <SectionHeading title="Source narrative" />
-    <div class="source-narrative-content">
-      <Content />
-    </div>
-  </section>
 </BaseLayout>
 
 <script is:inline>
@@ -326,15 +265,6 @@ const { Content } = await fakeStoreEntry.render();
     }
   }
 
-  .source-narrative-content :global(h2) {
-    font-size: clamp(1.02rem, 1.7vw, 1.16rem);
-    margin-top: 1rem;
-  }
-
-  .source-narrative-content :global(h3) {
-    font-size: clamp(0.94rem, 1.5vw, 1.05rem);
-  }
-
   .visual-card {
     margin: 0.8rem 0 0;
     overflow: hidden;
@@ -358,8 +288,6 @@ const { Content } = await fakeStoreEntry.render();
 
   .architecture-band {
     background: color-mix(in srgb, var(--background, #050c1a) 88%, #13294d 12%);
-    border-top: 1px solid color-mix(in srgb, var(--border, #2a344a) 72%, transparent);
-    border-bottom: 1px solid color-mix(in srgb, var(--border, #2a344a) 72%, transparent);
   }
 
   .architecture-section {
@@ -392,12 +320,18 @@ const { Content } = await fakeStoreEntry.render();
     margin: 0;
   }
 
-  .architecture-flow-left h3 {
-    margin: 1rem 0 0;
+  .case-narrative-content :global(h2) {
+    font-size: clamp(1.02rem, 1.7vw, 1.16rem);
+    margin-top: 1.1rem;
+    margin-bottom: 0.45rem;
   }
 
-  .architecture-flow-left h3:first-of-type {
-    margin-top: 0.2rem;
+  .case-narrative-content :global(h3) {
+    font-size: clamp(0.94rem, 1.5vw, 1.05rem);
+  }
+
+  .case-narrative-content :global(p) {
+    margin-bottom: 0.7rem;
   }
 
   .gallery-preview {
@@ -497,8 +431,8 @@ const { Content } = await fakeStoreEntry.render();
 
   @media (min-width: 64rem) {
     .architecture-flow-layout {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
+      grid-template-columns: 1fr;
+      gap: 1.1rem;
     }
 
   }

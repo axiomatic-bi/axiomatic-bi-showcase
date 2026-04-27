@@ -61,75 +61,73 @@ const proofLinks = [
     </div>
   </div>
 
-  <div class="full-bleed proof-band">
-    <div class="band-inner">
-      <section class="proof-strip proof-links-strip" aria-labelledby="proof-links-heading">
-        <p class="section-label">Technology and delivery proof</p>
-        <h2 id="proof-links-heading">Evidence you can inspect</h2>
-        <p>
-          Engine orchestration combines dlt ingestion and dbt transformation with client-owned delivery assets.
-          Planned next adapters include GraphQL API and SharePoint files.
-        </p>
-        <p class="proof-actions">
-          {
-            proofLinks.map((item) => (
-              <a
-                class="button button-secondary"
-                href={item.href.startsWith("http") ? item.href : withBase(item.href)}
-                target={item.href.startsWith("http") ? "_blank" : undefined}
-                rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-              >
-                {item.label}
-              </a>
-            ))
-          }
-        </p>
-      </section>
-    </div>
-  </div>
-
-  <section aria-labelledby="problem-heading">
-    <div class="problem-columns">
-      <div class="problem-column-intro">
-        <p class="section-label">Why reporting breaks</p>
-        <h2 id="problem-heading">Why reporting fails long before the dashboard.</h2>
-        <p class="section-intro">The delivery model below addresses the operational issues that make reporting hard to trust.</p>
-        <p class="section-intro">This service provides consistent metrics, lower manual overhead, and auditable reporting paths.</p>
-      </div>
-      <div class="problem-column-stack" aria-label="Problems and solutions">
-        <article class="proof-card problem-pair-card">
-          <h3 class="problem-line">
-            <CircleAlert size={14} strokeWidth={2.1} aria-hidden="true" />
-            <span>Still relying on manual exports and ad hoc ingest?</span>
-          </h3>
-          <p class="solution-line">
-            <Check size={14} strokeWidth={2.2} aria-hidden="true" />
-            <span>Scheduled ingestion pipelines with explicit source contracts and repeatable runs.</span>
-          </p>
-        </article>
-        <article class="proof-card problem-pair-card">
-          <h3 class="problem-line">
-            <CircleAlert size={14} strokeWidth={2.1} aria-hidden="true" />
-            <span>Seeing different metric logic across reports?</span>
-          </h3>
-          <p class="solution-line">
-            <Check size={14} strokeWidth={2.2} aria-hidden="true" />
-            <span>Shared analytical models and governed definitions so every report uses the same logic.</span>
-          </p>
-        </article>
-        <article class="proof-card problem-pair-card">
-          <h3 class="problem-line">
-            <CircleAlert size={14} strokeWidth={2.1} aria-hidden="true" />
-            <span>Locked into a managed stack with unclear ownership?</span>
-          </h3>
-          <p class="solution-line">
-            <Check size={14} strokeWidth={2.2} aria-hidden="true" />
-            <span>Client-owned code, data, automation, and handover boundaries from the start.</span>
-          </p>
-        </article>
-      </div>
-    </div>
+  <section class="proof-strip proof-links-strip" aria-labelledby="proof-links-heading">
+    <p class="section-label">Technology and delivery proof</p>
+    <h2 id="proof-links-heading">Evidence you can inspect</h2>
+    <p>
+      Engine orchestration combines dlt ingestion and dbt transformation with client-owned delivery assets.
+      Planned next adapters include GraphQL API and SharePoint files.
+    </p>
+    <p class="proof-actions">
+      {
+        proofLinks.map((item) => (
+          <a
+            class="button button-secondary"
+            href={item.href.startsWith("http") ? item.href : withBase(item.href)}
+            target={item.href.startsWith("http") ? "_blank" : undefined}
+            rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </p>
   </section>
+
+  <div class="full-bleed problem-band">
+    <section class="band-inner problem-band-section" aria-labelledby="problem-heading">
+      <div class="problem-columns">
+        <div class="problem-column-intro">
+          <p class="section-label">Why reporting breaks</p>
+          <h2 id="problem-heading">Why reporting fails long before the dashboard.</h2>
+          <p class="section-intro">The delivery model below addresses the operational issues that make reporting hard to trust.</p>
+          <p class="section-intro">This service provides consistent metrics, lower manual overhead, and auditable reporting paths.</p>
+        </div>
+        <div class="problem-column-stack" aria-label="Problems and solutions">
+          <article class="proof-card problem-pair-card">
+            <h3 class="problem-line">
+              <CircleAlert size={14} strokeWidth={2.1} aria-hidden="true" />
+              <span>Still relying on manual exports and ad hoc ingest?</span>
+            </h3>
+            <p class="solution-line">
+              <Check size={14} strokeWidth={2.2} aria-hidden="true" />
+              <span>Scheduled ingestion pipelines with explicit source contracts and repeatable runs.</span>
+            </p>
+          </article>
+          <article class="proof-card problem-pair-card">
+            <h3 class="problem-line">
+              <CircleAlert size={14} strokeWidth={2.1} aria-hidden="true" />
+              <span>Seeing different metric logic across reports?</span>
+            </h3>
+            <p class="solution-line">
+              <Check size={14} strokeWidth={2.2} aria-hidden="true" />
+              <span>Shared analytical models and governed definitions so every report uses the same logic.</span>
+            </p>
+          </article>
+          <article class="proof-card problem-pair-card">
+            <h3 class="problem-line">
+              <CircleAlert size={14} strokeWidth={2.1} aria-hidden="true" />
+              <span>Locked into a managed stack with unclear ownership?</span>
+            </h3>
+            <p class="solution-line">
+              <Check size={14} strokeWidth={2.2} aria-hidden="true" />
+              <span>Client-owned code, data, automation, and handover boundaries from the start.</span>
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <section class="engine-overview section-before-band" aria-labelledby="engine-overview-heading">
     <div class="engine-copy">
@@ -239,12 +237,18 @@ const proofLinks = [
     opacity: 0.8;
   }
 
-  .proof-band {
+  .proof-links-strip {
+    margin-bottom: 0;
+  }
+
+  .problem-band {
     background: color-mix(in srgb, var(--background, #050c1a) 90%, #13294d 10%);
   }
 
-  .proof-links-strip {
+  .problem-band-section {
     margin-bottom: 0;
+    padding-top: clamp(2.75rem, 4.5vw, 4rem);
+    padding-bottom: clamp(2.75rem, 4.5vw, 4rem);
   }
 
   .proof-actions {

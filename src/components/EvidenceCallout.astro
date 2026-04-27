@@ -6,6 +6,7 @@ interface EvidenceItem {
   label: string;
   path: string;
   note?: string;
+  href?: string;
 }
 
 interface Props {
@@ -26,6 +27,10 @@ function toAdrHref(path: string): string | null {
 function toExternalHref(path: string): string | null {
   return /^https?:\/\//.test(path) ? path : null;
 }
+
+function getDisplayHref(item: EvidenceItem): string | null {
+  return item.href ?? toAdrHref(item.path) ?? toExternalHref(item.path);
+}
 ---
 
 <aside aria-label={title}>
@@ -35,16 +40,18 @@ function toExternalHref(path: string): string | null {
       items.map((item) => (
         <li class="evidence-item" role="listitem">
           <p class="evidence-label">
-            <strong>{item.label}</strong> {item.type && <span class="evidence-type">{item.type}</span>}
+            <span class="evidence-label-main">
+              <strong>{item.label}</strong> {item.type && <span class="evidence-type">{item.type}</span>}
+            </span>
+            {item.note && <span class="evidence-status">{item.note}</span>}
           </p>
-          <p><code>{item.path}</code></p>
-          {item.note && <p>{item.note}</p>}
-          <p class="evidence-links">
-            {toAdrHref(item.path) && <a class="button button-secondary" href={toAdrHref(item.path) ?? "#"}>Open ADR</a>}
-            {toExternalHref(item.path) && (
-              <a class="button button-secondary" href={toExternalHref(item.path) ?? "#"} target="_blank" rel="noreferrer">
-                Open source
+          <p>
+            {getDisplayHref(item) ? (
+              <a href={getDisplayHref(item) ?? "#"} target="_blank" rel="noreferrer">
+                <code>{item.path}</code>
               </a>
+            ) : (
+              <code>{item.path}</code>
             )}
           </p>
         </li>
@@ -52,3 +59,32 @@ function toExternalHref(path: string): string | null {
     }
   </ul>
 </aside>
+
+<style>
+  .evidence-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+
+  .evidence-label-main {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+
+  .evidence-status {
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-soft);
+    border: 1px solid color-mix(in srgb, var(--border) 68%, transparent);
+    border-radius: 999px;
+    padding: 0.16rem 0.5rem;
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    white-space: nowrap;
+  }
+</style>

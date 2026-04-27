@@ -1,6 +1,6 @@
 ---
-title: Fake Store Case Study
-summary: End-to-end reference pipeline using Axiomatic Engine and dbt-first transformation for fakestoreapi.com.
+title: Fake Store Example
+summary: End-to-end reference pipeline using Axiomatic Engine and dbt-first transformation for Fake Store API reporting.
 sectionOrder:
   - Problem
   - Architecture
@@ -15,78 +15,76 @@ capabilityMaturity:
   semantic_mcp: planned
 evidence:
   - type: code
-    claim: Pipeline architecture and medallion flow
-    sourcePath: src/content/caseStudies/fake-store.mdx
+    claim: End-to-end implementation overview and usage guide
+    sourcePath: projects/fake_store/README.md
     status: implemented
   - type: code
-    claim: Runtime orchestration path and resource-level load hints
-    sourcePath: examples/fake_store/run_pipeline.py
+    claim: Runtime orchestration entrypoint and resource-level load hints
+    sourcePath: projects/fake_store/run_pipeline.py
     status: implemented
   - type: code
-    claim: Environment contract and secret handling expectations
-    sourcePath: context_docs/project_fake_store/.env.example
+    claim: dbt model contracts and star schema tests
+    sourcePath: projects/fake_store/dbt_project/models/gold/schema.yml
     status: implemented
-  - type: video
-    claim: Planned MCP connection walkthrough and semantic demonstration
-    sourcePath: docs/media/placeholder-mcp-demo.md
+  - type: code
+    claim: Environment contract for local execution
+    sourcePath: projects/fake_store/.env.example
+    status: implemented
+  - type: diagram
+    claim: Planned semantic layer and MCP walkthrough artefacts
+    sourcePath: projects/fake_store/README.md
     status: planned
 reproducibility:
-  - command: cd examples/fake_store && uv sync
-    assumption: Python 3.10+ with uv installed; run from the repository root.
-  - command: cd examples/fake_store && uv run python run_pipeline.py --skip-transforms
-    assumption: .env is copied from .env.example and AXIOMATIC_* values are configured.
-  - command: cd examples/fake_store && uv run python run_pipeline.py --run-transforms
-    assumption: dbt profile/target settings are valid for your selected warehouse.
+  - command: cd projects/fake_store && uv sync
+    assumption: Python 3.10+ with uv installed; run from repository root.
+  - command: cd projects/fake_store && uv run python run_pipeline.py --skip-transforms
+    assumption: Copy .env from .env.example and configure AXIOMATIC_* values.
+  - command: cd projects/fake_store && uv run python run_pipeline.py --run-transforms
+    assumption: dbt profile and target settings are valid for your selected warehouse.
 assumptions:
-  - Environment values are loaded from local non-committed files.
-  - Dependencies can also be installed with pip via requirements.txt when uv is unavailable.
+  - Environment values are loaded from local non-committed files only.
+  - Warehouse credentials and dataset permissions are configured before running transforms.
 limitations:
-  - Metrics and screenshots will be added once execution artefacts are captured for publication.
+  - This reference build is demonstration-focused and does not include production scheduling or alerting.
+  - Semantic MCP integration remains planned and is not yet published in this example.
 ---
 
-## Problem
+The objective is to prove a repeatable reporting workflow from API-first source data, without embedding business logic in dashboards.  
+This example shows that ingestion, transformation, and BI delivery can be versioned independently while still producing one consistent analytical contract.
 
-Build a reproducible analytics pipeline from Fake Store API data while keeping domain logic in project code and orchestration logic in the engine.
+## Responsibility split
 
-## Architecture
+### Engine layer (ingestion and transformation)
 
-The documented flow is bronze to silver to gold, with optional analytics views.  
-Ingestion runs via dlt through the engine; transformation runs through the dbt-first adapter path when enabled.
+- Source extraction and load policies are defined in [`projects/fake_store/run_pipeline.py`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/run_pipeline.py).
+- Transformation contracts live in dbt model files and tests, including [`models/gold/schema.yml`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/dbt_project/models/gold/schema.yml).
+- Runtime and local execution assumptions are documented in [`projects/fake_store/.env.example`](https://github.com/axiomatic-bi/axiomatic-engine/blob/main/projects/fake_store/.env.example).
 
-## Data model
+### Reporting layer (semantic and BI outputs)
 
-The project documentation defines silver/gold modelling layers and references dimensional/fact intent.  
-As model files are published into showcase context, this section should link each analytical table claim to concrete dbt model paths.
+- The Power BI artefact consumes the same warehouse contract and is published separately from runtime code.
+- Report outputs are implementation evidence, not a place for hidden pipeline logic.
 
-## Transform logic
+## Modelling and transform decisions
 
-`run_pipeline.py` applies CLI-over-env settings and defines resource-level ingestion contracts used by engine orchestration:
+### Model contract
 
-```python
-RestApiResourceDefinition(
-    name="products",
-    endpoint_path="products",
-    load_hints=ResourceLoadHints(
-        write_disposition="merge",
-        primary_key="id",
-        schema_evolution_mode="auto",
-    ),
-)
-```
+Gold models follow a star-schema contract centred on cart-item facts with conformed user, product, and date dimensions.  
+This keeps joins and grain explicit for downstream BI consumers.
 
-The same pattern is used for `users` (`merge`) and `carts` (`replace`), giving deterministic rerun behaviour per resource policy.
+### Load policy decisions
 
-## Data quality/tests
+Resource-level load hints define rerun semantics at endpoint level (`merge` for entity updates, `replace` for snapshot-style refreshes).  
+This improves operational clarity and supports deterministic behaviour.
 
-The pipeline contract includes dbt execution support and optional test execution controls through environment settings (`AXIOMATIC_DBT_RUN_TESTS`).  
-Current public evidence confirms the validation path; publication-ready test result artefacts are tracked for follow-up.
+### Validation approach
 
-## Results/insights
+Quality checks are maintained in dbt schema tests and run in the same transformation path as model execution.  
+This reduces drift between transform logic and validation logic.
 
-Current measurable outcome: rerun expectations are explicit and testable from documented commands (`merge` resources should be idempotent; `replace` resources should be deterministic on rerun).  
-Analytical insight metrics will be added once query result snapshots are captured in public-safe form.
+## Outcomes and limitations
 
-## Trade-offs/lessons
-
-Resource-level policy control improves operational clarity but requires deliberate per-endpoint configuration choices.  
-The case study currently prioritises reproducibility and explicit boundaries over broad feature scope claims.
+- The current example proves deterministic rerun expectations and reproducible outputs from documented commands.
+- It provides a baseline for comparing future source adapters and front-end reporting consumers.
+- It is demonstration-focused and does not include full production scheduling or alerting.
+- Semantic MCP integration remains planned rather than implemented in this example.
