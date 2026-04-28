@@ -274,7 +274,7 @@ function isActive(href: string): boolean {
       html,
       body {
         max-width: 100%;
-        overflow-x: clip;
+        overflow-x: hidden;
       }
       body {
         margin: 0;
@@ -545,9 +545,9 @@ function isActive(href: string): boolean {
         padding-bottom: 0;
       }
       :global(.full-bleed) {
-        width: 100dvw;
-        margin-left: calc(50% - 50dvw);
-        margin-right: calc(50% - 50dvw);
+        width: auto;
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
         background: var(--bleed-accent-bg);
       }
       :global(.band-inner) {
@@ -652,8 +652,8 @@ function isActive(href: string): boolean {
         align-items: center;
       }
       :global(.hero-visual-image) {
-        width: auto;
-        max-width: min(100%, 680px);
+        width: 100%;
+        max-width: 680px;
         max-height: min(52vh, 440px);
         height: auto;
         aspect-ratio: auto;
@@ -799,6 +799,12 @@ function isActive(href: string): boolean {
         flex-wrap: wrap;
         gap: var(--space-3);
         margin: var(--space-6) 0 var(--space-3);
+      }
+      :global(.hero-actions .button),
+      :global(.engine-actions .button),
+      :global(.case-study-actions .button) {
+        width: auto;
+        max-width: 100%;
       }
       :global(.hero-proofline) {
         margin-bottom: var(--space-6);
@@ -1261,6 +1267,7 @@ function isActive(href: string): boolean {
       :global(.mermaid) {
         display: block;
         width: 100%;
+        max-width: 100%;
         background: var(--mermaid-wrapper-bg);
         border: 1px solid var(--mermaid-wrapper-border);
         box-shadow: var(--mermaid-wrapper-shadow);
@@ -1268,13 +1275,14 @@ function isActive(href: string): boolean {
         padding: var(--space-4);
         margin-top: 0;
         overflow-x: auto;
+        overflow-y: hidden;
         text-align: center;
         cursor: zoom-in;
       }
       :global(.mermaid svg) {
-        max-width: 100%;
+        width: 100% !important;
+        max-width: 100% !important;
         min-width: 0;
-        width: auto;
         height: auto;
         overflow: visible;
         margin-inline: auto;
@@ -1331,12 +1339,14 @@ function isActive(href: string): boolean {
       }
       :global(dialog.mermaid-lightbox) {
         width: min(96vw, 1600px);
+        max-width: calc(100vw - 1rem);
         max-height: 92vh;
         border: 1px solid var(--border);
         border-radius: var(--radius-md);
         background: var(--modal-bg);
         color: var(--text);
         padding: var(--space-4);
+        box-sizing: border-box;
       }
       :global(dialog.mermaid-lightbox::backdrop) {
         background: color-mix(in srgb, #000 72%, transparent);
@@ -1354,17 +1364,40 @@ function isActive(href: string): boolean {
         background: var(--modal-content-bg);
       }
       :global(.mermaid-lightbox-content .mermaid) {
-        width: max-content;
-        min-width: 100%;
-        margin: 0 auto;
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+        overflow: visible;
       }
       :global(.mermaid-lightbox-content .mermaid svg) {
-        width: max-content;
-        min-width: 100%;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
         height: auto;
         display: block;
         overflow: visible;
-        margin: 0 auto;
+        margin: 0;
+      }
+      @media (max-width: 640px) {
+        :global(dialog.mermaid-lightbox) {
+          width: 100dvw;
+          max-width: 100dvw;
+          height: 100dvh;
+          max-height: 100dvh;
+          margin: 0;
+          border-radius: 0;
+          border-left: 0;
+          border-right: 0;
+          border-bottom: 0;
+          padding: calc(var(--space-3) + env(safe-area-inset-top, 0px))
+            calc(var(--space-3) + env(safe-area-inset-right, 0px))
+            calc(var(--space-3) + env(safe-area-inset-bottom, 0px))
+            calc(var(--space-3) + env(safe-area-inset-left, 0px));
+          inset: 0;
+        }
+        :global(.mermaid-lightbox-content) {
+          max-height: calc(100dvh - 4.75rem);
+        }
       }
       :global(.mermaid .nodeLabel tspan:first-child),
       :global(.mermaid .edgeLabel tspan:first-child),
@@ -1397,6 +1430,7 @@ function isActive(href: string): boolean {
           justify-content: flex-end;
           flex-wrap: wrap;
           position: relative;
+          overflow-x: clip;
         }
         .mobile-nav-toggle {
           display: inline-flex;
@@ -1451,6 +1485,18 @@ function isActive(href: string): boolean {
           padding: 0.34rem 0.1rem;
           font-size: 0.86rem;
         }
+        .theme-toggle::after {
+          left: auto;
+          right: 0;
+          transform: translateY(-0.2rem);
+          max-width: min(70vw, 16rem);
+          white-space: normal;
+          text-align: center;
+        }
+        .theme-toggle:hover::after,
+        .theme-toggle:focus-visible::after {
+          transform: translateY(0);
+        }
         :global(.band-inner) {
           padding-top: var(--space-12);
           padding-bottom: var(--space-12);
@@ -1463,7 +1509,8 @@ function isActive(href: string): boolean {
           margin-top: 0.35rem;
         }
         :global(.hero-visual-image) {
-          max-width: min(520px, 92vw);
+          width: 100%;
+          max-width: 520px;
           max-height: min(42vh, 360px);
         }
         :global(.hero-visual-frame) {
@@ -1609,20 +1656,27 @@ function isActive(href: string): boolean {
               container.setAttribute("tabindex", "0");
               container.setAttribute("aria-label", "Open Mermaid diagram in full size");
 
-              const openLightbox = () => {
-                const svg = container.querySelector("svg");
-                if (!svg) return;
+              const openLightbox = async () => {
+                const source = container.dataset.mermaidSource ?? "";
+                if (!source) return;
                 content.innerHTML = "";
-                const wrapperClone = container.cloneNode(true);
-                content.appendChild(wrapperClone);
                 dialog.showModal();
+                const lightboxDiagram = document.createElement("div");
+                lightboxDiagram.className = "mermaid";
+                lightboxDiagram.textContent = source;
+                content.appendChild(lightboxDiagram);
+
+                await mermaid.run({ nodes: [lightboxDiagram] });
+
               };
 
-              container.onclick = openLightbox;
+              container.onclick = () => {
+                void openLightbox();
+              };
               container.onkeydown = (event) => {
                 if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
-                  openLightbox();
+                  void openLightbox();
                 }
               };
             });

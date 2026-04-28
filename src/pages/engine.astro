@@ -287,6 +287,7 @@ flowchart LR
     display: grid;
     gap: 0.75rem;
     align-content: start;
+    min-width: 0;
   }
 
   .architecture-flow-left p {
@@ -309,7 +310,12 @@ flowchart LR
   @media (max-width: 680px) {
     .engine-actions {
       flex-direction: column;
-      align-items: stretch;
+      align-items: flex-start;
+    }
+
+    .engine-actions .button {
+      width: auto;
+      max-width: 100%;
     }
   }
 
