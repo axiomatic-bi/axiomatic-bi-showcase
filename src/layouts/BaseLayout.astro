@@ -47,6 +47,16 @@ function isActive(href: string): boolean {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <script is:inline>
+      try {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "light" || savedTheme === "dark") {
+          document.documentElement.setAttribute("data-theme", savedTheme);
+        }
+      } catch {
+        // Ignore storage access issues and fall back to system theme.
+      }
+    </script>
     <style>
       :root {
         color-scheme: dark light;
@@ -56,8 +66,12 @@ function isActive(href: string): boolean {
         --surface-subtle: #1b2436;
         --border: #2a344a;
         --border-strong: #3b4966;
-        --bleed-accent-bg: color-mix(in srgb, var(--border) 50%, transparent);
-        --bleed-band-blue: color-mix(in srgb, var(--background, #050c1a) 90%, #13294d 10%);
+        --bleed-accent-bg: color-mix(in srgb, var(--bg) 50%, var(--border) 36%);
+        --bleed-band-blue: color-mix(in srgb, var(--bg) 88%, var(--surface) 12%);
+        --hero-scene-bg:
+          radial-gradient(circle at 15% 20%, rgba(123, 141, 255, 0.22), transparent 40%),
+          radial-gradient(circle at 85% 5%, rgba(123, 141, 255, 0.18), transparent 32%),
+          linear-gradient(180deg, #0b1220 0%, #0a0f1b 60%, #090d17 100%);
         --text: #e8edf7;
         --text-muted: #b9c4d8;
         --text-soft: #96a4c0;
@@ -101,8 +115,58 @@ function isActive(href: string): boolean {
           --accent-strong: #3b4cf8;
           --accent-soft: rgba(79, 95, 253, 0.12);
           --accent-contrast: #ffffff;
+          --bleed-accent-bg: color-mix(in srgb, #dce7fb 60%, var(--border) 40%);
+          --bleed-band-blue: color-mix(in srgb, #edf2fb 86%, #dbe6fb 14%);
+          --hero-scene-bg:
+            radial-gradient(circle at 15% 18%, rgba(79, 95, 253, 0.16), transparent 38%),
+            radial-gradient(circle at 88% 8%, rgba(79, 95, 253, 0.1), transparent 34%),
+            linear-gradient(180deg, #f7faff 0%, #eef4ff 58%, #e8f0ff 100%);
           --shadow-soft: 0 16px 30px rgba(48, 64, 109, 0.12);
         }
+      }
+      :root[data-theme="dark"] {
+        --bg: #080b11;
+        --surface: #111723;
+        --surface-soft: #161d2b;
+        --surface-subtle: #1b2436;
+        --border: #2a344a;
+        --border-strong: #3b4966;
+        --bleed-accent-bg: color-mix(in srgb, var(--bg) 64%, var(--border) 36%);
+        --bleed-band-blue: color-mix(in srgb, var(--bg) 88%, #10213f 12%);
+        --hero-scene-bg:
+          radial-gradient(circle at 15% 20%, rgba(123, 141, 255, 0.22), transparent 40%),
+          radial-gradient(circle at 85% 5%, rgba(123, 141, 255, 0.18), transparent 32%),
+          linear-gradient(180deg, #0b1220 0%, #0a0f1b 60%, #090d17 100%);
+        --text: #e8edf7;
+        --text-muted: #b9c4d8;
+        --text-soft: #96a4c0;
+        --accent: #7b8dff;
+        --accent-strong: #96a5ff;
+        --accent-soft: rgba(123, 141, 255, 0.18);
+        --accent-contrast: #ffffff;
+        --shadow-soft: 0 18px 34px rgba(2, 8, 20, 0.38);
+      }
+      :root[data-theme="light"] {
+        --bg: #f4f6fb;
+        --surface: #ffffff;
+        --surface-soft: #f9faff;
+        --surface-subtle: #eef2fd;
+        --border: #d5ddf0;
+        --border-strong: #bec9e3;
+        --bleed-accent-bg: color-mix(in srgb, #dce7fb 60%, var(--border) 40%);
+        --bleed-band-blue: color-mix(in srgb, #edf2fb 86%, #dbe6fb 14%);
+        --hero-scene-bg:
+          radial-gradient(circle at 15% 18%, rgba(79, 95, 253, 0.16), transparent 38%),
+          radial-gradient(circle at 88% 8%, rgba(79, 95, 253, 0.1), transparent 34%),
+          linear-gradient(180deg, #f7faff 0%, #eef4ff 58%, #e8f0ff 100%);
+        --text: #111a2e;
+        --text-muted: #3a4864;
+        --text-soft: #5a6783;
+        --accent: #4f5ffd;
+        --accent-strong: #3b4cf8;
+        --accent-soft: rgba(79, 95, 253, 0.12);
+        --accent-contrast: #ffffff;
+        --shadow-soft: 0 16px 30px rgba(48, 64, 109, 0.12);
       }
       * {
         box-sizing: border-box;
@@ -136,6 +200,11 @@ function isActive(href: string): boolean {
         justify-content: space-between;
         gap: var(--space-4);
         padding: var(--space-2) 0;
+      }
+      .site-header-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
       }
       nav ul {
         display: flex;
@@ -217,6 +286,41 @@ function isActive(href: string): boolean {
         background: var(--accent-soft);
         color: var(--text);
         border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+      }
+      .theme-toggle {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface-soft);
+        color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+      }
+      .theme-toggle:hover {
+        border-color: var(--border-strong);
+        background: color-mix(in srgb, var(--surface-soft) 82%, var(--accent-soft) 18%);
+      }
+      .theme-toggle:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .theme-toggle-icon {
+        width: 1rem;
+        height: 1rem;
+        display: block;
+      }
+      [data-theme="light"] .theme-icon-moon {
+        display: none;
+      }
+      [data-theme="dark"] .theme-icon-sun {
+        display: none;
+      }
+      :root:not([data-theme]) .theme-icon-sun {
+        display: none;
       }
       main.container {
         padding-top: 0;
@@ -436,10 +540,7 @@ function isActive(href: string): boolean {
         color: var(--text-soft);
       }
       :global(.hero-scene) {
-        background:
-          radial-gradient(circle at 15% 20%, rgba(123, 141, 255, 0.22), transparent 40%),
-          radial-gradient(circle at 85% 5%, rgba(123, 141, 255, 0.18), transparent 32%),
-          linear-gradient(180deg, #0b1220 0%, #0a0f1b 60%, #090d17 100%);
+        background: var(--hero-scene-bg);
         border-bottom: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
         margin-bottom: 0;
       }
@@ -904,6 +1005,10 @@ function isActive(href: string): boolean {
         color: var(--text-soft);
       }
       @media (max-width: 860px) {
+        .site-header-actions {
+          width: 100%;
+          justify-content: space-between;
+        }
         :global(.band-inner) {
           padding-top: var(--space-12);
           padding-bottom: var(--space-12);
@@ -981,86 +1086,182 @@ function isActive(href: string): boolean {
       enableMermaid && (
         <script type="module" is:inline>
           import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-          const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          const themeConfig = isDark
-            ? {
-                theme: "base",
-                themeVariables: {
-                  background: "#111a2c",
-                  primaryColor: "#162136",
-                  secondaryColor: "#111a2c",
-                  tertiaryColor: "#0b1220",
-                  borderRadius: 10,
-                  primaryTextColor: "#e6edf7",
-                  secondaryTextColor: "#e6edf7",
-                  tertiaryTextColor: "#e6edf7",
-                  primaryBorderColor: "#4b5e83",
-                  lineColor: "#9cb0d1",
-                  fontFamily: "Inter, Segoe UI, Arial, sans-serif"
-                }
-              }
-            : {
-                theme: "base",
-                themeVariables: {
-                  background: "#ffffff",
-                  primaryColor: "#eff6ff",
-                  secondaryColor: "#f8fafc",
-                  tertiaryColor: "#ffffff",
-                  borderRadius: 10,
-                  primaryTextColor: "#0f172a",
-                  secondaryTextColor: "#0f172a",
-                  tertiaryTextColor: "#0f172a",
-                  primaryBorderColor: "#8aa3d1",
-                  lineColor: "#475569",
-                  fontFamily: "Inter, Segoe UI, Arial, sans-serif"
-                }
-              };
-          mermaid.initialize({
-            startOnLoad: true,
-            securityLevel: "strict",
-            flowchart: { useMaxWidth: true, htmlLabels: false, curve: "linear" },
-            ...themeConfig
+          const root = document.documentElement;
+          const darkThemeConfig = {
+            theme: "base",
+            themeVariables: {
+              background: "#111a2c",
+              primaryColor: "#162136",
+              secondaryColor: "#111a2c",
+              tertiaryColor: "#0b1220",
+              borderRadius: 10,
+              primaryTextColor: "#e6edf7",
+              secondaryTextColor: "#e6edf7",
+              tertiaryTextColor: "#e6edf7",
+              primaryBorderColor: "#4b5e83",
+              lineColor: "#9cb0d1",
+              fontFamily: "Inter, Segoe UI, Arial, sans-serif"
+            }
+          };
+          const lightThemeConfig = {
+            theme: "base",
+            themeVariables: {
+              background: "#ffffff",
+              primaryColor: "#eff6ff",
+              secondaryColor: "#f8fafc",
+              tertiaryColor: "#ffffff",
+              borderRadius: 10,
+              primaryTextColor: "#0f172a",
+              secondaryTextColor: "#0f172a",
+              tertiaryTextColor: "#0f172a",
+              primaryBorderColor: "#8aa3d1",
+              lineColor: "#475569",
+              fontFamily: "Inter, Segoe UI, Arial, sans-serif"
+            }
+          };
+          const mermaidContainers = Array.from(document.querySelectorAll(".mermaid"));
+
+          mermaidContainers.forEach((container) => {
+            if (!container.dataset.mermaidSource) {
+              container.dataset.mermaidSource = container.textContent?.trim() ?? "";
+            }
+          });
+
+          function getActiveTheme() {
+            const explicitTheme = root.getAttribute("data-theme");
+            if (explicitTheme === "light" || explicitTheme === "dark") {
+              return explicitTheme;
+            }
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          }
+
+          async function renderMermaidForTheme(theme) {
+            mermaid.initialize({
+              startOnLoad: false,
+              securityLevel: "strict",
+              flowchart: { useMaxWidth: true, htmlLabels: false, curve: "linear" },
+              ...(theme === "dark" ? darkThemeConfig : lightThemeConfig)
+            });
+
+            mermaidContainers.forEach((container, index) => {
+              const source = container.dataset.mermaidSource ?? "";
+              if (!source) return;
+              container.removeAttribute("data-processed");
+              container.id = `mermaid-${theme}-${index}-${Date.now()}`;
+              container.textContent = source;
+            });
+
+            await mermaid.run({ querySelector: ".mermaid" });
+          }
+
+          renderMermaidForTheme(getActiveTheme());
+          window.addEventListener("themechange", () => {
+            renderMermaidForTheme(getActiveTheme());
           });
         </script>
       )
     }
+    <script is:inline>
+      const root = document.documentElement;
+
+      function initThemeToggle() {
+        const toggleButton = document.querySelector("[data-theme-toggle]");
+        if (!toggleButton) return;
+
+        function getActiveTheme() {
+          const currentTheme = root.getAttribute("data-theme");
+          if (currentTheme === "dark" || currentTheme === "light") {
+            return currentTheme;
+          }
+          return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+
+        function setTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          toggleButton.setAttribute("aria-label", `Switch to ${theme === "dark" ? "light" : "dark"} mode`);
+          try {
+            localStorage.setItem("theme", theme);
+          } catch {
+            // Ignore storage access issues; theme still applies for this page.
+          }
+          window.dispatchEvent(new CustomEvent("themechange", { detail: { theme } }));
+        }
+
+        toggleButton.setAttribute("aria-label", `Switch to ${getActiveTheme() === "dark" ? "light" : "dark"} mode`);
+
+        toggleButton.addEventListener("click", () => {
+          const activeTheme = getActiveTheme();
+          setTheme(activeTheme === "dark" ? "light" : "dark");
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initThemeToggle, { once: true });
+      } else {
+        initThemeToggle();
+      }
+    </script>
   </head>
   <body>
     <header class="site-header">
       <div class="container site-header-inner">
         <a class="nav-link" href={withBase("/")}>Axiomatic BI Showcase</a>
-        <nav aria-label="Primary">
-          <ul>
-            {
-              navItems.map((item) => (
-                item.href === "/case-studies" ? (
-                  <li class="nav-item-dropdown">
-                    <a class="nav-link" href={withBase(item.href)} aria-current={isActive(item.href) ? "page" : undefined}>
-                      {item.label}
-                    </a>
-                    {caseStudyEntries.length > 0 && (
-                      <ul class="nav-dropdown" aria-label="Case study pages">
-                        {caseStudyEntries.map((entry) => (
-                          <li>
-                            <a class="nav-dropdown-link" href={withBase(entry.href)}>
-                              {entry.label}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ) : (
-                  <li>
-                    <a class="nav-link" href={withBase(item.href)} aria-current={isActive(item.href) ? "page" : undefined}>
-                      {item.label}
-                    </a>
-                  </li>
-                )
-              ))
-            }
-          </ul>
-        </nav>
+        <div class="site-header-actions">
+          <nav aria-label="Primary">
+            <ul>
+              {
+                navItems.map((item) => (
+                  item.href === "/case-studies" ? (
+                    <li class="nav-item-dropdown">
+                      <a class="nav-link" href={withBase(item.href)} aria-current={isActive(item.href) ? "page" : undefined}>
+                        {item.label}
+                      </a>
+                      {caseStudyEntries.length > 0 && (
+                        <ul class="nav-dropdown" aria-label="Case study pages">
+                          {caseStudyEntries.map((entry) => (
+                            <li>
+                              <a class="nav-dropdown-link" href={withBase(entry.href)}>
+                                {entry.label}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ) : (
+                    <li>
+                      <a class="nav-link" href={withBase(item.href)} aria-current={isActive(item.href) ? "page" : undefined}>
+                        {item.label}
+                      </a>
+                    </li>
+                  )
+                ))
+              }
+            </ul>
+          </nav>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode">
+            <svg class="theme-toggle-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M15.5 3.5a8.5 8.5 0 1 0 5 15.4 9 9 0 1 1-5-15.4z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <svg class="theme-toggle-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.75" />
+              <path
+                d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M4.9 19.1l1.5-1.5M17.6 6.4l1.5-1.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </header>
     <main class="container">

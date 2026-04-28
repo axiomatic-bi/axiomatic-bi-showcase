@@ -7,46 +7,88 @@ import ReproSteps from "../../components/ReproSteps.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import { withBase } from "../../utils/urls";
 import { fakeStoreLinks } from "../../utils/externalLinks";
-import fakeStoreSalesPageImage from "../../../assets/fake-store-sales-page.webp";
-import fakeStorePbiModelImage from "../../../assets/fake-store-pbi-model.webp";
 import { ExternalLink } from "lucide-react";
 
 const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
+const fakeStorePbiImageModules = import.meta.glob("../../../assets/fake-store-pbi-*.webp", {
+  eager: true,
+  import: "default"
+});
+const fakeStorePbiImageOrder = [
+  "fake-store-pbi-model",
+  "fake-store-pbi-sales",
+  "fake-store-pbi-sales-full-page",
+  "fake-store-pbi-products",
+  "fake-store-pbi-customers",
+  "fake-store-pbi-filters"
+];
+const fakeStorePbiImageAltByName = {
+  "fake-store-pbi-model": "Power BI model view for the Fake Store case study.",
+  "fake-store-pbi-sales": "Power BI sales page for the Fake Store case study.",
+  "fake-store-pbi-sales-full-page": "Power BI full-page sales view for the Fake Store case study.",
+  "fake-store-pbi-products": "Power BI products page for the Fake Store case study.",
+  "fake-store-pbi-customers": "Power BI customers page for the Fake Store case study.",
+  "fake-store-pbi-filters": "Power BI filters page for the Fake Store case study."
+};
+const fakeStoreGalleryImages = Object.entries(fakeStorePbiImageModules)
+  .map(([assetPath, image]) => {
+    const filename = assetPath.split("/").pop() ?? "";
+    const imageName = filename.replace(".webp", "");
+    const alt = fakeStorePbiImageAltByName[imageName] ?? `Power BI ${imageName.replace("fake-store-pbi-", "").replaceAll("-", " ")} screenshot for the Fake Store case study.`;
+    const orderIndex = fakeStorePbiImageOrder.indexOf(imageName);
+
+    return {
+      imageName,
+      image,
+      alt,
+      orderIndex
+    };
+  })
+  .sort((a, b) => {
+    const resolvedA = a.orderIndex === -1 ? Number.MAX_SAFE_INTEGER : a.orderIndex;
+    const resolvedB = b.orderIndex === -1 ? Number.MAX_SAFE_INTEGER : b.orderIndex;
+
+    if (resolvedA === resolvedB) {
+      return a.imageName.localeCompare(b.imageName);
+    }
+
+    return resolvedA - resolvedB;
+  });
+const fakeStoreHeroImage =
+  fakeStoreGalleryImages.find((item) => item.imageName === "fake-store-pbi-sales") ?? fakeStoreGalleryImages[0];
+const fakeStorePreviewImages = fakeStoreGalleryImages.slice(0, 4).map((item) => ({
+  ...item,
+  fullIndex: fakeStoreGalleryImages.findIndex((fullItem) => fullItem.imageName === item.imageName)
+}));
 const fakeStoreTransformationMermaid = `flowchart TB
   subgraph ingestGroup["Ingestion"]
     direction LR
     apiNode["<b>API extraction</b><br/>Products, users, carts via dlt resources"]
     bronzeNode["<b>Bronze load</b><br/>Raw outputs persisted to warehouse tables"]
-    ingestOut[" "]
-    apiNode --> bronzeNode --> ingestOut
+    apiNode --> bronzeNode
   end
   subgraph transformGroup["Transformation"]
     direction LR
-    transformIn[" "]
     silverNode["<b>Silver staging</b><br/>Typed and normalised dbt models"]
     goldNode["<b>Gold star schema</b><br/>Conformed dimensions and fact tables for analytics"]
     martsNode["<b>Mart layer (optional)</b><br/>Derived serving views for consumers"]
-    transformOut[" "]
-    transformIn --> silverNode --> goldNode
+    silverNode --> goldNode
     goldNode -.-> martsNode
-    goldNode --> transformOut
-    martsNode -.-> transformOut
   end
   subgraph consumeGroup["Consumption"]
     direction LR
-    consumeIn[" "]
     consumeNode["<b>Consumption tools</b><br/>Power BI, Tableau, Evidence, Dash, MCP, or other analytics apps"]
-    consumeIn --> consumeNode
   end
-  ingestOut --> transformIn
-  transformOut --> consumeIn
-  style ingestOut fill:transparent,stroke:transparent,color:transparent
-  style transformIn fill:transparent,stroke:transparent,color:transparent
-  style transformOut fill:transparent,stroke:transparent,color:transparent
-  style consumeIn fill:transparent,stroke:transparent,color:transparent`;
+  bronzeNode --> silverNode
+  goldNode --> consumeNode
+  martsNode -.-> consumeNode`;
 
 if (!fakeStoreEntry) {
   throw new Error("Missing case study entry: fake-store");
+}
+
+if (fakeStoreGalleryImages.length === 0) {
+  throw new Error("Missing fake-store gallery assets in assets/fake-store-pbi-*.webp");
 }
 
 const { Content } = await fakeStoreEntry.render();
@@ -71,10 +113,10 @@ const { Content } = await fakeStoreEntry.render();
         <img
           slot="visual"
           class="hero-visual-image"
-          src={fakeStoreSalesPageImage.src}
+          src={fakeStoreHeroImage.image.src}
           alt="Power BI sales dashboard screenshot for the Fake Store case study."
-          width={fakeStoreSalesPageImage.width}
-          height={fakeStoreSalesPageImage.height}
+          width={fakeStoreHeroImage.image.width}
+          height={fakeStoreHeroImage.image.height}
           loading="eager"
           decoding="async"
         />
@@ -141,6 +183,7 @@ const { Content } = await fakeStoreEntry.render();
         Reporting assets are versioned separately from engine runtime code, so BI can evolve independently while
         staying aligned to the same warehouse contract.
       </p>
+      <h3>Power BI</h3>
       <p>
         The PBIX artefact, semantic model assets, and screenshots show how reporting consumes the governed model in
         practice.
@@ -152,28 +195,19 @@ const { Content } = await fakeStoreEntry.render();
       </p>
       <div class="gallery-preview">
         <div class="gallery-grid gallery-grid-4">
-          <button class="gallery-tile" type="button" data-gallery-index="0" aria-label="Open model view screenshot">
-            <img
-              class="gallery-image-cover"
-              src={fakeStorePbiModelImage.src}
-              alt="Power BI model view for the Fake Store case study."
-              width={fakeStorePbiModelImage.width}
-              height={fakeStorePbiModelImage.height}
-              loading="lazy"
-              decoding="async"
-            />
-          </button>
-          <button class="gallery-tile" type="button" data-gallery-index="1" aria-label="Open sales page screenshot">
-            <img
-              class="gallery-image-cover"
-              src={fakeStoreSalesPageImage.src}
-              alt="Power BI sales page for the Fake Store case study."
-              width={fakeStoreSalesPageImage.width}
-              height={fakeStoreSalesPageImage.height}
-              loading="lazy"
-              decoding="async"
-            />
-          </button>
+          {fakeStorePreviewImages.map((item, index) => (
+            <button class="gallery-tile" type="button" data-gallery-index={item.fullIndex} aria-label={`Open screenshot ${index + 1}`}>
+              <img
+                class="gallery-image-cover"
+                src={item.image.src}
+                alt={item.alt}
+                width={item.image.width}
+                height={item.image.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          ))}
         </div>
         <p class="gallery-actions">
           <button class="button button-secondary bi-gallery-open" type="button" data-open-gallery>
@@ -383,6 +417,11 @@ const { Content } = await fakeStoreEntry.render();
 
   .gallery-preview {
     margin-top: 0.5rem;
+    border: 0;
+  }
+
+  :global(.reporting-section .gallery-tile) {
+    border: 0;
   }
 
   .bi-gallery-dialog {

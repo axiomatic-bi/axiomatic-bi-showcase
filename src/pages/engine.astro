@@ -86,7 +86,7 @@ const engineScopeMermaid = `flowchart LR
     </div>
   </div>
 
-  <section>
+  <section class="engine-repro-section">
     <p class="section-label">Quick overview</p>
     <SectionHeading title="At a glance" />
     <div class="glance-grid" role="list" aria-label="Engine overview highlights">
@@ -255,7 +255,7 @@ const engineScopeMermaid = `flowchart LR
   }
 
   .accent-band {
-    background: color-mix(in srgb, var(--background, #050c1a) 88%, #2d1b5a 12%);
+    background: var(--bleed-accent-bg);
   }
 
   .accent-section {
@@ -295,6 +295,10 @@ const engineScopeMermaid = `flowchart LR
 
   .source-narrative-content :global(h3) {
     font-size: clamp(0.94rem, 1.5vw, 1.05rem);
+  }
+
+  .engine-repro-section :global(pre) {
+    border: 0;
   }
 
   .mermaid :global(.cluster rect) {

@@ -4,7 +4,7 @@ import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import { withBase } from "../utils/urls";
 import heroImage from "../../assets/hero-image.webp";
-import fakeStoreSalesPageImage from "../../assets/fake-store-sales-page.webp";
+import fakeStorePbiSalesImage from "../../assets/fake-store-pbi-sales.webp";
 import { ArrowRight, Check, CircleAlert, Layers3 } from "lucide-react";
 
 const primaryCta = {
@@ -174,10 +174,10 @@ const proofLinks = [
         </div>
         <figure class="proof-image">
           <img
-            src={fakeStoreSalesPageImage.src}
+            src={fakeStorePbiSalesImage.src}
             alt="Fake Store sales dashboard page showing order and category level reporting."
-            width={fakeStoreSalesPageImage.width}
-            height={fakeStoreSalesPageImage.height}
+            width={fakeStorePbiSalesImage.width}
+            height={fakeStorePbiSalesImage.height}
             loading="lazy"
             decoding="async"
           />
@@ -242,7 +242,7 @@ const proofLinks = [
   }
 
   .problem-band {
-    background: color-mix(in srgb, var(--background, #050c1a) 90%, #13294d 10%);
+    background: var(--bleed-band-blue);
   }
 
   .problem-band-section {
