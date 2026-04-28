@@ -60,7 +60,7 @@ const fakeStorePreviewImages = fakeStoreGalleryImages.slice(0, 4).map((item) => 
   ...item,
   fullIndex: fakeStoreGalleryImages.findIndex((fullItem) => fullItem.imageName === item.imageName)
 }));
-const fakeStoreTransformationMermaid = `flowchart TB
+const fakeStoreTransformationMermaid = `flowchart LR
   subgraph ingestGroup["Ingestion"]
     direction LR
     apiNode["<b>API extraction</b><br/>Products, users, carts via dlt resources"]
@@ -325,7 +325,9 @@ const { Content } = await fakeStoreEntry.render();
   }
 
   .glance-card {
-    background: color-mix(in srgb, var(--surface, #111723) 86%, transparent);
+    background: var(--surface-on-bleed);
+    border: 0;
+    box-shadow: var(--surface-on-bleed-shadow);
     border-radius: var(--radius-md);
     padding: 0.8rem 0.85rem;
   }
@@ -337,7 +339,7 @@ const { Content } = await fakeStoreEntry.render();
 
   .glance-card p {
     margin: 0;
-    color: var(--text-soft);
+    color: var(--text-muted);
     font-size: 0.9rem;
   }
 
@@ -417,17 +419,18 @@ const { Content } = await fakeStoreEntry.render();
 
   .gallery-preview {
     margin-top: 0.5rem;
-    border: 0;
   }
 
   :global(.reporting-section .gallery-tile) {
     border: 0;
+    background: var(--surface-on-bleed-soft);
   }
 
   .bi-gallery-dialog {
     width: min(92vw, 1100px);
+    border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--surface, #111723) 96%, #000);
+    background: var(--modal-bg);
     color: var(--text);
     padding: 0.9rem;
   }
@@ -446,7 +449,7 @@ const { Content } = await fakeStoreEntry.render();
     margin: 0;
     min-height: min(70vh, 760px);
     border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--surface, #111723) 88%, transparent);
+    background: var(--modal-content-bg);
     display: grid;
     place-items: center;
     padding: 0.85rem;
@@ -473,14 +476,6 @@ const { Content } = await fakeStoreEntry.render();
     display: flex;
     justify-content: center;
     gap: 0.6rem;
-  }
-
-  .mermaid {
-    padding-top: 0.9rem;
-  }
-
-  .mermaid :global(svg) {
-    overflow: visible;
   }
 
   @media (min-width: 64rem) {

@@ -16,43 +16,19 @@ if (!engineEntry) {
   throw new Error("Engine overview entry not found.");
 }
 const { Content } = await engineEntry.render();
-const engineArchitectureMermaid = `flowchart LR
-  sourceNode["<b>Source protocols</b><br/>Typed source contracts expose extraction resources"] --> ingestNode["<b>Ingestion stage</b><br/>dlt orchestration handles extraction and load execution"]
-  ingestNode --> warehouseNode["<b>Warehouse adapter</b><br/>Backend-specific load behaviour remains isolated"]
-  warehouseNode --> transformNode["<b>Transformation adapter</b><br/>dbt execution applies model contracts and quality checks"]`;
+const engineArchitectureMermaid = `%%{init: {'flowchart': {'htmlLabels': true}} }%%
+flowchart LR
+  sourceNode["<div style='width:17rem; text-align:center;'><b>Source protocols</b><div style='margin-top:0.5rem;'>Typed source contracts expose extraction resources</div></div>"] --> ingestNode["<div style='width:17rem; text-align:center;'><b>Ingestion stage</b><div style='margin-top:0.5rem;'>dlt orchestration handles extraction and load execution</div></div>"]
+  ingestNode --> warehouseNode["<div style='width:17rem; text-align:center;'><b>Warehouse adapter</b><div style='margin-top:0.5rem;'>Backend-specific load behaviour remains isolated</div></div>"]
+  warehouseNode --> transformNode["<div style='width:17rem; text-align:center;'><b>Transformation adapter</b><div style='margin-top:0.5rem;'>dbt execution applies model contracts and quality checks</div></div>"]
+  transformNode -. planned .-> semanticNode["<div style='width:17rem; text-align:center;'><b>Semantic translator (planned)</b><div style='margin-top:0.5rem;'>Converts dbt semantic definitions for MCP consumption</div></div>"]`;
 
-const engineScopeMermaid = `flowchart LR
-  subgraph sourceGroup["Sources currently supported"]
-    direction TB
-    restNode["REST API source"]
-    fileNode["File source"]
-  end
-
-  subgraph storageGroup["Storage currently supported"]
-    direction TB
-    dltNode["dlt-managed landing/load"]
-  end
-
-  subgraph warehouseGroup["Warehouses currently supported"]
-    direction TB
-    duckdbNode["DuckDB"]
-    motherduckNode["MotherDuck"]
-  end
-
-  subgraph plannedGroup["Planned extensions"]
-    direction TB
-    s3Node["S3 storage"]
-    gcsNode["GCS storage"]
-    bigqueryNode["BigQuery warehouse"]
-  end
-
-  restNode --> dltNode
-  fileNode --> dltNode
-  dltNode --> duckdbNode
-  dltNode --> motherduckNode
-  dltNode -. planned .-> s3Node
-  dltNode -. planned .-> gcsNode
-  dltNode -. planned .-> bigqueryNode`;
+const engineScopeMermaid = `%%{init: {'flowchart': {'htmlLabels': true}} }%%
+flowchart LR
+  sourceNode["<div style='width:18rem; text-align:center;'><b>Sources</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• REST API<br/>• File source<br/><br/><b>Upcoming:</b><br/>• None</div>"]
+  storageNode["<div style='width:18rem; text-align:center;'><b>Storage</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• Local storage<br/><br/><b>Upcoming:</b><br/>• S3<br/>• GCS<br/>• S3-compatible</div>"]
+  warehouseNode["<div style='width:18rem; text-align:center;'><b>Warehouse</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• DuckDB<br/>• MotherDuck<br/><br/><b>Upcoming:</b><br/>• BigQuery</div>"]
+  sourceNode --> storageNode --> warehouseNode`;
 ---
 
 <BaseLayout
@@ -86,18 +62,20 @@ const engineScopeMermaid = `flowchart LR
     </div>
   </div>
 
-  <section class="engine-repro-section">
-    <p class="section-label">Quick overview</p>
-    <SectionHeading title="At a glance" />
-    <div class="glance-grid" role="list" aria-label="Engine overview highlights">
-      {engineEntry.data.highlights.map((item) => (
-        <article class="glance-card" role="listitem">
-          <h3>{item.title}</h3>
-          <p>{item.body}</p>
-        </article>
-      ))}
-    </div>
-  </section>
+  <div class="full-bleed tonal-band engine-repro-band">
+    <section class="band-inner engine-repro-section">
+      <p class="section-label">Quick overview</p>
+      <SectionHeading title="At a glance" />
+      <div class="glance-grid" role="list" aria-label="Engine overview highlights">
+        {engineEntry.data.highlights.map((item) => (
+          <article class="glance-card" role="listitem">
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
 
   <section>
     <p class="section-label">Context</p>
@@ -139,13 +117,23 @@ const engineScopeMermaid = `flowchart LR
     ))}
   </section>
 
-  <div class="full-bleed">
+  <div class="full-bleed tonal-band">
     <section class="band-inner band-inner-wide engine-scope-section">
       <p class="section-label">Delivery scope</p>
       <SectionHeading title="Implemented scope and declared extensions">
         <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
       </SectionHeading>
       <p>{engineEntry.data.scopeSummary}</p>
+      <p>
+        <strong>Phase 1 roadmap:</strong> S3, GCS, S3-compatible storage, and BigQuery.
+      </p>
+      <p>
+        <strong>Phase 2 roadmap:</strong> GraphQL API, SQL source, vendor REST connectors, PostgreSQL, Snowflake, and
+        Redshift.
+      </p>
+      <p> 
+        <strong>Phase 3 roadmap:</strong> SharePoint, OneDrive, Fabric, Databricks, and Azure Blob/ADLS.
+      </p>
       <div class="mermaid">{engineScopeMermaid}</div>
     </section>
   </div>
@@ -238,7 +226,8 @@ const engineScopeMermaid = `flowchart LR
   }
 
   .glance-card {
-    background: color-mix(in srgb, var(--surface, #111723) 86%, transparent);
+    background: var(--surface-on-bleed);
+    box-shadow: var(--surface-on-bleed-shadow);
     border-radius: var(--radius-md);
     padding: 0.8rem 0.85rem;
   }
@@ -252,6 +241,10 @@ const engineScopeMermaid = `flowchart LR
     margin: 0;
     color: var(--text-soft);
     font-size: 0.9rem;
+  }
+
+  .engine-repro-band {
+    background: var(--bleed-band-blue);
   }
 
   .accent-band {
@@ -299,11 +292,6 @@ const engineScopeMermaid = `flowchart LR
 
   .engine-repro-section :global(pre) {
     border: 0;
-  }
-
-  .mermaid :global(.cluster rect) {
-    stroke: none !important;
-    stroke-width: 0 !important;
   }
 
   @media (max-width: 680px) {

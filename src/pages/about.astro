@@ -36,7 +36,7 @@ const { Content } = await cvEntry.render();
     </div>
   </div>
 
-  <div class="full-bleed cv-focus-band">
+  <div class="full-bleed tonal-band">
     <section class="band-inner band-inner-wide cv-focus-section">
       <SectionHeading title="Focus areas">
         <FileText slot="icon" size={18} strokeWidth={2} />
@@ -80,10 +80,6 @@ const { Content } = await cvEntry.render();
     margin: 0 0 0.9rem;
   }
 
-  .cv-focus-band {
-    background: var(--bleed-band-blue);
-  }
-
   .cv-focus-section {
     margin-bottom: 0;
     padding-top: clamp(2.4rem, 4vw, 3.4rem);
@@ -98,7 +94,8 @@ const { Content } = await cvEntry.render();
 
   .cv-focus-card {
     border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--surface, #111723) 84%, transparent);
+    background: var(--surface-on-bleed);
+    box-shadow: var(--surface-on-bleed-shadow);
     padding: 0.8rem 0.9rem;
     color: var(--text-muted);
   }
@@ -117,7 +114,8 @@ const { Content } = await cvEntry.render();
 
   .cv-skill-card {
     border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--surface, #111723) 84%, transparent);
+    background: var(--surface-on-bleed);
+    box-shadow: var(--surface-on-bleed-shadow);
     padding: 0.8rem 0.9rem;
   }
 

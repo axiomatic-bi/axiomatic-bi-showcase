@@ -60,25 +60,49 @@ function isActive(href: string): boolean {
     <style>
       :root {
         color-scheme: dark light;
-        --bg: #080b11;
-        --surface: #111723;
-        --surface-soft: #161d2b;
-        --surface-subtle: #1b2436;
-        --border: #2a344a;
-        --border-strong: #3b4966;
-        --bleed-accent-bg: color-mix(in srgb, var(--bg) 50%, var(--border) 36%);
-        --bleed-band-blue: color-mix(in srgb, var(--bg) 88%, var(--surface) 12%);
+        --bg: #060a14;
+        --surface: #141f34;
+        --surface-soft: #1a2740;
+        --surface-subtle: #20304e;
+        --border: #32466d;
+        --border-strong: #45608f;
+        --bleed-accent-bg:
+          linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--bg) 72%, var(--accent) 28%) 0%,
+            color-mix(in srgb, var(--bg) 78%, var(--accent-purple) 22%) 100%
+          );
+        --bleed-band-blue: color-mix(in srgb, var(--bg) 70%, #214887 30%);
         --hero-scene-bg:
-          radial-gradient(circle at 15% 20%, rgba(123, 141, 255, 0.22), transparent 40%),
-          radial-gradient(circle at 85% 5%, rgba(123, 141, 255, 0.18), transparent 32%),
-          linear-gradient(180deg, #0b1220 0%, #0a0f1b 60%, #090d17 100%);
-        --text: #e8edf7;
-        --text-muted: #b9c4d8;
-        --text-soft: #96a4c0;
-        --accent: #7b8dff;
-        --accent-strong: #96a5ff;
-        --accent-soft: rgba(123, 141, 255, 0.18);
+          radial-gradient(circle at 14% 18%, rgba(87, 104, 255, 0.62), transparent 50%),
+          radial-gradient(circle at 86% 8%, rgba(156, 114, 255, 0.62), transparent 48%),
+          radial-gradient(circle at 62% -8%, rgba(156, 114, 255, 0.36), transparent 52%),
+          linear-gradient(180deg, #263f8f 0%, #1b3270 46%, #060a14 100%);
+        --text: #f0f4ff;
+        --text-muted: #c0ccec;
+        --text-soft: #9fb1d8;
+        --accent: #5768ff;
+        --accent-strong: #8e75ff;
+        --accent-purple: #9c72ff;
+        --accent-soft: rgba(87, 104, 255, 0.24);
         --accent-contrast: #ffffff;
+        --surface-on-bleed: color-mix(in srgb, var(--surface) 76%, var(--accent-purple) 24%);
+        --surface-on-bleed-soft: color-mix(in srgb, var(--surface-soft) 68%, var(--accent-purple) 32%);
+        --surface-on-bleed-shadow: none;
+        --mermaid-wrapper-bg: color-mix(in srgb, var(--surface) 86%, transparent);
+        --mermaid-wrapper-border: color-mix(in srgb, var(--border) 64%, transparent);
+        --mermaid-wrapper-shadow: none;
+        --mermaid-node-fill: color-mix(in srgb, var(--surface-on-bleed) 78%, var(--surface-soft) 22%);
+        --mermaid-connector: #9cb0d1;
+        --mermaid-text: #e6edf7;
+        --mermaid-heading-text: #f4f7ff;
+        --mermaid-text-size: 0.86rem;
+        --mermaid-text-weight: 500;
+        --mermaid-group-label-size: 0.98rem;
+        --mermaid-connector-width: 1.9px;
+        --mermaid-cluster-bg: color-mix(in srgb, var(--mermaid-wrapper-bg) 58%, var(--mermaid-node-fill) 42%);
+        --modal-bg: color-mix(in srgb, #0f1b34 62%, var(--bg) 38%);
+        --modal-content-bg: color-mix(in srgb, #16284d 64%, var(--surface) 36%);
         --radius-sm: 10px;
         --radius-md: 14px;
         --radius-lg: 18px;
@@ -102,70 +126,142 @@ function isActive(href: string): boolean {
       }
       @media (prefers-color-scheme: light) {
         :root {
-          --bg: #f4f6fb;
+          --bg: #f2f5ff;
           --surface: #ffffff;
-          --surface-soft: #f9faff;
-          --surface-subtle: #eef2fd;
-          --border: #d5ddf0;
-          --border-strong: #bec9e3;
-          --text: #111a2e;
-          --text-muted: #3a4864;
-          --text-soft: #5a6783;
-          --accent: #4f5ffd;
-          --accent-strong: #3b4cf8;
-          --accent-soft: rgba(79, 95, 253, 0.12);
+          --surface-soft: #f4f7ff;
+          --surface-subtle: #e9efff;
+          --border: #c8d5f2;
+          --border-strong: #afc1e8;
+          --text: #0f1b36;
+          --text-muted: #3a4f77;
+          --text-soft: #556c98;
+          --accent: #3f55ff;
+          --accent-strong: #5a3ff2;
+          --accent-purple: #7a4dff;
+          --accent-soft: rgba(63, 85, 255, 0.16);
           --accent-contrast: #ffffff;
-          --bleed-accent-bg: color-mix(in srgb, #dce7fb 60%, var(--border) 40%);
-          --bleed-band-blue: color-mix(in srgb, #edf2fb 86%, #dbe6fb 14%);
+          --bleed-accent-bg:
+            linear-gradient(
+              180deg,
+              color-mix(in srgb, #ffffff 81%, var(--accent) 19%) 0%,
+              color-mix(in srgb, #ffffff 85%, var(--accent-purple) 15%) 100%
+            );
+          --bleed-band-blue: color-mix(in srgb, #eff4ff 62%, #dce7ff 38%);
           --hero-scene-bg:
-            radial-gradient(circle at 15% 18%, rgba(79, 95, 253, 0.16), transparent 38%),
-            radial-gradient(circle at 88% 8%, rgba(79, 95, 253, 0.1), transparent 34%),
-            linear-gradient(180deg, #f7faff 0%, #eef4ff 58%, #e8f0ff 100%);
+            radial-gradient(circle at 14% 18%, rgba(87, 104, 255, 0.62), transparent 50%),
+            radial-gradient(circle at 86% 8%, rgba(156, 114, 255, 0.62), transparent 48%),
+            radial-gradient(circle at 62% -8%, rgba(156, 114, 255, 0.36), transparent 52%),
+            linear-gradient(180deg, #203a86 0%, #4662b1 48%, #dfe8ff 100%);
+          --surface-on-bleed: color-mix(in srgb, #ffffff 82%, #d1deff 18%);
+          --surface-on-bleed-soft: color-mix(in srgb, #f8faff 74%, #cfddff 26%);
+          --surface-on-bleed-shadow: none;
+          --mermaid-wrapper-bg: color-mix(in srgb, #ffffff 92%, #e8eeff 8%);
+          --mermaid-wrapper-border: color-mix(in srgb, var(--border) 68%, transparent);
+          --mermaid-wrapper-shadow: none;
+          --mermaid-node-fill: color-mix(in srgb, #e3eaff 82%, #c9d7ff 18%);
+          --mermaid-connector: #4a5d8d;
+          --mermaid-text: #0f1b36;
+          --mermaid-heading-text: #0f1b36;
+          --mermaid-text-size: 0.84rem;
+          --mermaid-text-weight: 500;
+          --mermaid-group-label-size: 0.94rem;
+          --mermaid-connector-width: 1.8px;
+          --mermaid-cluster-bg: color-mix(in srgb, #eef4ff 82%, #d8e3ff 18%);
+          --modal-bg: #edf1f7;
+          --modal-content-bg: #f5f7fb;
           --shadow-soft: 0 16px 30px rgba(48, 64, 109, 0.12);
         }
       }
       :root[data-theme="dark"] {
-        --bg: #080b11;
-        --surface: #111723;
-        --surface-soft: #161d2b;
-        --surface-subtle: #1b2436;
-        --border: #2a344a;
-        --border-strong: #3b4966;
-        --bleed-accent-bg: color-mix(in srgb, var(--bg) 64%, var(--border) 36%);
-        --bleed-band-blue: color-mix(in srgb, var(--bg) 88%, #10213f 12%);
+        --bg: #060a14;
+        --surface: #141f34;
+        --surface-soft: #1a2740;
+        --surface-subtle: #20304e;
+        --border: #32466d;
+        --border-strong: #45608f;
+        --bleed-accent-bg:
+          linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--bg) 72%, var(--accent) 28%) 0%,
+            color-mix(in srgb, var(--bg) 78%, var(--accent-purple) 22%) 100%
+          );
+        --bleed-band-blue: color-mix(in srgb, var(--bg) 76%, #214887 24%);
         --hero-scene-bg:
-          radial-gradient(circle at 15% 20%, rgba(123, 141, 255, 0.22), transparent 40%),
-          radial-gradient(circle at 85% 5%, rgba(123, 141, 255, 0.18), transparent 32%),
-          linear-gradient(180deg, #0b1220 0%, #0a0f1b 60%, #090d17 100%);
-        --text: #e8edf7;
-        --text-muted: #b9c4d8;
-        --text-soft: #96a4c0;
-        --accent: #7b8dff;
-        --accent-strong: #96a5ff;
-        --accent-soft: rgba(123, 141, 255, 0.18);
+          radial-gradient(circle at 14% 18%, rgba(87, 104, 255, 0.62), transparent 50%),
+          radial-gradient(circle at 86% 8%, rgba(156, 114, 255, 0.62), transparent 48%),
+          radial-gradient(circle at 62% -8%, rgba(156, 114, 255, 0.36), transparent 52%),
+          linear-gradient(180deg, #263f8f 0%, #1b3270 46%, #060a14 100%);
+        --text: #f0f4ff;
+        --text-muted: #c0ccec;
+        --text-soft: #9fb1d8;
+        --accent: #5768ff;
+        --accent-strong: #8e75ff;
+        --accent-purple: #9c72ff;
+        --accent-soft: rgba(87, 104, 255, 0.24);
         --accent-contrast: #ffffff;
+        --surface-on-bleed: color-mix(in srgb, var(--surface) 76%, var(--accent-purple) 24%);
+        --surface-on-bleed-soft: color-mix(in srgb, var(--surface-soft) 68%, var(--accent-purple) 32%);
+        --surface-on-bleed-shadow: none;
+        --mermaid-wrapper-bg: color-mix(in srgb, var(--surface) 86%, transparent);
+        --mermaid-wrapper-border: color-mix(in srgb, var(--border) 64%, transparent);
+        --mermaid-wrapper-shadow: none;
+        --mermaid-node-fill: color-mix(in srgb, var(--surface-on-bleed) 78%, var(--surface-soft) 22%);
+        --mermaid-connector: #9cb0d1;
+        --mermaid-text: #e6edf7;
+        --mermaid-heading-text: #f4f7ff;
+        --mermaid-text-size: 0.86rem;
+        --mermaid-text-weight: 500;
+        --mermaid-group-label-size: 0.98rem;
+        --mermaid-connector-width: 1.9px;
+        --mermaid-cluster-bg: color-mix(in srgb, var(--mermaid-wrapper-bg) 58%, var(--mermaid-node-fill) 42%);
+        --modal-bg: color-mix(in srgb, #0f1b34 62%, var(--bg) 38%);
+        --modal-content-bg: color-mix(in srgb, #16284d 64%, var(--surface) 36%);
         --shadow-soft: 0 18px 34px rgba(2, 8, 20, 0.38);
       }
       :root[data-theme="light"] {
-        --bg: #f4f6fb;
+        --bg: #f2f5ff;
         --surface: #ffffff;
-        --surface-soft: #f9faff;
-        --surface-subtle: #eef2fd;
-        --border: #d5ddf0;
-        --border-strong: #bec9e3;
-        --bleed-accent-bg: color-mix(in srgb, #dce7fb 60%, var(--border) 40%);
-        --bleed-band-blue: color-mix(in srgb, #edf2fb 86%, #dbe6fb 14%);
+        --surface-soft: #f4f7ff;
+        --surface-subtle: #e9efff;
+        --border: #c8d5f2;
+        --border-strong: #afc1e8;
+        --bleed-accent-bg:
+          linear-gradient(
+            180deg,
+            color-mix(in srgb, #ffffff 81%, var(--accent) 19%) 0%,
+            color-mix(in srgb, #ffffff 85%, var(--accent-purple) 15%) 100%
+          );
+        --bleed-band-blue: color-mix(in srgb, #eff4ff 62%, #dce7ff 38%);
         --hero-scene-bg:
-          radial-gradient(circle at 15% 18%, rgba(79, 95, 253, 0.16), transparent 38%),
-          radial-gradient(circle at 88% 8%, rgba(79, 95, 253, 0.1), transparent 34%),
-          linear-gradient(180deg, #f7faff 0%, #eef4ff 58%, #e8f0ff 100%);
-        --text: #111a2e;
-        --text-muted: #3a4864;
-        --text-soft: #5a6783;
-        --accent: #4f5ffd;
-        --accent-strong: #3b4cf8;
-        --accent-soft: rgba(79, 95, 253, 0.12);
+          radial-gradient(circle at 14% 18%, rgba(87, 104, 255, 0.62), transparent 50%),
+          radial-gradient(circle at 86% 8%, rgba(156, 114, 255, 0.62), transparent 48%),
+          radial-gradient(circle at 62% -8%, rgba(156, 114, 255, 0.36), transparent 52%),
+          linear-gradient(180deg, #203a86 0%, #4662b1 48%, #dfe8ff 100%);
+        --text: #0f1b36;
+        --text-muted: #3a4f77;
+        --text-soft: #556c98;
+        --accent: #3f55ff;
+        --accent-strong: #5a3ff2;
+        --accent-purple: #7a4dff;
+        --accent-soft: rgba(63, 85, 255, 0.16);
         --accent-contrast: #ffffff;
+        --surface-on-bleed: color-mix(in srgb, #ffffff 82%, #d1deff 18%);
+        --surface-on-bleed-soft: color-mix(in srgb, #f8faff 74%, #cfddff 26%);
+        --surface-on-bleed-shadow: none;
+        --mermaid-wrapper-bg: color-mix(in srgb, #ffffff 92%, #e8eeff 8%);
+        --mermaid-wrapper-border: color-mix(in srgb, var(--border) 68%, transparent);
+        --mermaid-wrapper-shadow: none;
+        --mermaid-node-fill: color-mix(in srgb, #e3eaff 82%, #c9d7ff 18%);
+        --mermaid-connector: #4a5d8d;
+        --mermaid-text: #0f1b36;
+        --mermaid-heading-text: #0f1b36;
+        --mermaid-text-size: 0.84rem;
+        --mermaid-text-weight: 500;
+        --mermaid-group-label-size: 0.94rem;
+        --mermaid-connector-width: 1.8px;
+        --mermaid-cluster-bg: color-mix(in srgb, #eef4ff 82%, #d8e3ff 18%);
+        --modal-bg: #edf1f7;
+        --modal-content-bg: #f5f7fb;
         --shadow-soft: 0 16px 30px rgba(48, 64, 109, 0.12);
       }
       * {
@@ -398,6 +494,36 @@ function isActive(href: string): boolean {
       :global(.page-header-copy p) {
         max-width: 55ch;
       }
+      :root[data-theme="light"] :global(.hero-scene .page-header h1) {
+        color: #f4f7ff;
+      }
+      :root[data-theme="light"] :global(.hero-scene .page-header-copy p),
+      :root[data-theme="light"] :global(.hero-scene .section-label),
+      :root[data-theme="light"] :global(.hero-scene .hero-proofline),
+      :root[data-theme="light"] :global(.hero-scene .page-breadcrumbs li),
+      :root[data-theme="light"] :global(.hero-scene .page-breadcrumbs a),
+      :root[data-theme="light"] :global(.hero-scene .page-breadcrumbs li:last-child span) {
+        color: #dfe8ff;
+      }
+      :root[data-theme="light"] :global(.hero-scene .page-breadcrumbs li + li::before) {
+        color: color-mix(in srgb, #dfe8ff 76%, transparent);
+      }
+      @media (prefers-color-scheme: light) {
+        :root:not([data-theme="dark"]) :global(.hero-scene .page-header h1) {
+          color: #f4f7ff;
+        }
+        :root:not([data-theme="dark"]) :global(.hero-scene .page-header-copy p),
+        :root:not([data-theme="dark"]) :global(.hero-scene .section-label),
+        :root:not([data-theme="dark"]) :global(.hero-scene .hero-proofline),
+        :root:not([data-theme="dark"]) :global(.hero-scene .page-breadcrumbs li),
+        :root:not([data-theme="dark"]) :global(.hero-scene .page-breadcrumbs a),
+        :root:not([data-theme="dark"]) :global(.hero-scene .page-breadcrumbs li:last-child span) {
+          color: #dfe8ff;
+        }
+        :root:not([data-theme="dark"]) :global(.hero-scene .page-breadcrumbs li + li::before) {
+          color: color-mix(in srgb, #dfe8ff 76%, transparent);
+        }
+      }
       :global(.page-header-visual) {
         display: flex;
         justify-content: flex-end;
@@ -487,6 +613,22 @@ function isActive(href: string): boolean {
       :global(.page-breadcrumbs li:last-child span) {
         color: var(--text);
         font-weight: 600;
+      }
+      :root[data-theme="light"] :global(.page-breadcrumbs li),
+      :root[data-theme="light"] :global(.page-breadcrumbs a) {
+        color: color-mix(in srgb, var(--text) 84%, var(--text-muted));
+      }
+      :root[data-theme="light"] :global(.page-breadcrumbs li + li::before) {
+        color: color-mix(in srgb, var(--text) 62%, transparent);
+      }
+      @media (prefers-color-scheme: light) {
+        :root:not([data-theme="dark"]) :global(.page-breadcrumbs li),
+        :root:not([data-theme="dark"]) :global(.page-breadcrumbs a) {
+          color: color-mix(in srgb, var(--text) 84%, var(--text-muted));
+        }
+        :root:not([data-theme="dark"]) :global(.page-breadcrumbs li + li::before) {
+          color: color-mix(in srgb, var(--text) 62%, transparent);
+        }
       }
       :global(.section-label) {
         margin: 0 0 var(--space-2);
@@ -596,7 +738,7 @@ function isActive(href: string): boolean {
         padding: 0.35rem 0.7rem;
         border-radius: 999px;
         border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
-        background: transparent;
+        background: color-mix(in srgb, var(--surface-on-bleed-soft) 72%, transparent);
         color: var(--text-muted);
         font-size: 0.82rem;
         font-weight: 500;
@@ -613,10 +755,11 @@ function isActive(href: string): boolean {
         padding: var(--space-5);
         border-radius: var(--radius-md);
         border: 0;
-        background: color-mix(in srgb, var(--surface) 82%, transparent);
+        background: var(--surface-on-bleed);
+        box-shadow: var(--surface-on-bleed-shadow);
       }
       :global(.problem-card-featured) {
-        background: color-mix(in srgb, var(--surface) 78%, var(--accent-soft));
+        background: color-mix(in srgb, var(--surface-on-bleed) 68%, var(--accent-soft));
       }
       :global(.problem-icon) {
         display: inline-flex;
@@ -643,10 +786,11 @@ function isActive(href: string): boolean {
         padding: var(--space-5);
         border-radius: var(--radius-md);
         border: 0;
-        background: color-mix(in srgb, var(--surface) 76%, transparent);
+        background: var(--surface-on-bleed);
+        box-shadow: var(--surface-on-bleed-shadow);
       }
       :global(.outcome-card-featured) {
-        background: color-mix(in srgb, var(--surface) 72%, var(--accent-soft));
+        background: color-mix(in srgb, var(--surface-on-bleed) 64%, var(--accent-soft));
       }
       :global(.deliverable-tags) {
         list-style: none;
@@ -685,7 +829,8 @@ function isActive(href: string): boolean {
         padding: var(--space-5);
         border-radius: var(--radius-md);
         border: 0;
-        background: color-mix(in srgb, var(--surface) 82%, transparent);
+        background: var(--surface-on-bleed);
+        box-shadow: var(--surface-on-bleed-shadow);
       }
       :global(.case-preview-grid) {
         display: grid;
@@ -696,7 +841,8 @@ function isActive(href: string): boolean {
         padding: var(--space-5);
         border-radius: var(--radius-md);
         border: 0;
-        background: color-mix(in srgb, var(--surface) 84%, transparent);
+        background: var(--surface-on-bleed);
+        box-shadow: var(--surface-on-bleed-shadow);
       }
       :global(.case-preview-list) {
         margin: 0 0 var(--space-4);
@@ -756,9 +902,9 @@ function isActive(href: string): boolean {
       :global(.reporting-visual) {
         border: 0;
         border-radius: var(--radius-md);
-        background: color-mix(in srgb, var(--surface) 84%, transparent);
+        background: var(--surface-on-bleed);
         padding: var(--space-4);
-        box-shadow: var(--shadow-soft);
+        box-shadow: var(--surface-on-bleed-shadow);
       }
       :global(.report-header-bar) {
         height: 0.7rem;
@@ -774,14 +920,14 @@ function isActive(href: string): boolean {
       }
       :global(.report-panel) {
         min-height: 88px;
-        border: 1px solid var(--border);
+        border: 0;
         border-radius: var(--radius-sm);
-        background: var(--surface-soft);
+        background: var(--surface-on-bleed-soft);
       }
       :global(.report-panel-large) {
         grid-column: 1 / -1;
         min-height: 148px;
-        background: color-mix(in srgb, var(--surface-soft) 80%, var(--accent-soft));
+        background: color-mix(in srgb, var(--surface-on-bleed-soft) 72%, var(--accent-soft));
       }
       :global(.reporting-callouts) {
         display: grid;
@@ -790,8 +936,9 @@ function isActive(href: string): boolean {
       :global(.reporting-note) {
         border: 0;
         border-radius: var(--radius-md);
-        background: color-mix(in srgb, var(--surface) 82%, transparent);
+        background: var(--surface-on-bleed);
         padding: var(--space-5);
+        box-shadow: var(--surface-on-bleed-shadow);
       }
       :global(.process-band) {
         background: var(--bleed-band-blue);
@@ -850,10 +997,11 @@ function isActive(href: string): boolean {
         gap: var(--space-3);
       }
       :global(.icon-card) {
-        background: color-mix(in srgb, var(--surface) 84%, transparent);
-        border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+        background: var(--surface-on-bleed);
+        border: 0;
         border-radius: var(--radius-md);
         padding: var(--space-4);
+        box-shadow: var(--surface-on-bleed-shadow);
       }
       :global(.icon-card-icon) {
         display: inline-flex;
@@ -916,8 +1064,8 @@ function isActive(href: string): boolean {
         border-color: color-mix(in srgb, var(--accent) 46%, var(--border));
       }
       :global(.button-primary:hover) {
-        background: color-mix(in srgb, var(--accent) 72%, #ffffff 28%);
-        color: #0b1020;
+        background: color-mix(in srgb, var(--accent) 82%, var(--accent-purple) 18%);
+        color: var(--accent-contrast);
       }
       :global(.button:focus-visible) {
         outline: 2px solid var(--accent);
@@ -929,12 +1077,13 @@ function isActive(href: string): boolean {
         border-color: color-mix(in srgb, var(--accent) 62%, var(--border));
       }
       :global(.gallery-preview) {
-        border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+        border: 0;
         border-radius: var(--radius-md);
-        background: color-mix(in srgb, var(--surface) 84%, transparent);
+        background: var(--surface-on-bleed);
         padding: var(--space-3);
         display: grid;
         gap: var(--space-3);
+        box-shadow: var(--surface-on-bleed-shadow);
       }
       :global(.gallery-grid) {
         display: grid;
@@ -975,17 +1124,27 @@ function isActive(href: string): boolean {
         display: flex;
         justify-content: flex-end;
       }
-      .mermaid {
-        background: color-mix(in srgb, var(--surface) 85%, transparent);
-        border: 1px solid color-mix(in srgb, var(--border) 66%, transparent);
+      :global(.mermaid) {
+        display: block;
+        width: 100%;
+        background: var(--mermaid-wrapper-bg);
+        border: 1px solid var(--mermaid-wrapper-border);
+        box-shadow: var(--mermaid-wrapper-shadow);
         border-radius: var(--radius-md);
         padding: var(--space-4);
         margin-top: 0;
         overflow-x: auto;
+        text-align: center;
+        cursor: zoom-in;
       }
       :global(.mermaid svg) {
         max-width: 100%;
+        min-width: 0;
+        width: auto;
         height: auto;
+        overflow: visible;
+        margin-inline: auto;
+        display: block;
       }
       :global(.mermaid .node rect),
       :global(.mermaid .node polygon),
@@ -993,6 +1152,92 @@ function isActive(href: string): boolean {
       :global(.mermaid .cluster rect) {
         rx: 10px;
         ry: 10px;
+        stroke: none !important;
+        stroke-width: 0 !important;
+      }
+      :global(.mermaid .node rect),
+      :global(.mermaid .node polygon),
+      :global(.mermaid .node path),
+      :global(.mermaid .node circle),
+      :global(.mermaid .node ellipse) {
+        fill: var(--mermaid-node-fill) !important;
+      }
+      :global(.mermaid .cluster rect) {
+        fill: var(--mermaid-cluster-bg) !important;
+      }
+      :global(.mermaid .edgePath .path),
+      :global(.mermaid .flowchart-link) {
+        stroke: var(--mermaid-connector) !important;
+        fill: none !important;
+        stroke-width: var(--mermaid-connector-width) !important;
+      }
+      :global(.mermaid .arrowheadPath),
+      :global(.mermaid marker path) {
+        stroke: none !important;
+        fill: var(--mermaid-connector) !important;
+      }
+      :global(.mermaid .label),
+      :global(.mermaid text),
+      :global(.mermaid .nodeLabel),
+      :global(.mermaid .edgeLabel) {
+        color: var(--mermaid-text) !important;
+        fill: var(--mermaid-text) !important;
+        font-family: Inter, "Segoe UI", Arial, sans-serif !important;
+        font-size: var(--mermaid-text-size) !important;
+        font-weight: var(--mermaid-text-weight) !important;
+      }
+      :global(.mermaid .cluster-label),
+      :global(.mermaid .cluster-label text),
+      :global(.mermaid .cluster-label tspan) {
+        color: var(--mermaid-text) !important;
+        fill: var(--mermaid-text) !important;
+        font-family: Inter, "Segoe UI", Arial, sans-serif !important;
+        font-size: var(--mermaid-group-label-size) !important;
+        font-weight: 600 !important;
+      }
+      :global(dialog.mermaid-lightbox) {
+        width: min(96vw, 1600px);
+        max-height: 92vh;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--modal-bg);
+        color: var(--text);
+        padding: var(--space-4);
+      }
+      :global(dialog.mermaid-lightbox::backdrop) {
+        background: color-mix(in srgb, #000 72%, transparent);
+      }
+      :global(.mermaid-lightbox-header) {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0 0 var(--space-3);
+      }
+      :global(.mermaid-lightbox-content) {
+        overflow: auto;
+        max-height: calc(92vh - 5rem);
+        border-radius: var(--radius-sm);
+        padding: var(--space-2);
+        background: var(--modal-content-bg);
+      }
+      :global(.mermaid-lightbox-content .mermaid) {
+        width: max-content;
+        min-width: 100%;
+        margin: 0 auto;
+      }
+      :global(.mermaid-lightbox-content .mermaid svg) {
+        width: max-content;
+        min-width: 100%;
+        height: auto;
+        display: block;
+        overflow: visible;
+        margin: 0 auto;
+      }
+      :global(.mermaid .nodeLabel tspan:first-child),
+      :global(.mermaid .edgeLabel tspan:first-child),
+      :global(.mermaid .label tspan:first-child) {
+        fill: var(--mermaid-heading-text) !important;
+        color: var(--mermaid-heading-text) !important;
+        font-weight: 700 !important;
       }
       .site-footer {
         border-top: 1px solid var(--border);
@@ -1094,11 +1339,13 @@ function isActive(href: string): boolean {
               primaryColor: "#162136",
               secondaryColor: "#111a2c",
               tertiaryColor: "#0b1220",
+              clusterBkg: "transparent",
+              clusterBorder: "transparent",
               borderRadius: 10,
               primaryTextColor: "#e6edf7",
               secondaryTextColor: "#e6edf7",
               tertiaryTextColor: "#e6edf7",
-              primaryBorderColor: "#4b5e83",
+              primaryBorderColor: "transparent",
               lineColor: "#9cb0d1",
               fontFamily: "Inter, Segoe UI, Arial, sans-serif"
             }
@@ -1110,11 +1357,13 @@ function isActive(href: string): boolean {
               primaryColor: "#eff6ff",
               secondaryColor: "#f8fafc",
               tertiaryColor: "#ffffff",
+              clusterBkg: "transparent",
+              clusterBorder: "transparent",
               borderRadius: 10,
               primaryTextColor: "#0f172a",
               secondaryTextColor: "#0f172a",
               tertiaryTextColor: "#0f172a",
-              primaryBorderColor: "#8aa3d1",
+              primaryBorderColor: "transparent",
               lineColor: "#475569",
               fontFamily: "Inter, Segoe UI, Arial, sans-serif"
             }
@@ -1135,6 +1384,51 @@ function isActive(href: string): boolean {
             return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
           }
 
+          function ensureMermaidLightbox() {
+            let dialog = document.querySelector("dialog.mermaid-lightbox");
+            if (dialog) return dialog;
+
+            dialog = document.createElement("dialog");
+            dialog.className = "mermaid-lightbox";
+            dialog.innerHTML = `
+              <form method="dialog" class="mermaid-lightbox-header">
+                <button class="button button-secondary" value="close">Close</button>
+              </form>
+              <div class="mermaid-lightbox-content" data-mermaid-lightbox-content></div>
+            `;
+            document.body.appendChild(dialog);
+            return dialog;
+          }
+
+          function bindMermaidLightbox() {
+            const dialog = ensureMermaidLightbox();
+            const content = dialog.querySelector("[data-mermaid-lightbox-content]");
+            if (!content) return;
+
+            mermaidContainers.forEach((container) => {
+              container.setAttribute("role", "button");
+              container.setAttribute("tabindex", "0");
+              container.setAttribute("aria-label", "Open Mermaid diagram in full size");
+
+              const openLightbox = () => {
+                const svg = container.querySelector("svg");
+                if (!svg) return;
+                content.innerHTML = "";
+                const wrapperClone = container.cloneNode(true);
+                content.appendChild(wrapperClone);
+                dialog.showModal();
+              };
+
+              container.onclick = openLightbox;
+              container.onkeydown = (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  openLightbox();
+                }
+              };
+            });
+          }
+
           async function renderMermaidForTheme(theme) {
             mermaid.initialize({
               startOnLoad: false,
@@ -1152,6 +1446,7 @@ function isActive(href: string): boolean {
             });
 
             await mermaid.run({ querySelector: ".mermaid" });
+            bindMermaidLightbox();
           }
 
           renderMermaidForTheme(getActiveTheme());
