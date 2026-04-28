@@ -141,10 +141,12 @@ function isActive(href: string): boolean {
           --accent-soft: rgba(63, 85, 255, 0.16);
           --accent-contrast: #ffffff;
           --bleed-accent-bg:
+            radial-gradient(circle at 16% 18%, rgba(87, 104, 255, 0.20), transparent 44%),
+            radial-gradient(circle at 80% 8%, rgba(156, 114, 255, 0.12), transparent 40%),
             linear-gradient(
               180deg,
-              color-mix(in srgb, #ffffff 77%, var(--accent) 23%) 0%,
-              color-mix(in srgb, #ffffff 81%, var(--accent-purple) 19%) 100%
+              color-mix(in oklab, #060a14 70%, var(--accent) 30%) 0%,
+              color-mix(in oklab, #060a14 77%, var(--accent-purple) 23%) 100%
             );
           --bleed-band-blue: color-mix(in srgb, #eff4ff 62%, #dce7ff 38%);
           --hero-scene-bg:
@@ -226,10 +228,12 @@ function isActive(href: string): boolean {
         --border: #c8d5f2;
         --border-strong: #afc1e8;
         --bleed-accent-bg:
+          radial-gradient(circle at 14% 16%, rgba(87, 104, 255, 0.14), transparent 42%),
+          radial-gradient(circle at 84% 6%, rgba(156, 114, 255, 0.08), transparent 38%),
           linear-gradient(
             180deg,
-            color-mix(in srgb, #ffffff 77%, var(--accent) 23%) 0%,
-            color-mix(in srgb, #ffffff 81%, var(--accent-purple) 19%) 100%
+            color-mix(in oklab, var(--accent) 24%, white) 0%,
+            color-mix(in oklab, var(--accent-purple) 14%, white) 100%
           );
         --bleed-band-blue: color-mix(in srgb, #eff4ff 62%, #dce7ff 38%);
         --hero-scene-bg:
@@ -359,6 +363,14 @@ function isActive(href: string): boolean {
       }
       a {
         color: var(--accent);
+      }
+      :root[data-theme="light"] a {
+        color: color-mix(in srgb, var(--accent) 62%, var(--text) 38%);
+      }
+      @media (prefers-color-scheme: light) {
+        :root:not([data-theme="dark"]) a {
+          color: color-mix(in srgb, var(--accent) 62%, var(--text) 38%);
+        }
       }
       .nav-link {
         display: inline-flex;
@@ -570,6 +582,9 @@ function isActive(href: string): boolean {
         gap: var(--space-6);
         align-items: center;
       }
+      :global(.hero-scene .page-header-content) {
+        align-items: start;
+      }
       :global(.page-header-copy) {
         max-width: 65ch;
       }
@@ -612,8 +627,9 @@ function isActive(href: string): boolean {
         align-items: center;
       }
       :global(.hero-visual-image) {
-        width: clamp(420px, 50vw, 680px);
-        max-width: 100%;
+        width: auto;
+        max-width: min(100%, 680px);
+        max-height: min(52vh, 440px);
         height: auto;
         aspect-ratio: auto;
         object-fit: initial;
@@ -1111,7 +1127,7 @@ function isActive(href: string): boolean {
       :global(.icon-card p) {
         margin: 0;
       }
-      :global(code) {
+      :global(:not(pre) > code) {
         background: var(--surface-subtle);
         padding: 0.12rem 0.36rem;
         border-radius: 6px;
@@ -1122,6 +1138,11 @@ function isActive(href: string): boolean {
         border-radius: var(--radius-md);
         padding: var(--space-3);
         overflow-x: auto;
+      }
+      :global(pre code) {
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
       }
       :global(.button) {
         display: inline-flex;
@@ -1354,7 +1375,8 @@ function isActive(href: string): boolean {
           margin-top: 0.35rem;
         }
         :global(.hero-visual-image) {
-          width: min(520px, 92vw);
+          max-width: min(520px, 92vw);
+          max-height: min(42vh, 360px);
         }
         :global(.hero-visual-frame) {
           width: min(280px, 72vw);
@@ -1411,7 +1433,8 @@ function isActive(href: string): boolean {
           gap: clamp(2rem, 3vw, 3rem);
         }
         :global(.hero-scene .hero-visual-image) {
-          width: clamp(560px, 46vw, 860px);
+          max-width: clamp(560px, 46vw, 860px);
+          max-height: min(58vh, 540px);
         }
       }
     </style>

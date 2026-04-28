@@ -42,48 +42,50 @@ const { Content } = await contactEntry.render();
     </div>
   </div>
 
-  <section>
-    <SectionHeading title="Contact methods">
-      <BriefcaseBusiness slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <div class="contact-grid">
-      <article class="contact-card">
-        <h3>
-          <Mail size={16} strokeWidth={2} />
-          <span>Email</span>
-        </h3>
-        <p>
-          <a href={`mailto:${contactEntry.data.email}`}>{contactEntry.data.email}</a>
-        </p>
-      </article>
-      <article class="contact-card">
-        <h3>
-          <Link2 size={16} strokeWidth={2} />
-          <span>LinkedIn</span>
-        </h3>
-        <p>
-          <a class="button button-secondary" href={contactEntry.data.linkedinUrl} target="_blank" rel="noreferrer">
-            Open LinkedIn profile
-          </a>
-        </p>
-      </article>
-      <article class="contact-card">
-        <h3>
-          <FileText size={16} strokeWidth={2} />
-          <span>About Me and CV</span>
-        </h3>
-        <p class="contact-card-links">
-          <a class="button button-secondary" href={withBase("/about")}>
-            View About Me
-          </a>
-          <a class="button button-secondary" href={cvPdf} download>
-            Download PDF <Download size={14} strokeWidth={2} />
-          </a>
-        </p>
-      </article>
-    </div>
-    <p class="response-window">{contactEntry.data.responseWindow}</p>
-  </section>
+  <div class="full-bleed tonal-band">
+    <section class="band-inner contact-methods-section">
+      <SectionHeading title="Contact methods">
+        <BriefcaseBusiness slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <div class="contact-grid">
+        <article class="contact-card">
+          <h3>
+            <Mail size={16} strokeWidth={2} />
+            <span>Email</span>
+          </h3>
+          <p>
+            <a href={`mailto:${contactEntry.data.email}`}>{contactEntry.data.email}</a>
+          </p>
+        </article>
+        <article class="contact-card">
+          <h3>
+            <Link2 size={16} strokeWidth={2} />
+            <span>LinkedIn</span>
+          </h3>
+          <p>
+            <a class="button button-secondary" href={contactEntry.data.linkedinUrl} target="_blank" rel="noreferrer">
+              Open LinkedIn profile
+            </a>
+          </p>
+        </article>
+        <article class="contact-card">
+          <h3>
+            <FileText size={16} strokeWidth={2} />
+            <span>About Me and CV</span>
+          </h3>
+          <p class="contact-card-links">
+            <a class="button button-secondary" href={withBase("/about")}>
+              View About Me
+            </a>
+            <a class="button button-secondary" href={cvPdf} download>
+              Download PDF <Download size={14} strokeWidth={2} />
+            </a>
+          </p>
+        </article>
+      </div>
+      <p class="response-window">{contactEntry.data.responseWindow}</p>
+    </section>
+  </div>
 
   <section>
     <SectionHeading title="Enquiry guidance">
@@ -96,6 +98,16 @@ const { Content } = await contactEntry.render();
 </BaseLayout>
 
 <style>
+  .accent-band {
+    background: var(--bleed-accent-bg);
+  }
+
+  .contact-methods-section {
+    margin-bottom: 0;
+    padding-top: clamp(2.3rem, 4vw, 3.3rem);
+    padding-bottom: clamp(2.3rem, 4vw, 3.3rem);
+  }
+
   .contact-grid {
     display: grid;
     gap: 0.9rem;
@@ -104,7 +116,8 @@ const { Content } = await contactEntry.render();
 
   .contact-card {
     border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--surface, #111723) 84%, transparent);
+    background: var(--surface-on-bleed);
+    box-shadow: var(--surface-on-bleed-shadow);
     padding: 0.85rem 0.95rem;
   }
 
