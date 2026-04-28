@@ -216,8 +216,8 @@ function isActive(href: string): boolean {
         --mermaid-group-label-size: 0.98rem;
         --mermaid-connector-width: 1.9px;
         --mermaid-cluster-bg: color-mix(in srgb, var(--mermaid-wrapper-bg) 58%, var(--mermaid-node-fill) 42%);
-        --modal-bg: color-mix(in srgb, #0f1b34 62%, var(--bg) 38%);
-        --modal-content-bg: color-mix(in srgb, #16284d 64%, var(--surface) 36%);
+        --modal-bg: color-mix(in srgb, var(--surface) 62%, var(--bg) 38%);
+        --modal-content-bg: var(--surface);
         --shadow-soft: 0 18px 34px rgba(2, 8, 20, 0.38);
       }
       :root[data-theme="light"] {
@@ -275,6 +275,9 @@ function isActive(href: string): boolean {
       body {
         max-width: 100%;
         overflow-x: hidden;
+      }
+      html {
+        scrollbar-gutter: stable;
       }
       body {
         margin: 0;
@@ -1273,15 +1276,15 @@ function isActive(href: string): boolean {
         box-shadow: var(--mermaid-wrapper-shadow);
         border-radius: var(--radius-md);
         padding: var(--space-4);
-        margin-top: 0;
         overflow-x: auto;
         overflow-y: hidden;
         text-align: center;
         cursor: zoom-in;
+        box-sizing: border-box;
       }
       :global(.mermaid svg) {
-        width: 100% !important;
-        max-width: 100% !important;
+        width: auto !important;
+        max-width: none !important;
         min-width: 0;
         height: auto;
         overflow: visible;
@@ -1363,20 +1366,28 @@ function isActive(href: string): boolean {
         padding: var(--space-2);
         background: var(--modal-content-bg);
       }
-      :global(.mermaid-lightbox-content .mermaid) {
-        width: 100%;
-        min-width: 0;
+      :global(.mermaid-lightbox-content .mermaid-lightbox-diagram) {
+        display: inline-block;
+        width: auto !important;
+        max-width: none !important;
+        min-width: 0 !important;
         margin: 0;
+        padding: 0;
         overflow: visible;
+        text-align: left;
+        cursor: default;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
       }
-      :global(.mermaid-lightbox-content .mermaid svg) {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        height: auto;
+      :global(.mermaid-lightbox-content .mermaid-lightbox-diagram svg) {
         display: block;
-        overflow: visible;
+        width: auto !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        height: auto !important;
         margin: 0;
+        overflow: visible;
       }
       @media (max-width: 640px) {
         :global(dialog.mermaid-lightbox) {
@@ -1577,7 +1588,9 @@ function isActive(href: string): boolean {
       enableMermaid && (
         <script type="module" is:inline>
           import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
           const root = document.documentElement;
+
           const darkThemeConfig = {
             theme: "base",
             themeVariables: {
@@ -1596,6 +1609,7 @@ function isActive(href: string): boolean {
               fontFamily: "Inter, Segoe UI, Arial, sans-serif"
             }
           };
+
           const lightThemeConfig = {
             theme: "base",
             themeVariables: {
@@ -1614,13 +1628,6 @@ function isActive(href: string): boolean {
               fontFamily: "Inter, Segoe UI, Arial, sans-serif"
             }
           };
-          const mermaidContainers = Array.from(document.querySelectorAll(".mermaid"));
-
-          mermaidContainers.forEach((container) => {
-            if (!container.dataset.mermaidSource) {
-              container.dataset.mermaidSource = container.textContent?.trim() ?? "";
-            }
-          });
 
           function getActiveTheme() {
             const explicitTheme = root.getAttribute("data-theme");
@@ -1628,6 +1635,24 @@ function isActive(href: string): boolean {
               return explicitTheme;
             }
             return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          }
+
+          function getThemeConfig(theme) {
+            return theme === "dark" ? darkThemeConfig : lightThemeConfig;
+          }
+
+          function getInlineMermaidContainers() {
+            return Array.from(document.querySelectorAll(".mermaid")).filter(
+              (container) => !container.closest(".mermaid-lightbox-content")
+            );
+          }
+
+          function captureMermaidSources() {
+            getInlineMermaidContainers().forEach((container) => {
+              if (!container.dataset.mermaidSource) {
+                container.dataset.mermaidSource = container.textContent?.trim() ?? "";
+              }
+            });
           }
 
           function ensureMermaidLightbox() {
@@ -1646,65 +1671,107 @@ function isActive(href: string): boolean {
             return dialog;
           }
 
-          function bindMermaidLightbox() {
-            const dialog = ensureMermaidLightbox();
-            const content = dialog.querySelector("[data-mermaid-lightbox-content]");
-            if (!content) return;
+          async function renderInlineMermaid(theme) {
+            const mermaidContainers = getInlineMermaidContainers();
 
-            mermaidContainers.forEach((container) => {
-              container.setAttribute("role", "button");
-              container.setAttribute("tabindex", "0");
-              container.setAttribute("aria-label", "Open Mermaid diagram in full size");
-
-              const openLightbox = async () => {
-                const source = container.dataset.mermaidSource ?? "";
-                if (!source) return;
-                content.innerHTML = "";
-                dialog.showModal();
-                const lightboxDiagram = document.createElement("div");
-                lightboxDiagram.className = "mermaid";
-                lightboxDiagram.textContent = source;
-                content.appendChild(lightboxDiagram);
-
-                await mermaid.run({ nodes: [lightboxDiagram] });
-
-              };
-
-              container.onclick = () => {
-                void openLightbox();
-              };
-              container.onkeydown = (event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  void openLightbox();
-                }
-              };
-            });
-          }
-
-          async function renderMermaidForTheme(theme) {
             mermaid.initialize({
               startOnLoad: false,
               securityLevel: "strict",
-              flowchart: { useMaxWidth: true, htmlLabels: false, curve: "linear" },
-              ...(theme === "dark" ? darkThemeConfig : lightThemeConfig)
+              flowchart: {
+                useMaxWidth: true,
+                htmlLabels: false,
+                curve: "linear"
+              },
+              ...getThemeConfig(theme)
             });
 
             mermaidContainers.forEach((container, index) => {
               const source = container.dataset.mermaidSource ?? "";
               if (!source) return;
               container.removeAttribute("data-processed");
-              container.id = `mermaid-${theme}-${index}-${Date.now()}`;
+              container.id = `mermaid-inline-${theme}-${index}-${Date.now()}`;
               container.textContent = source;
             });
 
-            await mermaid.run({ querySelector: ".mermaid" });
+            await mermaid.run({ nodes: mermaidContainers });
+          }
+
+          async function openMermaidLightbox(container) {
+            const dialog = ensureMermaidLightbox();
+            const content = dialog.querySelector("[data-mermaid-lightbox-content]");
+            if (!content) return;
+
+            const source = container.dataset.mermaidSource ?? "";
+            if (!source) return;
+
+            content.innerHTML = "";
+            dialog.showModal();
+
+            const lightboxDiagram = document.createElement("div");
+            lightboxDiagram.className = "mermaid mermaid-lightbox-diagram";
+            lightboxDiagram.textContent = source;
+            content.appendChild(lightboxDiagram);
+
+            const theme = getActiveTheme();
+
+            mermaid.initialize({
+              startOnLoad: false,
+              securityLevel: "strict",
+              flowchart: {
+                useMaxWidth: false,
+                htmlLabels: false,
+                curve: "linear"
+              },
+              ...getThemeConfig(theme)
+            });
+
+            lightboxDiagram.removeAttribute("data-processed");
+            lightboxDiagram.id = `mermaid-lightbox-${theme}-${Date.now()}`;
+
+            await mermaid.run({ nodes: [lightboxDiagram] });
+
+            const svg = lightboxDiagram.querySelector("svg");
+            if (svg) {
+              svg.style.setProperty("max-width", "none", "important");
+              svg.style.setProperty("width", "auto", "important");
+              svg.style.setProperty("height", "auto", "important");
+            }
+          }
+
+          function bindMermaidLightbox() {
+            const mermaidContainers = getInlineMermaidContainers();
+
+            mermaidContainers.forEach((container) => {
+              if (container.dataset.mermaidLightboxBound === "true") return;
+
+              container.dataset.mermaidLightboxBound = "true";
+              container.setAttribute("role", "button");
+              container.setAttribute("tabindex", "0");
+              container.setAttribute("aria-label", "Open Mermaid diagram in full size");
+
+              container.addEventListener("click", () => {
+                void openMermaidLightbox(container);
+              });
+
+              container.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  void openMermaidLightbox(container);
+                }
+              });
+            });
+          }
+
+          async function renderMermaidForTheme(theme) {
+            captureMermaidSources();
+            await renderInlineMermaid(theme);
             bindMermaidLightbox();
           }
 
           renderMermaidForTheme(getActiveTheme());
+
           window.addEventListener("themechange", () => {
-            renderMermaidForTheme(getActiveTheme());
+            void renderMermaidForTheme(getActiveTheme());
           });
         </script>
       )
