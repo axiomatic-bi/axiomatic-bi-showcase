@@ -26,9 +26,9 @@ flowchart LR
 
 const engineScopeMermaid = `%%{init: {'flowchart': {'htmlLabels': true}} }%%
 flowchart LR
-  sourceNode["<div style='width:18rem; text-align:center;'><b>Sources</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• REST API<br/>• File source<br/><br/><b>Upcoming:</b><br/>• None</div>"]
-  storageNode["<div style='width:18rem; text-align:center;'><b>Storage</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• Local storage<br/><br/><b>Upcoming:</b><br/>• S3<br/>• GCS<br/>• S3-compatible</div>"]
-  warehouseNode["<div style='width:18rem; text-align:center;'><b>Warehouse</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• DuckDB<br/>• MotherDuck<br/><br/><b>Upcoming:</b><br/>• BigQuery</div>"]
+  sourceNode["<div style='width:18rem; text-align:center;'><b>Sources</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• REST API<br/>• File source</div>"]
+  storageNode["<div style='width:18rem; text-align:center;'><b>Storage</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• Local storage</div>"]
+  warehouseNode["<div style='width:18rem; text-align:center;'><b>Warehouse</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• DuckDB<br/>• MotherDuck</div>"]
   sourceNode --> storageNode --> warehouseNode`;
 ---
 
