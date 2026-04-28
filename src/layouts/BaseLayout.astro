@@ -271,6 +271,11 @@ function isActive(href: string): boolean {
       * {
         box-sizing: border-box;
       }
+      html,
+      body {
+        max-width: 100%;
+        overflow-x: clip;
+      }
       body {
         margin: 0;
         font-family: Inter, "Segoe UI", Arial, sans-serif;
@@ -305,6 +310,26 @@ function isActive(href: string): boolean {
         display: flex;
         align-items: center;
         gap: var(--space-2);
+      }
+      .site-brand {
+        flex-shrink: 0;
+      }
+      .mobile-nav-toggle {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.5rem;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: color-mix(in srgb, var(--surface-soft) 74%, var(--bg) 26%);
+        color: var(--text);
+        font-size: 0.88rem;
+        font-weight: 600;
+        padding: 0.42rem 0.9rem;
+      }
+      .mobile-nav-toggle:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
       }
       nav > ul {
         display: flex;
@@ -520,9 +545,9 @@ function isActive(href: string): boolean {
         padding-bottom: 0;
       }
       :global(.full-bleed) {
-        width: 100vw;
-        margin-left: calc(50% - 50vw);
-        margin-right: calc(50% - 50vw);
+        width: 100dvw;
+        margin-left: calc(50% - 50dvw);
+        margin-right: calc(50% - 50dvw);
         background: var(--bleed-accent-bg);
       }
       :global(.band-inner) {
@@ -1359,9 +1384,72 @@ function isActive(href: string): boolean {
         color: var(--text-soft);
       }
       @media (max-width: 860px) {
+        .site-header-inner {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: var(--space-2);
+        }
+        .site-brand {
+          display: none;
+        }
         .site-header-actions {
           width: 100%;
-          justify-content: space-between;
+          justify-content: flex-end;
+          flex-wrap: wrap;
+          position: relative;
+        }
+        .mobile-nav-toggle {
+          display: inline-flex;
+        }
+        nav[aria-label="Primary"] {
+          width: 100%;
+          display: none;
+          border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+          border-radius: var(--radius-md);
+          background: color-mix(in srgb, var(--surface) 94%, var(--bg));
+          padding: var(--space-2);
+          order: 3;
+        }
+        .site-header-actions[data-mobile-nav-open="true"] nav[aria-label="Primary"] {
+          display: block;
+        }
+        nav > ul {
+          flex-direction: column;
+          gap: var(--space-1);
+        }
+        nav > ul > li {
+          width: 100%;
+        }
+        .nav-link {
+          width: 100%;
+          justify-content: flex-start;
+          border: 0;
+          border-radius: var(--radius-sm);
+          background: transparent;
+          padding: 0.5rem 0.25rem;
+        }
+        .nav-link:hover,
+        .nav-link:focus-visible {
+          background: color-mix(in srgb, var(--accent-soft) 36%, transparent);
+          border-color: transparent;
+        }
+        .nav-link[aria-current="page"] {
+          border-color: transparent;
+        }
+        .nav-dropdown {
+          position: static;
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+          min-width: 0;
+          box-shadow: none;
+          border: 0;
+          background: transparent;
+          padding: var(--space-1) 0 0 var(--space-3);
+        }
+        .nav-dropdown-link {
+          padding: 0.34rem 0.1rem;
+          font-size: 0.86rem;
         }
         :global(.band-inner) {
           padding-top: var(--space-12);
@@ -1615,15 +1703,49 @@ function isActive(href: string): boolean {
       } else {
         initThemeToggle();
       }
+
+      function initMobileNavToggle() {
+        const actions = document.querySelector(".site-header-actions");
+        const toggleButton = document.querySelector("[data-mobile-nav-toggle]");
+        if (!actions || !toggleButton) return;
+
+        function setMenuState(isOpen) {
+          actions.setAttribute("data-mobile-nav-open", isOpen ? "true" : "false");
+          toggleButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
+          toggleButton.textContent = isOpen ? "Close menu" : "Menu";
+        }
+
+        setMenuState(false);
+
+        toggleButton.addEventListener("click", () => {
+          const isOpen = actions.getAttribute("data-mobile-nav-open") === "true";
+          setMenuState(!isOpen);
+        });
+
+        window.addEventListener("resize", () => {
+          if (window.matchMedia("(min-width: 861px)").matches) {
+            setMenuState(false);
+          }
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initMobileNavToggle, { once: true });
+      } else {
+        initMobileNavToggle();
+      }
     </script>
   </head>
   <body>
     <header class="site-header">
       <div class="container site-header-inner">
-        <a class="nav-link" href={withBase("/")}>Axiomatic BI Showcase</a>
-        <div class="site-header-actions">
+        <a class="nav-link site-brand" href={withBase("/")}>Axiomatic BI Showcase</a>
+        <div class="site-header-actions" data-mobile-nav-open="false">
+          <button class="mobile-nav-toggle" type="button" data-mobile-nav-toggle aria-expanded="false" aria-controls="primary-navigation">
+            Menu
+          </button>
           <nav aria-label="Primary">
-            <ul>
+            <ul id="primary-navigation">
               {
                 navItems.map((item) => (
                   item.href === "/case-studies" ? (
