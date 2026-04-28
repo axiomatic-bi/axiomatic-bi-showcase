@@ -1,0 +1,150 @@
+.mermaid {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        background: var(--mermaid-wrapper-bg);
+        border: 1px solid var(--mermaid-wrapper-border);
+        box-shadow: var(--mermaid-wrapper-shadow);
+        border-radius: var(--radius-md);
+        padding: var(--space-4);
+        overflow-x: auto;
+        overflow-y: hidden;
+        text-align: center;
+        cursor: zoom-in;
+        box-sizing: border-box;
+      }
+      .mermaid svg {
+        width: auto !important;
+        max-width: none !important;
+        min-width: 0;
+        height: auto;
+        overflow: visible;
+        margin-inline: auto;
+        display: block;
+      }
+      .mermaid .node rect,
+      .mermaid .node polygon,
+      .mermaid .node path,
+      .mermaid .cluster rect {
+        rx: 10px;
+        ry: 10px;
+        stroke: none !important;
+        stroke-width: 0 !important;
+      }
+      .mermaid .node rect,
+      .mermaid .node polygon,
+      .mermaid .node path,
+      .mermaid .node circle,
+      .mermaid .node ellipse {
+        fill: var(--mermaid-node-fill) !important;
+      }
+      .mermaid .cluster rect {
+        fill: var(--mermaid-cluster-bg) !important;
+      }
+      .mermaid .edgePath .path,
+      .mermaid .flowchart-link {
+        stroke: var(--mermaid-connector) !important;
+        fill: none !important;
+        stroke-width: var(--mermaid-connector-width) !important;
+      }
+      .mermaid .arrowheadPath,
+      .mermaid marker path {
+        stroke: none !important;
+        fill: var(--mermaid-connector) !important;
+      }
+      .mermaid .label,
+      .mermaid text,
+      .mermaid .nodeLabel,
+      .mermaid .edgeLabel {
+        color: var(--mermaid-text) !important;
+        fill: var(--mermaid-text) !important;
+        font-family: Inter, "Segoe UI", Arial, sans-serif !important;
+        font-size: var(--mermaid-text-size) !important;
+        font-weight: var(--mermaid-text-weight) !important;
+      }
+      .mermaid .cluster-label,
+      .mermaid .cluster-label text,
+      .mermaid .cluster-label tspan {
+        color: var(--mermaid-text) !important;
+        fill: var(--mermaid-text) !important;
+        font-family: Inter, "Segoe UI", Arial, sans-serif !important;
+        font-size: var(--mermaid-group-label-size) !important;
+        font-weight: 600 !important;
+      }
+      dialog.mermaid-lightbox {
+        width: min(96vw, 1600px);
+        max-width: calc(100vw - 1rem);
+        max-height: 92vh;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--modal-bg);
+        color: var(--text);
+        padding: var(--space-4);
+        box-sizing: border-box;
+      }
+      dialog.mermaid-lightbox::backdrop {
+        background: color-mix(in srgb, #000 72%, transparent);
+      }
+      .mermaid-lightbox-header {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0 0 var(--space-3);
+      }
+      .mermaid-lightbox-content {
+        overflow: auto;
+        max-height: calc(92vh - 5rem);
+        border-radius: var(--radius-sm);
+        padding: var(--space-2);
+        background: var(--modal-content-bg);
+      }
+      .mermaid-lightbox-content .mermaid-lightbox-diagram {
+        display: inline-block;
+        width: auto !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+        text-align: left;
+        cursor: default;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+      }
+      .mermaid-lightbox-content .mermaid-lightbox-diagram svg {
+        display: block;
+        width: auto !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        height: auto !important;
+        margin: 0;
+        overflow: visible;
+      }
+      @media (max-width: 640px) {
+        dialog.mermaid-lightbox {
+          width: 100dvw;
+          max-width: 100dvw;
+          height: 100dvh;
+          max-height: 100dvh;
+          margin: 0;
+          border-radius: 0;
+          border-left: 0;
+          border-right: 0;
+          border-bottom: 0;
+          padding: calc(var(--space-3) + env(safe-area-inset-top, 0px))
+            calc(var(--space-3) + env(safe-area-inset-right, 0px))
+            calc(var(--space-3) + env(safe-area-inset-bottom, 0px))
+            calc(var(--space-3) + env(safe-area-inset-left, 0px));
+          inset: 0;
+        }
+        .mermaid-lightbox-content {
+          max-height: calc(100dvh - 4.75rem);
+        }
+      }
+      .mermaid .nodeLabel tspan:first-child,
+      .mermaid .edgeLabel tspan:first-child,
+      .mermaid .label tspan:first-child {
+        fill: var(--mermaid-heading-text) !important;
+        color: var(--mermaid-heading-text) !important;
+        font-weight: 700 !important;
+      }

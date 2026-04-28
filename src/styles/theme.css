@@ -1,0 +1,210 @@
+      :root {
+        color-scheme: dark light;
+        --bg: #060a14;
+        --surface: #141f34;
+        --surface-soft: #1a2740;
+        --surface-subtle: #20304e;
+        --border: #32466d;
+        --border-strong: #45608f;
+        --bleed-accent-bg:
+          linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--bg) 72%, var(--accent) 28%) 0%,
+            color-mix(in srgb, var(--bg) 78%, var(--accent-purple) 22%) 100%
+          );
+        --bleed-band-blue: color-mix(in srgb, var(--bg) 70%, #214887 30%);
+        --hero-scene-bg:
+          radial-gradient(circle at 14% 18%, rgba(87, 104, 255, 0.62), transparent 50%),
+          radial-gradient(circle at 86% 8%, rgba(156, 114, 255, 0.62), transparent 48%),
+          radial-gradient(circle at 62% -8%, rgba(156, 114, 255, 0.36), transparent 52%),
+          linear-gradient(180deg, #263f8f 0%, #1b3270 46%, #060a14 100%);
+        --text: #f0f4ff;
+        --text-muted: #c0ccec;
+        --text-soft: #9fb1d8;
+        --accent: #5768ff;
+        --accent-strong: #8e75ff;
+        --accent-purple: #9c72ff;
+        --accent-soft: rgba(87, 104, 255, 0.24);
+        --accent-contrast: #ffffff;
+        --surface-on-bleed: color-mix(in srgb, var(--surface) 76%, var(--accent-purple) 24%);
+        --surface-on-bleed-soft: color-mix(in srgb, var(--surface-soft) 68%, var(--accent-purple) 32%);
+        --surface-on-bleed-shadow: none;
+        --mermaid-wrapper-bg: color-mix(in srgb, var(--surface) 86%, transparent);
+        --mermaid-wrapper-border: color-mix(in srgb, var(--border) 64%, transparent);
+        --mermaid-wrapper-shadow: none;
+        --mermaid-node-fill: color-mix(in srgb, var(--surface-on-bleed) 78%, var(--surface-soft) 22%);
+        --mermaid-connector: #9cb0d1;
+        --mermaid-text: #e6edf7;
+        --mermaid-heading-text: #f4f7ff;
+        --mermaid-text-size: 0.86rem;
+        --mermaid-text-weight: 500;
+        --mermaid-group-label-size: 0.98rem;
+        --mermaid-connector-width: 1.9px;
+        --mermaid-cluster-bg: color-mix(in srgb, var(--mermaid-wrapper-bg) 58%, var(--mermaid-node-fill) 42%);
+        --modal-bg: color-mix(in srgb, #0f1b34 62%, var(--bg) 38%);
+        --modal-content-bg: color-mix(in srgb, #16284d 64%, var(--surface) 36%);
+        --radius-sm: 10px;
+        --radius-md: 14px;
+        --radius-lg: 18px;
+        --space-1: 0.25rem;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --space-5: 1.25rem;
+        --space-6: 1.5rem;
+        --space-8: 2rem;
+        --space-10: 2.5rem;
+        --space-12: 3rem;
+        --space-14: 3.5rem;
+        --space-16: 4rem;
+        --section-gap: clamp(4.5rem, 7vw, 6.5rem);
+        --content-max-width: 1140px;
+        --band-max-width: 1140px;
+        --band-wide-max-width: 1232px;
+        --hero-max-width: 1440px;
+        --shadow-soft: 0 18px 34px rgba(2, 8, 20, 0.38);
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f2f5ff;
+          --surface: #ffffff;
+          --surface-soft: #f4f7ff;
+          --surface-subtle: #e9efff;
+          --border: #c8d5f2;
+          --border-strong: #afc1e8;
+          --text: #0f1b36;
+          --text-muted: #3a4f77;
+          --text-soft: #556c98;
+          --accent: #3f55ff;
+          --accent-strong: #5a3ff2;
+          --accent-purple: #7a4dff;
+          --accent-soft: rgba(63, 85, 255, 0.16);
+          --accent-contrast: #ffffff;
+          --bleed-accent-bg:
+            radial-gradient(circle at 16% 18%, rgba(87, 104, 255, 0.20), transparent 44%),
+            radial-gradient(circle at 80% 8%, rgba(156, 114, 255, 0.12), transparent 40%),
+            linear-gradient(
+              180deg,
+              color-mix(in oklab, #060a14 70%, var(--accent) 30%) 0%,
+              color-mix(in oklab, #060a14 77%, var(--accent-purple) 23%) 100%
+            );
+          --bleed-band-blue: color-mix(in srgb, #eff4ff 62%, #dce7ff 38%);
+          --hero-scene-bg:
+            radial-gradient(circle at 14% 18%, rgba(87, 104, 255, 0.62), transparent 50%),
+            radial-gradient(circle at 86% 8%, rgba(156, 114, 255, 0.62), transparent 48%),
+            radial-gradient(circle at 62% -8%, rgba(156, 114, 255, 0.36), transparent 52%),
+            linear-gradient(180deg, #203a86 0%, #4662b1 48%, #dfe8ff 100%);
+          --surface-on-bleed: color-mix(in srgb, #ffffff 82%, #d1deff 18%);
+          --surface-on-bleed-soft: color-mix(in srgb, #f8faff 74%, #cfddff 26%);
+          --surface-on-bleed-shadow: none;
+          --mermaid-wrapper-bg: color-mix(in srgb, #ffffff 92%, #e8eeff 8%);
+          --mermaid-wrapper-border: color-mix(in srgb, var(--border) 68%, transparent);
+          --mermaid-wrapper-shadow: none;
+          --mermaid-node-fill: color-mix(in srgb, #e3eaff 82%, #c9d7ff 18%);
+          --mermaid-connector: #4a5d8d;
+          --mermaid-text: #0f1b36;
+          --mermaid-heading-text: #0f1b36;
+          --mermaid-text-size: 0.84rem;
+          --mermaid-text-weight: 500;
+          --mermaid-group-label-size: 0.94rem;
+          --mermaid-connector-width: 1.8px;
+          --mermaid-cluster-bg: color-mix(in srgb, #eef4ff 82%, #d8e3ff 18%);
+          --modal-bg: #edf1f7;
+          --modal-content-bg: #f5f7fb;
+          --shadow-soft: 0 16px 30px rgba(48, 64, 109, 0.12);
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #060a14;
+        --surface: #141f34;
+        --surface-soft: #1a2740;
+        --surface-subtle: #20304e;
+        --border: #32466d;
+        --border-strong: #45608f;
+        --bleed-accent-bg:
+          linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--bg) 72%, var(--accent) 28%) 0%,
+            color-mix(in srgb, var(--bg) 78%, var(--accent-purple) 22%) 100%
+          );
+        --bleed-band-blue: color-mix(in srgb, var(--bg) 76%, #214887 24%);
+        --hero-scene-bg:
+          radial-gradient(circle at 14% 18%, rgba(87, 104, 255, 0.62), transparent 50%),
+          radial-gradient(circle at 86% 8%, rgba(156, 114, 255, 0.62), transparent 48%),
+          radial-gradient(circle at 62% -8%, rgba(156, 114, 255, 0.36), transparent 52%),
+          linear-gradient(180deg, #263f8f 0%, #1b3270 46%, #060a14 100%);
+        --text: #f0f4ff;
+        --text-muted: #c0ccec;
+        --text-soft: #9fb1d8;
+        --accent: #5768ff;
+        --accent-strong: #8e75ff;
+        --accent-purple: #9c72ff;
+        --accent-soft: rgba(87, 104, 255, 0.24);
+        --accent-contrast: #ffffff;
+        --surface-on-bleed: color-mix(in srgb, var(--surface) 76%, var(--accent-purple) 24%);
+        --surface-on-bleed-soft: color-mix(in srgb, var(--surface-soft) 68%, var(--accent-purple) 32%);
+        --surface-on-bleed-shadow: none;
+        --mermaid-wrapper-bg: color-mix(in srgb, var(--surface) 86%, transparent);
+        --mermaid-wrapper-border: color-mix(in srgb, var(--border) 64%, transparent);
+        --mermaid-wrapper-shadow: none;
+        --mermaid-node-fill: color-mix(in srgb, var(--surface-on-bleed) 78%, var(--surface-soft) 22%);
+        --mermaid-connector: #9cb0d1;
+        --mermaid-text: #e6edf7;
+        --mermaid-heading-text: #f4f7ff;
+        --mermaid-text-size: 0.86rem;
+        --mermaid-text-weight: 500;
+        --mermaid-group-label-size: 0.98rem;
+        --mermaid-connector-width: 1.9px;
+        --mermaid-cluster-bg: color-mix(in srgb, var(--mermaid-wrapper-bg) 58%, var(--mermaid-node-fill) 42%);
+        --modal-bg: color-mix(in srgb, var(--surface) 62%, var(--bg) 38%);
+        --modal-content-bg: var(--surface);
+        --shadow-soft: 0 18px 34px rgba(2, 8, 20, 0.38);
+      }
+      :root[data-theme="light"] {
+        --bg: #f2f5ff;
+        --surface: #ffffff;
+        --surface-soft: #f4f7ff;
+        --surface-subtle: #e9efff;
+        --border: #c8d5f2;
+        --border-strong: #afc1e8;
+        --bleed-accent-bg:
+          radial-gradient(circle at 14% 16%, rgba(87, 104, 255, 0.14), transparent 42%),
+          radial-gradient(circle at 84% 6%, rgba(156, 114, 255, 0.08), transparent 38%),
+          linear-gradient(
+            180deg,
+            color-mix(in oklab, var(--accent) 24%, white) 0%,
+            color-mix(in oklab, var(--accent-purple) 14%, white) 100%
+          );
+        --bleed-band-blue: color-mix(in srgb, #eff4ff 62%, #dce7ff 38%);
+        --hero-scene-bg:
+          radial-gradient(circle at 14% 18%, rgba(87, 104, 255, 0.62), transparent 50%),
+          radial-gradient(circle at 86% 8%, rgba(156, 114, 255, 0.62), transparent 48%),
+          radial-gradient(circle at 62% -8%, rgba(156, 114, 255, 0.36), transparent 52%),
+          linear-gradient(180deg, #203a86 0%, #4662b1 48%, #dfe8ff 100%);
+        --text: #0f1b36;
+        --text-muted: #3a4f77;
+        --text-soft: #556c98;
+        --accent: #3f55ff;
+        --accent-strong: #5a3ff2;
+        --accent-purple: #7a4dff;
+        --accent-soft: rgba(63, 85, 255, 0.16);
+        --accent-contrast: #ffffff;
+        --surface-on-bleed: color-mix(in srgb, #ffffff 82%, #d1deff 18%);
+        --surface-on-bleed-soft: color-mix(in srgb, #f8faff 74%, #cfddff 26%);
+        --surface-on-bleed-shadow: none;
+        --mermaid-wrapper-bg: color-mix(in srgb, #ffffff 92%, #e8eeff 8%);
+        --mermaid-wrapper-border: color-mix(in srgb, var(--border) 68%, transparent);
+        --mermaid-wrapper-shadow: none;
+        --mermaid-node-fill: color-mix(in srgb, #e3eaff 82%, #c9d7ff 18%);
+        --mermaid-connector: #4a5d8d;
+        --mermaid-text: #0f1b36;
+        --mermaid-heading-text: #0f1b36;
+        --mermaid-text-size: 0.84rem;
+        --mermaid-text-weight: 500;
+        --mermaid-group-label-size: 0.94rem;
+        --mermaid-connector-width: 1.8px;
+        --mermaid-cluster-bg: color-mix(in srgb, #eef4ff 82%, #d8e3ff 18%);
+        --modal-bg: #edf1f7;
+        --modal-content-bg: #f5f7fb;
+        --shadow-soft: 0 16px 30px rgba(48, 64, 109, 0.12);
+      }

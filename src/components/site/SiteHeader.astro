@@ -1,0 +1,42 @@
+---
+import { withBase } from "../../utils/urls";
+import Navigation from "./Navigation.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+
+interface NavItem {
+  href: string;
+  label: string;
+}
+
+interface CaseStudyEntry {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  navItems: NavItem[];
+  caseStudyEntries: CaseStudyEntry[];
+  routePathname: string;
+}
+
+const { navItems, caseStudyEntries, routePathname } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="container site-header-inner">
+    <a class="nav-link site-brand" href={withBase("/")}>Axiomatic BI Showcase</a>
+    <div class="site-header-actions" data-mobile-nav-open="false">
+      <button class="mobile-nav-toggle" type="button" data-mobile-nav-toggle aria-expanded="false" aria-controls="primary-navigation">
+        Menu
+      </button>
+      <Navigation navItems={navItems} caseStudyEntries={caseStudyEntries} routePathname={routePathname} />
+      <ThemeToggle />
+    </div>
+  </div>
+</header>
+
+<script>
+  import { initThemeAndMobileNav } from "../../scripts/theme-toggle";
+
+  initThemeAndMobileNav();
+</script>
