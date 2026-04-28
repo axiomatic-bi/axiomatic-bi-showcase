@@ -6,6 +6,7 @@ import SectionHeading from "../components/SectionHeading.astro";
 import { withBase } from "../utils/urls";
 import { Download, FileText, Layers3 } from "lucide-react";
 import cvPdf from "../../assets/cv-timothy-amison.pdf";
+import heroAboutMeImage from "../../assets/hero-about-me.webp";
 
 const cvEntry = await getEntry("cv", "main");
 
@@ -27,7 +28,18 @@ const { Content } = await cvEntry.render();
         title={cvEntry.data.title}
         lede={cvEntry.data.summary}
         updatedAt={cvEntry.data.updatedAt}
-      />
+      >
+        <img
+          slot="visual"
+          class="hero-visual-image"
+          src={heroAboutMeImage.src}
+          alt="Professional profile visual with blue and purple gradient overlays."
+          width={heroAboutMeImage.width}
+          height={heroAboutMeImage.height}
+          loading="eager"
+          decoding="async"
+        />
+      </PageHeader>
       <p class="cv-actions">
         <a class="button button-primary" href={cvPdf} download>
           Download PDF CV <Download size={16} strokeWidth={2} />

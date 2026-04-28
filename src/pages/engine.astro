@@ -10,6 +10,7 @@ import SectionHeading from "../components/SectionHeading.astro";
 import { fakeStoreLinks } from "../utils/externalLinks";
 import { withBase } from "../utils/urls";
 import { CheckCircle2, ExternalLink, FileCode2, Lightbulb, Microscope, Target } from "lucide-react";
+import heroEngineImage from "../../assets/hero-engine.webp";
 
 const engineEntry = await getEntry("engine", "overview");
 if (!engineEntry) {
@@ -45,7 +46,18 @@ flowchart LR
         ]}
         title="Engine Overview"
         lede="Contract-first orchestration design for ingestion, transformation, and warehouse execution."
-      />
+      >
+        <img
+          slot="visual"
+          class="hero-visual-image"
+          src={heroEngineImage.src}
+          alt="Abstract engine architecture visual with layered blue and purple data paths."
+          width={heroEngineImage.width}
+          height={heroEngineImage.height}
+          loading="eager"
+          decoding="async"
+        />
+      </PageHeader>
       <div class="engine-actions">
         <a class="button button-primary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
           View example project <ExternalLink size={16} strokeWidth={2} />

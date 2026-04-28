@@ -6,6 +6,7 @@ import SectionHeading from "../components/SectionHeading.astro";
 import { withBase } from "../utils/urls";
 import { BriefcaseBusiness, Download, FileText, Link2, Mail } from "lucide-react";
 import cvPdf from "../../assets/cv-timothy-amison.pdf";
+import heroContactImage from "../../assets/hero-contact.webp";
 
 const contactEntry = await getEntry("contact", "main");
 
@@ -26,7 +27,18 @@ const { Content } = await contactEntry.render();
         ]}
         title={contactEntry.data.title}
         lede={contactEntry.data.summary}
-      />
+      >
+        <img
+          slot="visual"
+          class="hero-visual-image"
+          src={heroContactImage.src}
+          alt="Contact-themed visual showing connected communication channels."
+          width={heroContactImage.width}
+          height={heroContactImage.height}
+          loading="eager"
+          decoding="async"
+        />
+      </PageHeader>
     </div>
   </div>
 

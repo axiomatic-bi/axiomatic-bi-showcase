@@ -7,6 +7,7 @@ import SectionHeading from "../../components/SectionHeading.astro";
 import { withBase } from "../../utils/urls";
 import { ArrowRight, CheckCircle2, Microscope, Target } from "lucide-react";
 import fakeStorePbiSalesImage from "../../../assets/fake-store-pbi-sales.webp";
+import heroExampleImage from "../../../assets/hero-example.webp";
 
 const entries = await getCollection("caseStudies");
 ---
@@ -21,7 +22,18 @@ const entries = await getCollection("caseStudies");
         ]}
         title="Examples"
         lede="Each walkthrough links challenge, implementation choices, and measurable improvements in one scannable format."
-      />
+      >
+        <img
+          slot="visual"
+          class="hero-visual-image"
+          src={heroExampleImage.src}
+          alt="Examples overview visual with dashboard and model artefact motifs."
+          width={heroExampleImage.width}
+          height={heroExampleImage.height}
+          loading="eager"
+          decoding="async"
+        />
+      </PageHeader>
     </div>
   </div>
 
