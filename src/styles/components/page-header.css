@@ -189,3 +189,24 @@
   line-height: 1.2;
   font-weight: 500;
 }
+@media (max-width: 860px) {
+  .page-header-content {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "visual";
+    gap: var(--space-4);
+  }
+  .page-header-copy {
+    grid-area: copy;
+    max-width: 100%;
+  }
+  .page-header-visual {
+    grid-area: visual;
+    justify-content: center;
+    margin-top: 0;
+  }
+  .hero-scene .page-header-copy p {
+    max-width: 100%;
+  }
+}
