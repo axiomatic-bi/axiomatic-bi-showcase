@@ -23,7 +23,7 @@ body {
   padding: var(--space-4) var(--space-5);
 }
 main.container {
-  padding-top: 0;
+  padding-top: var(--site-header-height, 4.25rem);
   padding-bottom: var(--space-12);
 }
 main.container:has(> .full-bleed:last-child) {

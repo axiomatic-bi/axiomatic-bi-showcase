@@ -1,10 +1,17 @@
-.site-header {
-        position: sticky;
+:root {
+        --site-header-height: 3.6rem;
+      }
+      .site-header {
+        position: fixed;
         top: 0;
-        z-index: 10;
-        backdrop-filter: blur(10px);
-        background: color-mix(in srgb, var(--bg) 84%, transparent);
-        border-bottom: 1px solid var(--border);
+        left: 0;
+        right: 0;
+        z-index: 60;
+        backdrop-filter: blur(12px) saturate(1.15);
+        -webkit-backdrop-filter: blur(12px) saturate(1.15);
+        background: color-mix(in srgb, var(--bg) 74%, transparent);
+        border-bottom: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
+        box-shadow: 0 10px 26px color-mix(in srgb, var(--bg) 26%, transparent);
       }
       .site-header .container {
         max-width: var(--hero-max-width);
