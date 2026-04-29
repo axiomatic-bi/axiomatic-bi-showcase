@@ -62,3 +62,10 @@
   width: auto;
   max-width: 100%;
 }
+@media (max-width: 860px) {
+  .hero-scene .band-inner > .page-header + .engine-actions,
+  .hero-scene .band-inner > .page-header + .case-study-actions,
+  .hero-scene .band-inner > .page-header + .cv-actions {
+    margin-top: var(--space-4);
+  }
+}
