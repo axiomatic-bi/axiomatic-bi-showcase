@@ -2,11 +2,11 @@
 import { getEntry } from "astro:content";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PageHeader from "../components/PageHeader.astro";
-import EvidenceCallout from "../components/EvidenceCallout.astro";
-import ReproSteps from "../components/ReproSteps.astro";
-import DecisionLog from "../components/DecisionLog.astro";
-import SectionHeading from "../components/SectionHeading.astro";
+import PageHeader from "../components/layout/PageHeader.astro";
+import EvidenceCallout from "../components/content/EvidenceCallout.astro";
+import ReproSteps from "../components/content/ReproSteps.astro";
+import DecisionLog from "../components/content/DecisionLog.astro";
+import SectionHeading from "../components/layout/SectionHeading.astro";
 import { fakeStoreLinks } from "../utils/externalLinks";
 import { withBase } from "../utils/urls";
 import { CheckCircle2, ExternalLink, FileCode2, Lightbulb, Microscope, Target } from "lucide-react";

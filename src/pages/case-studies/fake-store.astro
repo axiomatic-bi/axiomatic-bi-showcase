@@ -2,9 +2,9 @@
 import { getEntry } from "astro:content";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import PageHeader from "../../components/PageHeader.astro";
-import ReproSteps from "../../components/ReproSteps.astro";
-import SectionHeading from "../../components/SectionHeading.astro";
+import PageHeader from "../../components/layout/PageHeader.astro";
+import ReproSteps from "../../components/content/ReproSteps.astro";
+import SectionHeading from "../../components/layout/SectionHeading.astro";
 import { withBase } from "../../utils/urls";
 import { fakeStoreLinks } from "../../utils/externalLinks";
 import { ExternalLink } from "lucide-react";
@@ -133,7 +133,7 @@ const { Content } = await fakeStoreEntry.render();
   </div>
 
   <div class="full-bleed glance-band">
-    <section class="band-inner band-inner-wide glance-section">
+    <section class="band-inner glance-section">
       <p class="section-label">Quick overview</p>
       <SectionHeading title="At a glance" />
       <div class="glance-grid" role="list" aria-label="Case study highlights">
@@ -176,7 +176,7 @@ const { Content } = await fakeStoreEntry.render();
   </section>
 
   <div class="full-bleed">
-    <section class="band-inner band-inner-wide reporting-section">
+    <section class="band-inner reporting-section">
       <p class="section-label">Consumption layer</p>
       <SectionHeading title="Reporting outputs" />
       <p>
