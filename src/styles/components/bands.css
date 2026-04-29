@@ -1,0 +1,95 @@
+/* Bands and full-bleed sections */
+.full-bleed {
+  width: auto;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: var(--bleed-accent-bg);
+}
+.band-inner {
+  max-width: var(--band-max-width);
+  margin: 0 auto;
+  padding-top: var(--band-padding-top, clamp(3rem, 5vw, 4rem));
+  padding-bottom: var(--band-padding-bottom, clamp(3rem, 5vw, 4rem));
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
+}
+.band-inner-wide {
+  max-width: var(--band-wide-max-width);
+}
+.band-inner-tight {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-8);
+}
+.hero-scene {
+  background: var(--hero-scene-bg);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+  margin-bottom: 0;
+}
+.hero-scene .band-inner {
+  max-width: var(--hero-max-width);
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-12);
+}
+.proof-band {
+  background: var(--bleed-band-blue);
+}
+.proof-band .band-inner {
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+}
+.proof-band .proof-strip {
+  padding-top: 0;
+  margin-bottom: 0;
+}
+.proof-strip {
+  padding: var(--space-2) 0 0;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+  margin-bottom: var(--space-14);
+}
+.tonal-band {
+  background: var(--bleed-band-blue);
+}
+.accent-band {
+  background: var(--bleed-accent-bg);
+}
+.engine-band {
+  background: var(--bleed-band-blue);
+  border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+}
+.reporting-band {
+  background: var(--bleed-band-blue);
+}
+.process-band {
+  background: var(--bleed-band-blue);
+}
+.roadmap-band {
+  background: var(--bleed-band-blue);
+  border-top: 1px solid color-mix(in srgb, var(--border) 68%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 68%, transparent);
+}
+.cta-band {
+  background: var(--bleed-band-blue);
+  border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+  margin-top: var(--space-14);
+}
+.final-cta-inner {
+  max-width: var(--band-max-width);
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-5);
+}
+.final-cta {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+.roadmap-callout {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: var(--space-2) 0;
+  margin: 0;
+}

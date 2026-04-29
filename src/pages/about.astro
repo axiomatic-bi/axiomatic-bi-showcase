@@ -49,7 +49,7 @@ const { Content } = await cvEntry.render();
   </div>
 
   <div class="full-bleed tonal-band">
-    <section class="band-inner band-inner-wide cv-focus-section">
+    <section class="band-inner cv-focus-section">
       <SectionHeading title="Focus areas">
         <FileText slot="icon" size={18} strokeWidth={2} />
       </SectionHeading>
@@ -60,7 +60,7 @@ const { Content } = await cvEntry.render();
   </div>
 
   <div class="full-bleed">
-    <section class="band-inner band-inner-wide cv-skills-section">
+    <section class="band-inner cv-skills-section">
       <SectionHeading title="Skills stack">
         <Layers3 slot="icon" size={18} strokeWidth={2} />
       </SectionHeading>
@@ -94,8 +94,6 @@ const { Content } = await cvEntry.render();
 
   .cv-focus-section {
     margin-bottom: 0;
-    padding-top: clamp(2.4rem, 4vw, 3.4rem);
-    padding-bottom: clamp(2.4rem, 4vw, 3.4rem);
   }
 
   .cv-focus-grid {
@@ -114,8 +112,6 @@ const { Content } = await cvEntry.render();
 
   .cv-skills-section {
     margin-bottom: 0;
-    padding-top: clamp(2.4rem, 4vw, 3.4rem);
-    padding-bottom: clamp(2.4rem, 4vw, 3.4rem);
   }
 
   .cv-skills-grid {

@@ -1,0 +1,73 @@
+/* Content styles */
+:not(pre) > code {
+  background: var(--surface-subtle);
+  padding: 0.12rem 0.36rem;
+  border-radius: 6px;
+}
+pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  overflow-x: auto;
+}
+pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+.evidence-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-4) 0 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.evidence-label {
+  margin-bottom: var(--space-2);
+}
+.evidence-type {
+  display: inline-block;
+  margin-left: var(--space-2);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent-strong);
+}
+.evidence-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+aside[aria-label="Evidence"] + [aria-label="Decision log"] {
+  margin-top: clamp(1rem, 2vw, 1.6rem);
+}
+[aria-label="Decision log"] h3 {
+  margin-bottom: var(--space-3);
+}
+.deliverable-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+}
+.deliverable-tags li {
+  color: var(--text-muted);
+  border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+  border-radius: 999px;
+  padding: 0.3rem 0.66rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: transparent;
+}
+.proof-chip-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+}

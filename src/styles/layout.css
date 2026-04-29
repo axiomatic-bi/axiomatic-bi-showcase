@@ -14,7 +14,7 @@
         align-items: center;
         justify-content: space-between;
         gap: var(--space-4);
-        padding: var(--space-2) 0;
+        padding: var(--space-2) var(--space-5);
       }
       .site-header-actions {
         display: flex;
@@ -259,31 +259,42 @@
       }
 @media (max-width: 860px) {
         .site-header-inner {
-          align-items: flex-start;
-          flex-direction: column;
+          align-items: center;
+          flex-direction: row;
           gap: var(--space-2);
+          min-width: 0;
         }
         .site-brand {
-          display: none;
+          display: inline-flex;
+          max-width: calc(100% - 10.5rem);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .site-header-actions {
-          width: 100%;
+          width: auto;
+          margin-left: auto;
           justify-content: flex-end;
-          flex-wrap: wrap;
+          flex-wrap: nowrap;
+          flex-shrink: 0;
           position: relative;
-          overflow-x: clip;
+          overflow: visible;
         }
         .mobile-nav-toggle {
           display: inline-flex;
         }
         nav[aria-label="Primary"] {
-          width: 100%;
+          width: min(22rem, calc(100vw - (var(--space-5) * 2)));
           display: none;
           border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
           border-radius: var(--radius-md);
           background: color-mix(in srgb, var(--surface) 94%, var(--bg));
           padding: var(--space-2);
-          order: 3;
+          position: absolute;
+          top: calc(100% + 0.35rem);
+          right: 0;
+          order: initial;
+          z-index: 30;
         }
         .site-header-actions[data-mobile-nav-open="true"] nav[aria-label="Primary"] {
           display: block;
@@ -302,6 +313,14 @@
           border-radius: var(--radius-sm);
           background: transparent;
           padding: 0.5rem 0.25rem;
+        }
+        .site-brand.nav-link {
+          width: auto;
+          justify-content: center;
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          background: transparent;
+          padding: 0.44rem 0.76rem;
         }
         .nav-link:hover,
         .nav-link:focus-visible {
@@ -350,9 +369,10 @@
           margin-top: 0.35rem;
         }
         .hero-visual-image {
-          width: 100%;
-          max-width: 520px;
+          width: auto;
+          max-width: min(100%, 520px);
           max-height: min(42vh, 360px);
+          height: auto;
         }
         .hero-visual-frame {
           width: min(280px, 72vw);
@@ -370,5 +390,58 @@
         }
         .process-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 640px) {
+        .container {
+          padding: var(--space-4);
+        }
+        .site-header-inner {
+          padding-left: var(--space-4);
+          padding-right: var(--space-4);
+        }
+        .site-brand {
+          max-width: calc(100% - 9.75rem);
+        }
+        nav[aria-label="Primary"] {
+          width: min(22rem, calc(100vw - (var(--space-4) * 2)));
+        }
+        .band-inner {
+          padding: var(--space-10) var(--space-4);
+        }
+        .page-header {
+          padding: var(--space-5);
+        }
+        .final-cta-inner {
+          padding: var(--space-10) var(--space-4);
+        }
+        .process-grid {
+          grid-template-columns: 1fr;
+        }
+        .gallery-grid-4 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (min-width: 1440px) {
+        .hero-scene .band-inner {
+          padding-top: clamp(5rem, 8vh, 6.5rem);
+          padding-bottom: clamp(3.5rem, 6vh, 5rem);
+        }
+        .hero-scene .page-header h1 {
+          font-size: clamp(3.4rem, 5.2vw, 6rem);
+        }
+        .hero-scene .page-header-copy p {
+          font-size: 1.1rem;
+          max-width: 60ch;
+        }
+        .hero-scene .page-header-content {
+          grid-template-columns: 1.15fr minmax(380px, 1fr);
+          gap: clamp(2rem, 3vw, 3rem);
+        }
+        .hero-scene .hero-visual-image {
+          max-width: clamp(560px, 46vw, 860px);
+          max-height: min(58vh, 540px);
+          width: auto;
+          height: auto;
         }
       }

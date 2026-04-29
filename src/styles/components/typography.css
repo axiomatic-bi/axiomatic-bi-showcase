@@ -1,0 +1,40 @@
+/* Typography */
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4.4vw, 3rem);
+  line-height: 1.08;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+h2 {
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+  font-size: clamp(1.32rem, 2.8vw, 1.86rem);
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+}
+h3 {
+  margin: 0 0 var(--space-2);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+.section-heading {
+  margin-bottom: var(--space-3);
+}
+p,
+li {
+  color: var(--text-muted);
+  margin-top: 0;
+}
+.section-label {
+  margin: 0 0 var(--space-2);
+  color: var(--accent-strong);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.section-intro {
+  margin-top: 0;
+  max-width: 60ch;
+}

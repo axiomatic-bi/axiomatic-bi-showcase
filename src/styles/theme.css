@@ -59,9 +59,9 @@
         --space-16: 4rem;
         --section-gap: clamp(4.5rem, 7vw, 6.5rem);
         --content-max-width: 1140px;
-        --band-max-width: 1140px;
-        --band-wide-max-width: 1232px;
-        --hero-max-width: 1440px;
+        --band-max-width: 1370px;
+        --band-wide-max-width: 1485px;
+        --hero-max-width: 1600px;
         --shadow-soft: 0 18px 34px rgba(2, 8, 20, 0.38);
       }
       @media (prefers-color-scheme: light) {

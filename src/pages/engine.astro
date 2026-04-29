@@ -98,7 +98,7 @@ flowchart LR
   </section>
 
   <div class="full-bleed accent-band">
-    <section class="band-inner band-inner-wide accent-section">
+    <section class="band-inner accent-section">
       <p class="section-label">Delivery architecture</p>
       <SectionHeading title="Architecture">
         <Microscope slot="icon" size={18} strokeWidth={2} />
@@ -130,7 +130,7 @@ flowchart LR
   </section>
 
   <div class="full-bleed tonal-band">
-    <section class="band-inner band-inner-wide engine-scope-section">
+    <section class="band-inner engine-scope-section">
       <p class="section-label">Delivery scope</p>
       <SectionHeading title="Implemented scope and declared extensions">
         <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
@@ -257,22 +257,6 @@ flowchart LR
 
   .engine-repro-band {
     background: var(--bleed-band-blue);
-  }
-
-  .accent-band {
-    background: var(--bleed-accent-bg);
-  }
-
-  .accent-section {
-    margin-bottom: 0;
-    padding-top: clamp(2.75rem, 4.5vw, 4rem);
-    padding-bottom: clamp(2.75rem, 4.5vw, 4rem);
-  }
-
-  .engine-scope-section {
-    margin-bottom: 0;
-    padding-top: clamp(2.1rem, 3.8vw, 3rem);
-    padding-bottom: clamp(2.1rem, 3.8vw, 3rem);
   }
 
   .architecture-flow-layout {
