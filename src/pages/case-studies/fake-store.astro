@@ -1,5 +1,6 @@
 ---
 import { getEntry } from "astro:content";
+import type { ImageMetadata } from "astro";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/layout/PageHeader.astro";
@@ -13,7 +14,7 @@ const fakeStoreEntry = await getEntry("caseStudies", "fake-store");
 const fakeStorePbiImageModules = import.meta.glob("../../../assets/fake-store-pbi-*.webp", {
   eager: true,
   import: "default"
-});
+}) as Record<string, ImageMetadata>;
 const fakeStorePbiImageOrder = [
   "fake-store-pbi-model",
   "fake-store-pbi-sales",
@@ -22,7 +23,7 @@ const fakeStorePbiImageOrder = [
   "fake-store-pbi-customers",
   "fake-store-pbi-filters"
 ];
-const fakeStorePbiImageAltByName = {
+const fakeStorePbiImageAltByName: Record<string, string> = {
   "fake-store-pbi-model": "Power BI model view for the Fake Store case study.",
   "fake-store-pbi-sales": "Power BI sales page for the Fake Store case study.",
   "fake-store-pbi-sales-full-page": "Power BI full-page sales view for the Fake Store case study.",
@@ -30,7 +31,14 @@ const fakeStorePbiImageAltByName = {
   "fake-store-pbi-customers": "Power BI customers page for the Fake Store case study.",
   "fake-store-pbi-filters": "Power BI filters page for the Fake Store case study."
 };
-const fakeStoreGalleryImages = Object.entries(fakeStorePbiImageModules)
+type FakeStoreGalleryImage = {
+  imageName: string;
+  image: ImageMetadata;
+  alt: string;
+  orderIndex: number;
+};
+
+const fakeStoreGalleryImages: FakeStoreGalleryImage[] = Object.entries(fakeStorePbiImageModules)
   .map(([assetPath, image]) => {
     const filename = assetPath.split("/").pop() ?? "";
     const imageName = filename.replace(".webp", "");
@@ -82,6 +90,15 @@ const fakeStoreTransformationMermaid = `flowchart LR
   bronzeNode --> silverNode
   goldNode --> consumeNode
   martsNode -.-> consumeNode`;
+const fakeStoreDataModelMermaid = `flowchart LR
+  fact["fact_cart_items"]
+  dimProduct["dim_products"]
+  dimCustomer["dim_customers"]
+  dimDate["dim_dates"]
+
+  dimProduct --> fact
+  dimCustomer --> fact
+  dimDate --> fact`;
 
 if (!fakeStoreEntry) {
   throw new Error("Missing case study entry: fake-store");
@@ -92,6 +109,8 @@ if (fakeStoreGalleryImages.length === 0) {
 }
 
 const { Content } = await fakeStoreEntry.render();
+const atGlanceCards = fakeStoreEntry.data.atGlance;
+const dataModelSection = fakeStoreEntry.data.dataModel;
 ---
 
 <BaseLayout
@@ -137,27 +156,71 @@ const { Content } = await fakeStoreEntry.render();
       <p class="section-label">Quick overview</p>
       <SectionHeading title="At a glance" />
       <div class="glance-grid" role="list" aria-label="Case study highlights">
-        <article class="glance-card" role="listitem">
-          <h3>Problem</h3>
-          <p>API data was easy to access but hard to govern and rerun.</p>
-        </article>
-        <article class="glance-card" role="listitem">
-          <h3>What was built</h3>
-          <p>A reusable ingestion and dbt pipeline with a reporting-ready star schema.</p>
-        </article>
-        <article class="glance-card" role="listitem">
-          <h3>Why it matters</h3>
-          <p>Reporting stays consistent because business logic lives in the model, not the dashboard.</p>
-        </article>
-        <article class="glance-card" role="listitem">
-          <h3>Technology</h3>
-          <p>Axiomatic Engine, dlt, dbt, warehouse modelling, and Power BI delivery.</p>
-        </article>
+        {atGlanceCards.map((card) => (
+          <article class="glance-card" role="listitem">
+            <h3>{card.title}</h3>
+            <p>{card.body}</p>
+          </article>
+        ))}
       </div>
     </section>
   </div>
 
   <div>
+    <section class="band-inner">
+      <p class="section-label">Reporting model</p>
+      <SectionHeading title="Data model" />
+      <div class="data-model-content">
+        <div class="data-model-intro-visual">
+          <div class="data-model-intro">
+            {dataModelSection.intro.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+            <h3>Model decisions</h3>
+            <ul>
+              {dataModelSection.keyModellingDecisions.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div class="mermaid">{fakeStoreDataModelMermaid}</div>
+        </div>
+
+        <div class="data-model-table-wrap">
+          <table class="data-model-table">
+            <thead>
+              <tr>
+                <th>Table</th>
+                <th>Role</th>
+                <th>Grain</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dataModelSection.tableStructure.map((item) => (
+                <tr>
+                  <td><code>{item.table}</code></td>
+                  <td>{item.role}</td>
+                  <td>{item.grain}</td>
+                  <td>{item.purpose}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Data quality</h3>
+        <ul>
+          {dataModelSection.qualityAndConsistency.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        
+      </div>
+    </section>
+  </div>
+
+  <div class="full-bleed tonal-band">
     <section class="band-inner">
       <p class="section-label">Delivery architecture</p>
       <SectionHeading title="Architecture" />
@@ -399,6 +462,114 @@ const { Content } = await fakeStoreEntry.render();
 
   .architecture-flow-left p {
     margin: 0;
+  }
+
+  .data-model-content {
+    display: grid;
+    gap: 0.7rem;
+    margin-top: 0.5rem;
+  }
+
+  .data-model-intro-visual {
+    display: grid;
+    gap: 0.8rem;
+    align-items: start;
+  }
+
+  @media (min-width: 64rem) {
+    .data-model-intro-visual {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .data-model-intro p {
+    margin: 0 0 0.45rem;
+  }
+
+  .data-model-diagram-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.65rem;
+    background: var(--surface-on-bleed);
+    overflow-x: auto;
+  }
+
+  .data-model-table-wrap {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--surface-on-bleed);
+    box-shadow: var(--surface-on-bleed-shadow);
+  }
+
+  .data-model-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 46rem;
+    background: transparent;
+  }
+
+  .data-model-table th,
+  .data-model-table td {
+    text-align: left;
+    padding: 0.72rem 0.85rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+
+  .data-model-table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-weight: 600;
+    font-size: 0.84rem;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    background: color-mix(in srgb, var(--surface, #111723) 76%, transparent);
+  }
+
+  .data-model-table tbody tr:nth-child(even) {
+    background: color-mix(in srgb, var(--surface-on-bleed) 88%, var(--surface, #111723));
+  }
+
+  .data-model-table tbody tr:hover {
+    background: color-mix(in srgb, var(--surface-on-bleed) 72%, var(--accent, #7e8dff) 8%);
+  }
+
+  .data-model-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .data-model-table td:first-child code {
+    display: inline-block;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    padding: 0.18rem 0.4rem;
+    border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface, #111723) 68%, transparent);
+    white-space: nowrap;
+  }
+
+  .data-model-content ul {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+
+  .data-model-content li + li {
+    margin-top: 0.3rem;
+  }
+
+  .data-model-intro {
+    --stack-gap: 0.95rem;
+  }
+
+  .data-model-intro > * + * {
+    margin-top: var(--stack-gap);
   }
 
   .case-narrative-content :global(h2) {

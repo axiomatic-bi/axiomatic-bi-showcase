@@ -23,6 +23,27 @@ const reproStepSchema = z.object({
   limitation: z.string().optional()
 });
 
+const atGlanceItemSchema = z.object({
+  title: z.string().min(1),
+  body: z.string().min(1)
+});
+
+const dataModelSectionSchema = z.object({
+  intro: z.array(z.string().min(1)).min(1).max(2),
+  tableStructure: z
+    .array(
+      z.object({
+        table: z.string().min(1),
+        role: z.string().min(1),
+        grain: z.string().min(1),
+        purpose: z.string().min(1)
+      })
+    )
+    .default([]),
+  keyModellingDecisions: z.array(z.string().min(1)).default([]),
+  qualityAndConsistency: z.array(z.string().min(1)).default([])
+});
+
 const capabilityMaturitySchema = z.object({
   ingestion: z.enum(["implemented", "in_progress", "planned"]),
   transformation: z.enum(["implemented", "in_progress", "planned"]),
@@ -75,7 +96,11 @@ const caseStudiesCollection = defineCollection({
   type: "content",
   schema: z.object({
     title: z.string(),
-    summary: z.string(),
+    previewItem: z.object({
+      summary: z.string(),
+      demonstrates: z.string(),
+      included: z.string()
+    }),
     sectionOrder: z
       .array(z.enum(fakeStoreSectionOrder))
       .refine(
@@ -85,6 +110,8 @@ const caseStudiesCollection = defineCollection({
         "Section order must follow the required Fake Store narrative structure."
       ),
     evidence: z.array(evidenceItemSchema).default([]),
+    atGlance: z.array(atGlanceItemSchema).default([]),
+    dataModel: dataModelSectionSchema,
     reproducibility: z.array(reproStepSchema).default([]),
     assumptions: z.array(z.string()).default([]),
     limitations: z.array(z.string()).default([]),

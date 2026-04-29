@@ -5,7 +5,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHeader from "../../components/layout/PageHeader.astro";
 import SectionHeading from "../../components/layout/SectionHeading.astro";
 import { withBase } from "../../utils/urls";
-import { ArrowRight, CheckCircle2, Microscope, Target } from "lucide-react";
+import { ArrowRight, Target } from "lucide-react";
 import fakeStorePbiSalesImage from "../../../assets/fake-store-pbi-sales.webp";
 import heroExampleImage from "../../../assets/hero-example.webp";
 
@@ -21,7 +21,7 @@ const entries = await getCollection("caseStudies");
           { label: "Examples" }
         ]}
         title="Examples"
-        lede="Each walkthrough links challenge, implementation choices, and measurable improvements in one scannable format."
+        lede="Reference builds showing how source data can be turned into trusted reporting systems, reusable models, and client-owned delivery assets."
       >
         <img
           slot="visual"
@@ -39,100 +39,62 @@ const entries = await getCollection("caseStudies");
 
   <div>
     <section class="band-inner">
-      <SectionHeading title="How to read these examples">
-        <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
-      </SectionHeading>
-      <p>
-        Each page follows the same structure: problem context, what changed, and what improved. Technical
-        details stay linked to architecture notes, commands, and implementation artefacts.
-      </p>
-    </section>
-  </div>
-
-  <div class="full-bleed">
-    <section class="band-inner examples-section">
-      <SectionHeading title="Available examples">
+      <SectionHeading title="Reference Builds">
         <Target slot="icon" size={18} strokeWidth={2} />
       </SectionHeading>
       <div class="case-preview-grid">
         {
-          entries.map((entry) => (
-            <article class="case-preview-card">
-              <div class="case-preview-card-layout">
-                <div class="case-preview-card-copy">
-                  <h3>{entry.data.title}</h3>
-                  <dl class="case-preview-list">
-                    <div>
-                      <dt>Problem</dt>
-                      <dd>Fragmented source outputs and limited confidence in reporting behaviour.</dd>
-                    </div>
-                    <div>
-                      <dt>What changed</dt>
-                      <dd>{entry.data.summary}</dd>
-                    </div>
-                    <div>
-                      <dt>What improved</dt>
-                      <dd>Reproducible delivery boundaries and clearer route to decision-ready models.</dd>
-                    </div>
-                  </dl>
-                  <p>
-                    <a class="button button-secondary" href={withBase(`/case-studies/${entry.slug}`)}>
-                      Open example <ArrowRight size={16} strokeWidth={2} />
-                    </a>
-                  </p>
+          entries.map((entry) => {
+            const { summary, demonstrates, included } = entry.data.previewItem;
+            return (
+              <article class="case-preview-card">
+                <div class="case-preview-card-layout">
+                  <div class="case-preview-card-copy">
+                    <h3>{entry.data.title}</h3>
+                    <dl class="case-preview-list">
+                      <div>
+                        <dd>{summary}</dd>
+                      </div>
+                      <div>
+                        <dt>What it demonstrates</dt>
+                        <dd>{demonstrates}</dd>
+                      </div>
+                      <div>
+                        <dt>Included</dt>
+                        <dd>{included}</dd>
+                      </div>
+                    </dl>
+                    <p>
+                      <a class="button button-secondary" href={withBase(`/case-studies/${entry.slug}`)}>
+                        Open example <ArrowRight size={16} strokeWidth={2} />
+                      </a>
+                    </p>
+                  </div>
+                  {
+                    entry.slug === "fake-store" && (
+                      <figure class="case-preview-card-media">
+                        <img
+                          src={fakeStorePbiSalesImage.src}
+                          alt="Fake Store report screenshot showing sales summary visuals."
+                          width={fakeStorePbiSalesImage.width}
+                          height={fakeStorePbiSalesImage.height}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </figure>
+                    )
+                  }
                 </div>
-                {
-                  entry.slug === "fake-store" && (
-                    <figure class="case-preview-card-media">
-                      <img
-                        src={fakeStorePbiSalesImage.src}
-                        alt="Fake Store report screenshot showing sales summary visuals."
-                        width={fakeStorePbiSalesImage.width}
-                        height={fakeStorePbiSalesImage.height}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </figure>
-                  )
-                }
-              </div>
-            </article>
-          ))
+              </article>
+            );
+          })
         }
       </div>
-    </section>
-  </div>
-
-  <div>
-    <section class="band-inner">
-      <SectionHeading title="Comparison criteria">
-        <Microscope slot="icon" size={18} strokeWidth={2} />
-      </SectionHeading>
-      <p>
-        Pages are compared across architecture clarity, data model quality, reproducibility, and evidence
-        strength. Claims map to code paths, query outputs, tests, or diagrams.
-      </p>
-    </section>
-  </div>
-
-  <div>
-    <section class="band-inner">
-      <SectionHeading title="Reproducibility standards">
-        <Target slot="icon" size={18} strokeWidth={2} />
-      </SectionHeading>
-      <p>
-        Each example includes runnable commands, assumptions, limitations, and explicit evidence links.
-        Planned capability areas are labelled clearly until supported by published artefacts.
-      </p>
     </section>
   </div>
 </BaseLayout>
 
 <style>
-  .examples-section {
-    margin-bottom: 0;
-  }
-
   .case-preview-card-layout {
     display: grid;
     gap: 1rem;

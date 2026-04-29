@@ -1,6 +1,9 @@
 ---
 title: Fake Store Example
-summary: End-to-end reference pipeline using Axiomatic Engine and dbt-first transformation for Fake Store API reporting.
+previewItem:
+  summary: A retail reporting reference build showing how API data can be turned into a shared reporting layer and dashboard outputs.
+  demonstrates: End-to-end ingestion, dbt-led modelling, and reproducible delivery built from one trusted model.
+  included: Architecture notes, implementation detail, and reproducibility steps.
 sectionOrder:
   - Problem
   - Architecture
@@ -34,6 +37,43 @@ evidence:
     claim: Planned semantic layer and MCP walkthrough artefacts
     sourcePath: projects/fake_store/README.md
     status: planned
+atGlance:
+  - title: Problem
+    body: Public API data was easy to access but not ready for governed, repeatable reporting.
+  - title: What was built
+    body: A reusable ingestion and modelling workflow with a reporting-ready retail star schema and Power BI outputs.
+  - title: Why it matters
+    body: Reporting stays consistent because business logic lives in the model, not the dashboard.
+  - title: Implementation focus
+    body: A config-driven reference build using Axiomatic Engine, dbt-led transformation, and client-ownable delivery assets.
+dataModel:
+  intro:
+    - The Fake Store source data is reshaped into a reporting-ready star schema built for reuse across dashboards and analysis. Business logic sits in the model layer so metrics stay consistent across outputs.
+    - The model separates cart-item facts from shared dimensions for products, customers, and dates. That makes the reporting layer easier to extend, test, and maintain.
+  tableStructure:
+    - table: fct_cart_items
+      role: Core sales fact
+      grain: One row per cart item
+      purpose: Supports revenue, quantity, and product analysis.
+    - table: dim_products
+      role: Product dimension
+      grain: One row per product
+      purpose: Holds product attributes and category information.
+    - table: dim_users
+      role: Customer dimension
+      grain: One row per user
+      purpose: Supports customer-level analysis and segmentation.
+    - table: dim_dates
+      role: Date dimension
+      grain: One row per date
+      purpose: Supports time-based filtering and reporting.
+  keyModellingDecisions:
+    - Star schema keeps joins predictable.
+    - Cart-item grain supports revenue and quantity analysis at product item and order level.
+    - Shared dimensions keep reporting definitions consistent.
+  qualityAndConsistency:
+    - dbt schema tests.
+    - Deterministic reruns from incremental load strategies per resource.
 reproducibility:
   - command: cd projects/fake_store && uv sync
     assumption: Python 3.10+ with uv installed; run from repository root.
@@ -51,13 +91,6 @@ limitations:
 
 This case study demonstrates a repeatable reporting workflow from API-first source data without embedding business logic in dashboards.
 It provides a clear handover between data engineering and BI delivery while keeping implementation evidence verifiable.
-
-## At a glance
-
-- **Problem**: API data was easy to access but hard to govern and rerun.
-- **What was built**: A reusable ingestion and dbt pipeline with a reporting-ready star schema.
-- **Why it matters**: Reporting stays consistent because business logic lives in the model, not the dashboard.
-- **Technology**: Axiomatic Engine, dlt, dbt, warehouse modelling, and Power BI.
 
 ## Engine layer
 

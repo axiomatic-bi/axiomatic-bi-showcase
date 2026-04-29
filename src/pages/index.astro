@@ -71,7 +71,6 @@ const deliveryItems = [
           decoding="async"
         />
       </PageHeader>
-      <p class="hero-proofline">Client-owned delivery. Shared data models. Automated refreshes. Reporting and AI-ready outputs.</p>
       <p class="hero-actions">
         <a class="button button-primary" href={withBase(primaryCta.href)}>
           {primaryCta.label} <ArrowRight size={16} strokeWidth={2} />
@@ -82,6 +81,7 @@ const deliveryItems = [
 
   <div class="full-bleed">
     <section class="band-inner band-inner-short" aria-label="Delivery scope tags">
+      <p class="proof-chip-list-intro">Client-owned delivery. Shared data models. Automated refreshes. Reporting and AI-ready outputs.</p>
       <ul class="proof-chip-list" role="list">
         {
           deliveryScopeTags.map((tag) => (
@@ -323,6 +323,10 @@ const deliveryItems = [
     width: 100%;
     height: auto;
     display: block;
+  }
+
+  .proof-chip-list-intro {
+    text-align: center;
   }
 
   @media (min-width: 64rem) {
