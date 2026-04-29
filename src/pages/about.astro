@@ -3,6 +3,7 @@ import { getEntry } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/layout/PageHeader.astro";
 import SectionHeading from "../components/layout/SectionHeading.astro";
+import { engineRepoLinks } from "../utils/externalLinks";
 import { withBase } from "../utils/urls";
 import { Download, FileText, Layers3 } from "lucide-react";
 import cvPdf from "../../assets/cv-timothy-amison.pdf";
@@ -43,6 +44,9 @@ const { Content } = await cvEntry.render();
       <p class="cv-actions">
         <a class="button button-primary" href={cvPdf} download>
           Download PDF CV <Download size={16} strokeWidth={2} />
+        </a>
+        <a class="button button-secondary" href={engineRepoLinks.organisation} target="_blank" rel="noreferrer">
+          View GitHub organisation
         </a>
       </p>
     </div>
@@ -89,6 +93,9 @@ const { Content } = await cvEntry.render();
 <style>
   .cv-actions {
     margin: 0 0 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
 
   .cv-focus-grid {

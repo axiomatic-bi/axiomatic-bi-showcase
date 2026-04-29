@@ -1,4 +1,5 @@
 export const engineRepoLinks = {
+  organisation: "https://github.com/axiomatic-bi",
   baseTreeMain: "https://github.com/axiomatic-bi/axiomatic-engine/tree/main",
   baseBlobMain: "https://github.com/axiomatic-bi/axiomatic-engine/blob/main"
 } as const;

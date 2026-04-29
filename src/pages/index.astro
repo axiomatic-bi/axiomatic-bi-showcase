@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/layout/PageHeader.astro";
+import { engineRepoLinks } from "../utils/externalLinks";
 import { withBase } from "../utils/urls";
 import heroImage from "../../assets/hero-image.webp";
 import fakeStorePbiSalesImage from "../../assets/fake-store-pbi-sales.webp";
@@ -14,8 +15,8 @@ const primaryCta = {
 const proofLinks = [
   { label: "Examples to get started", href: "/case-studies" },
   { label: "Fake store implementation", href: "/case-studies/fake-store" },
+  { label: "Axiomatic BI organisation", href: engineRepoLinks.organisation },
   { label: "Published ADRs", href: "https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr" },
-  { label: "Engine documentation", href: "https://github.com/axiomatic-bi/axiomatic-engine#readme" },
   { label: "Code you can see", href: "https://github.com/axiomatic-bi/axiomatic-engine" }
 ];
 
