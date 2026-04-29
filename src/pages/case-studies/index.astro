@@ -37,15 +37,17 @@ const entries = await getCollection("caseStudies");
     </div>
   </div>
 
-  <section>
-    <SectionHeading title="How to read these examples">
-      <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      Each page follows the same structure: problem context, what changed, and what improved. Technical
-      details stay linked to architecture notes, commands, and implementation artefacts.
-    </p>
-  </section>
+  <div>
+    <section class="band-inner">
+      <SectionHeading title="How to read these examples">
+        <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <p>
+        Each page follows the same structure: problem context, what changed, and what improved. Technical
+        details stay linked to architecture notes, commands, and implementation artefacts.
+      </p>
+    </section>
+  </div>
 
   <div class="full-bleed">
     <section class="band-inner examples-section">
@@ -101,25 +103,29 @@ const entries = await getCollection("caseStudies");
     </section>
   </div>
 
-  <section>
-    <SectionHeading title="Comparison criteria">
-      <Microscope slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      Pages are compared across architecture clarity, data model quality, reproducibility, and evidence
-      strength. Claims map to code paths, query outputs, tests, or diagrams.
-    </p>
-  </section>
+  <div>
+    <section class="band-inner">
+      <SectionHeading title="Comparison criteria">
+        <Microscope slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <p>
+        Pages are compared across architecture clarity, data model quality, reproducibility, and evidence
+        strength. Claims map to code paths, query outputs, tests, or diagrams.
+      </p>
+    </section>
+  </div>
 
-  <section>
-    <SectionHeading title="Reproducibility standards">
-      <Target slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>
-      Each example includes runnable commands, assumptions, limitations, and explicit evidence links.
-      Planned capability areas are labelled clearly until supported by published artefacts.
-    </p>
-  </section>
+  <div>
+    <section class="band-inner">
+      <SectionHeading title="Reproducibility standards">
+        <Target slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <p>
+        Each example includes runnable commands, assumptions, limitations, and explicit evidence links.
+        Planned capability areas are labelled clearly until supported by published artefacts.
+      </p>
+    </section>
+  </div>
 </BaseLayout>
 
 <style>

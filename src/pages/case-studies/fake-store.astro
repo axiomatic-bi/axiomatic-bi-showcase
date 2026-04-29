@@ -132,8 +132,8 @@ const { Content } = await fakeStoreEntry.render();
     </div>
   </div>
 
-  <div class="full-bleed glance-band">
-    <section class="band-inner glance-section">
+  <div class="full-bleed">
+    <section class="band-inner">
       <p class="section-label">Quick overview</p>
       <SectionHeading title="At a glance" />
       <div class="glance-grid" role="list" aria-label="Case study highlights">
@@ -157,26 +157,28 @@ const { Content } = await fakeStoreEntry.render();
     </section>
   </div>
 
-  <section class="architecture-section">
-    <p class="section-label">Delivery architecture</p>
-    <SectionHeading title="Architecture" />
-    <div class="architecture-flow-layout">
-      <div class="architecture-flow-left">
-        <p>
-          This diagram summarises the delivery flow from ingestion to warehouse modelling and then BI consumption.
-        </p>
-        <p>
-          For clients, this creates a reliable reporting foundation where pipeline changes and dashboard changes can be managed independently.
-        </p>
+  <div>
+    <section class="band-inner">
+      <p class="section-label">Delivery architecture</p>
+      <SectionHeading title="Architecture" />
+      <div class="architecture-flow-layout">
+        <div class="architecture-flow-left">
+          <p>
+            This diagram summarises the delivery flow from ingestion to warehouse modelling and then BI consumption.
+          </p>
+          <p>
+            For clients, this creates a reliable reporting foundation where pipeline changes and dashboard changes can be managed independently.
+          </p>
+        </div>
+        <div class="architecture-flow-right">
+          <div class="mermaid">{fakeStoreTransformationMermaid}</div>
+        </div>
       </div>
-      <div class="architecture-flow-right">
-        <div class="mermaid">{fakeStoreTransformationMermaid}</div>
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <div class="full-bleed">
-    <section class="band-inner reporting-section">
+    <section class="band-inner">
       <p class="section-label">Consumption layer</p>
       <SectionHeading title="Reporting outputs" />
       <p>
@@ -231,29 +233,33 @@ const { Content } = await fakeStoreEntry.render();
     </section>
   </div>
 
-  <section>
-    <p class="section-label">Reproducibility</p>
-    <SectionHeading title="How to reproduce" />
-    <p>
-      <a class="button button-secondary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
-        Open engine project repository <ExternalLink size={16} strokeWidth={2} />
-      </a>
-    </p>
-    <ReproSteps
-      title="Execution details"
-      steps={fakeStoreEntry.data.reproducibility.map((item) => item.command)}
-      assumptions={fakeStoreEntry.data.assumptions}
-      limitations={fakeStoreEntry.data.limitations}
-    />
-  </section>
+  <div>
+    <section class="band-inner">
+      <p class="section-label">Reproducibility</p>
+      <SectionHeading title="How to reproduce" />
+      <p>
+        <a class="button button-secondary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
+          Open engine project repository <ExternalLink size={16} strokeWidth={2} />
+        </a>
+      </p>
+      <ReproSteps
+        title="Execution details"
+        steps={fakeStoreEntry.data.reproducibility.map((item) => item.command)}
+        assumptions={fakeStoreEntry.data.assumptions}
+        limitations={fakeStoreEntry.data.limitations}
+      />
+    </section>
+  </div>
 
-  <section>
-    <p class="section-label">Technical delivery detail</p>
-    <SectionHeading title="Delivery intent, modelling, and transform decisions" />
-    <div class="case-narrative-content">
-      <Content />
-    </div>
-  </section>
+  <div>
+    <section class="band-inner">
+      <p class="section-label">Technical delivery detail</p>
+      <SectionHeading title="Delivery intent, modelling, and transform decisions" />
+      <div class="case-narrative-content">
+        <Content />
+      </div>
+    </section>
+  </div>
 
 </BaseLayout>
 
@@ -320,10 +326,6 @@ const { Content } = await fakeStoreEntry.render();
     grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
   }
 
-  .glance-band {
-    background: var(--bleed-band-blue);
-  }
-
   .glance-card {
     background: var(--surface-on-bleed);
     border: 0;
@@ -373,14 +375,6 @@ const { Content } = await fakeStoreEntry.render();
     align-items: start;
     margin-top: 0.6rem;
     margin-bottom: 1.1rem;
-  }
-
-  .architecture-section {
-    margin-bottom: var(--space-12);
-  }
-
-  .reporting-section {
-    margin-bottom: 0;
   }
 
   .architecture-flow-left,

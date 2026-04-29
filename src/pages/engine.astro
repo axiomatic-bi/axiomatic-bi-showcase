@@ -24,13 +24,15 @@ flowchart LR
   warehouseNode --> transformNode["<div style='width:17rem; text-align:center;'><b>Transformation adapter</b><div style='margin-top:0.5rem;'>dbt execution applies model contracts and quality checks</div></div>"]
   transformNode -. planned .-> semanticNode["<div style='width:17rem; text-align:center;'><b>Semantic translator (planned)</b><div style='margin-top:0.5rem;'>Converts dbt semantic definitions for MCP consumption</div></div>"]`;
 
-const engineScopeMermaid = `%%{init: {'flowchart': {'htmlLabels': true}} }%%
-flowchart LR
-  sourceNode["<div style='width:18rem; text-align:center;'><b>Sources</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• REST API<br/>• File source</div>"]
-  storageNode["<div style='width:18rem; text-align:center;'><b>Storage</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• Local storage</div>"]
-  warehouseNode["<div style='width:18rem; text-align:center;'><b>Warehouse</b></div><div style='width:18rem; text-align:left; margin-top:0.5rem;'>• DuckDB<br/>• MotherDuck</div>"]
-  sourceNode --> storageNode --> warehouseNode`;
+const crossSourceMermaid = `flowchart LR
+  sourceApis["<b>Source APIs</b><br/>Operational systems and service endpoints"] --> dataLoads["<b>Automated loads</b><br/>Scheduled ingestion with governed contracts"]
+  fileStreams["<b>File streams</b><br/>Batch extracts and managed file drops"] --> dataLoads
+  dataLoads --> sharedModel["<b>Shared model</b><br/>Reusable semantic layer for consistent metrics"]
+  sharedModel --> biReports["<b>Dashboards</b><br/>Business reporting for operational decisions"]
+  sharedModel --> aiContext["<b>AI context</b><br/>Structured inputs for assistant and agent workflows"]`;
+
 ---
+
 
 <BaseLayout
   title="Engine Overview"
@@ -74,8 +76,8 @@ flowchart LR
     </div>
   </div>
 
-  <div class="full-bleed tonal-band engine-repro-band">
-    <section class="band-inner engine-repro-section">
+  <div class="full-bleed tonal-band">
+    <section class="band-inner ">
       <p class="section-label">Quick overview</p>
       <SectionHeading title="At a glance" />
       <div class="glance-grid" role="list" aria-label="Engine overview highlights">
@@ -89,13 +91,15 @@ flowchart LR
     </section>
   </div>
 
-  <section>
-    <p class="section-label">Context</p>
-    <SectionHeading title="Problem">
-      <Target slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>{engineEntry.data.problemStatement}</p>
-  </section>
+  <div>
+    <section class="band-inner">
+      <p class="section-label">Context</p>
+      <SectionHeading title="Problem">
+        <Target slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <p>{engineEntry.data.problemStatement}</p>
+    </section>
+  </div>
 
   <div class="full-bleed accent-band">
     <section class="band-inner accent-section">
@@ -116,26 +120,46 @@ flowchart LR
     </section>
   </div>
 
-  <section>
-    <p class="section-label">Design decisions</p>
-    <SectionHeading title="Execution and backend strategy">
-      <Microscope slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    {engineEntry.data.strategySections.map((section) => (
-      <>
-        <h3>{section.heading}</h3>
-        <p>{section.body}</p>
-      </>
-    ))}
-  </section>
-
+  <div>
+    <section class="band-inner">
+      <p class="section-label">Design decisions</p>
+      <SectionHeading title="Execution and backend strategy">
+        <Microscope slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      {engineEntry.data.strategySections.map((section) => (
+        <>
+          <h3>{section.heading}</h3>
+          <p>{section.body}</p>
+        </>
+      ))}
+    </section>
+  </div>
   <div class="full-bleed tonal-band">
+    <section class="band-inner" aria-labelledby="engine-overview-heading">
+      <div class="engine-copy">
+        <p class="section-label">What I deliver</p>
+        <SectionHeading title="From source data to trusted reporting" />
+        <p id="engine-overview-heading">
+          Data from APIs and files is loaded on a schedule, modelled into a shared reporting layer, and used across dashboards and AI-assisted workflows. 
+        </p>
+        <p>The goal is one trusted model, clear ownership, and straightforward handover.</p>
+      </div>
+      <div class="engine-diagram-card">
+        <div class="mermaid">{crossSourceMermaid}</div>
+      </div>
+    </section>
+  </div>
+  
+  <div>
     <section class="band-inner engine-scope-section">
       <p class="section-label">Delivery scope</p>
       <SectionHeading title="Implemented scope and declared extensions">
         <CheckCircle2 slot="icon" size={18} strokeWidth={2} />
       </SectionHeading>
       <p>{engineEntry.data.scopeSummary}</p>
+      <p>
+        <strong>Implemented:</strong> REST and file ingestion, Duck-compatible warehouses, and dbt-first transformation.
+      </p>
       <p>
         <strong>Phase 1 roadmap:</strong> S3, GCS, S3-compatible storage, and BigQuery.
       </p>
@@ -146,78 +170,85 @@ flowchart LR
       <p> 
         <strong>Phase 3 roadmap:</strong> SharePoint, OneDrive, Fabric, Databricks, and Azure Blob/ADLS.
       </p>
-      <div class="mermaid">{engineScopeMermaid}</div>
     </section>
   </div>
 
-  <section>
-    <p class="section-label">Delivery notes</p>
-    <SectionHeading title="Trade-offs and Lessons">
-      <Lightbulb slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <p>{engineEntry.data.tradeOffs}</p>
-  </section>
+  <div>
+    <section>
+      <p class="section-label">Delivery notes</p>
+      <SectionHeading title="Trade-offs and Lessons">
+        <Lightbulb slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <p>{engineEntry.data.tradeOffs}</p>
+    </section>
+  </div>
 
-  <section>
-    <p class="section-label">Reproducibility</p>
-    <SectionHeading title="Reproducibility Notes">
-      <Target slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <ReproSteps
-      steps={[
-        "cd examples/fake_store",
-        "uv sync",
-        "uv run python run_pipeline.py --skip-transforms",
-        "uv run python run_pipeline.py --run-transforms",
-        "# pip alternative: python -m pip install -r requirements.txt"
-      ]}
-      assumptions={[
-        "Python 3.10+ is available and dependencies are installed from examples/fake_store.",
-        "Copy .env.example to .env and set AXIOMATIC_* values for your chosen warehouse.",
-        "Network access is available for Fake Store API calls."
-      ]}
-      limitations={[
-        "Engine-level execution is demonstrated through the Fake Store project runner rather than a standalone engine CLI.",
-        "Transformation coverage depends on local dbt profile/target settings."
-      ]}
-    />
-    <p>
-      <a class="button button-secondary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
-        Open Fake Store example project
-      </a>
-    </p>
-  </section>
+  <div>
+    <section>
+      <p class="section-label">Reproducibility</p>
+      <SectionHeading title="Reproducibility Notes">
+        <Target slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <ReproSteps
+        steps={[
+          "cd examples/fake_store",
+          "uv sync",
+          "uv run python run_pipeline.py --skip-transforms",
+          "uv run python run_pipeline.py --run-transforms",
+          "# pip alternative: python -m pip install -r requirements.txt"
+        ]}
+        assumptions={[
+          "Python 3.10+ is available and dependencies are installed from examples/fake_store.",
+          "Copy .env.example to .env and set AXIOMATIC_* values for your chosen warehouse.",
+          "Network access is available for Fake Store API calls."
+        ]}
+        limitations={[
+          "Engine-level execution is demonstrated through the Fake Store project runner rather than a standalone engine CLI.",
+          "Transformation coverage depends on local dbt profile/target settings."
+        ]}
+      />
+      <p>
+        <a class="button button-secondary" href={fakeStoreLinks.exampleCode} target="_blank" rel="noreferrer">
+          Open Fake Store example project
+        </a>
+      </p>
+    </section>
+  </div>
 
-  <section>
-    <p class="section-label">Evidence</p>
-    <SectionHeading title="Evidence and Decision Log">
-      <Microscope slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <EvidenceCallout
-      items={engineEntry.data.evidence.map((item) => ({ label: item.claim, path: item.sourcePath, type: item.type }))}
-    />
-    <DecisionLog decisions={engineEntry.data.decisions} />
-    <p>
-      <a
-        class="button button-secondary"
-        href="https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr"
-        target="_blank"
-        rel="noreferrer"
-      >
-        See all ADRs
-      </a>
-    </p>
-  </section>
+  <div>
+    <section>
+      <p class="section-label">Evidence</p>
+      <SectionHeading title="Evidence and Decision Log">
+        <Microscope slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <EvidenceCallout
+        items={engineEntry.data.evidence.map((item) => ({ label: item.claim, path: item.sourcePath, type: item.type }))}
+      />
+      <DecisionLog decisions={engineEntry.data.decisions} />
+      <p>
+        <a
+          class="button button-secondary"
+          href="https://github.com/axiomatic-bi/axiomatic-engine/tree/main/docs/adr"
+          target="_blank"
+          rel="noreferrer"
+        >
+          See all ADRs
+        </a>
+      </p>
+    </section>
+  </div>
 
-  <section>
-    <p class="section-label">Narrative detail</p>
-    <SectionHeading title="Source Narrative">
-      <FileCode2 slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <div class="source-narrative-content">
-      <Content />
-    </div>
-  </section>
+  <div>
+    <section>
+      <p class="section-label">Narrative detail</p>
+      <SectionHeading title="Source Narrative">
+        <FileCode2 slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <div class="source-narrative-content">
+        <Content />
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
 <style>
@@ -255,10 +286,6 @@ flowchart LR
     font-size: 0.9rem;
   }
 
-  .engine-repro-band {
-    background: var(--bleed-band-blue);
-  }
-
   .architecture-flow-layout {
     display: grid;
     gap: 1rem;
@@ -285,10 +312,6 @@ flowchart LR
 
   .source-narrative-content :global(h3) {
     font-size: clamp(0.94rem, 1.5vw, 1.05rem);
-  }
-
-  .engine-repro-section :global(pre) {
-    border: 0;
   }
 
   @media (max-width: 680px) {

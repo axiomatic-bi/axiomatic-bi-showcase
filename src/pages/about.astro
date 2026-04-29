@@ -49,7 +49,7 @@ const { Content } = await cvEntry.render();
   </div>
 
   <div class="full-bleed tonal-band">
-    <section class="band-inner cv-focus-section">
+    <section class="band-inner">
       <SectionHeading title="Focus areas">
         <FileText slot="icon" size={18} strokeWidth={2} />
       </SectionHeading>
@@ -60,7 +60,7 @@ const { Content } = await cvEntry.render();
   </div>
 
   <div class="full-bleed">
-    <section class="band-inner cv-skills-section">
+    <section class="band-inner">
       <SectionHeading title="Skills stack">
         <Layers3 slot="icon" size={18} strokeWidth={2} />
       </SectionHeading>
@@ -77,23 +77,18 @@ const { Content } = await cvEntry.render();
     </section>
   </div>
 
-  <section>
-    <SectionHeading title="About me overview">
-      <FileText slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <div class="cv-content">
-      <Content />
-    </div>
-  </section>
+  <div>
+    <section class="band-inner">
+      <div class="cv-content">
+        <Content />
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
 <style>
   .cv-actions {
     margin: 0 0 0.9rem;
-  }
-
-  .cv-focus-section {
-    margin-bottom: 0;
   }
 
   .cv-focus-grid {
@@ -108,10 +103,6 @@ const { Content } = await cvEntry.render();
     box-shadow: var(--surface-on-bleed-shadow);
     padding: 0.8rem 0.9rem;
     color: var(--text-muted);
-  }
-
-  .cv-skills-section {
-    margin-bottom: 0;
   }
 
   .cv-skills-grid {
@@ -138,12 +129,20 @@ const { Content } = await cvEntry.render();
   }
 
   .cv-content :global(h2) {
-    margin-top: 1.1rem;
-    margin-bottom: 0.45rem;
-    font-size: clamp(1.02rem, 1.7vw, 1.16rem);
+    margin-top: 2rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .cv-content :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .cv-content :global(h2 + p) {
+    margin-top: 0.35rem;
   }
 
   .cv-content :global(p) {
-    margin-bottom: 0.7rem;
+    margin: 0 0 0.85rem;
   }
+
 </style>

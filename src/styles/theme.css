@@ -59,6 +59,7 @@
         --space-16: 4rem;
         --section-gap: clamp(4.5rem, 7vw, 6.5rem);
         --content-max-width: 1140px;
+        --band-padding-top: clamp(3.5rem, 5.5vw, 4.5rem);
         --band-max-width: 1370px;
         --band-wide-max-width: 1485px;
         --hero-max-width: 1600px;

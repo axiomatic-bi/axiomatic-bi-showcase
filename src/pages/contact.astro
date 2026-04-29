@@ -43,7 +43,7 @@ const { Content } = await contactEntry.render();
   </div>
 
   <div class="full-bleed tonal-band">
-    <section class="band-inner contact-methods-section">
+    <section class="band-inner">
       <SectionHeading title="Contact methods">
         <BriefcaseBusiness slot="icon" size={18} strokeWidth={2} />
       </SectionHeading>
@@ -87,23 +87,21 @@ const { Content } = await contactEntry.render();
     </section>
   </div>
 
-  <section>
-    <SectionHeading title="Enquiry guidance">
-      <BriefcaseBusiness slot="icon" size={18} strokeWidth={2} />
-    </SectionHeading>
-    <div class="contact-content">
-      <Content />
-    </div>
-  </section>
+  <div>
+    <section class="band-inner">
+      <SectionHeading title="Enquiry guidance">
+        <BriefcaseBusiness slot="icon" size={18} strokeWidth={2} />
+      </SectionHeading>
+      <div class="contact-content">
+        <Content />
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
 <style>
   .accent-band {
     background: var(--bleed-accent-bg);
-  }
-
-  .contact-methods-section {
-    margin-bottom: 0;
   }
 
   .contact-grid {
