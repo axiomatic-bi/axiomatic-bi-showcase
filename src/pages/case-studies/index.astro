@@ -7,6 +7,7 @@ import SectionHeading from "../../components/layout/SectionHeading.astro";
 import { withBase } from "../../utils/urls";
 import { ArrowRight, Target } from "lucide-react";
 import fakeStorePbiSalesImage from "../../../assets/fake-store-pbi-sales.webp";
+import fiForecasterPreviewImage from "../../../assets/fi-forecaster-preview.webp";
 import heroExampleImage from "../../../assets/hero-example.webp";
 
 const entries = await getCollection("caseStudies");
@@ -84,6 +85,20 @@ const entries = await getCollection("caseStudies");
                       </figure>
                     )
                   }
+                  {
+                    entry.slug === "fi-forecaster" && (
+                      <figure class="case-preview-card-media">
+                        <img
+                          src={fiForecasterPreviewImage.src}
+                          alt="Financial independence forecaster preview with timeline and FI metrics."
+                          width={fiForecasterPreviewImage.width}
+                          height={fiForecasterPreviewImage.height}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </figure>
+                    )
+                  }
                 </div>
               </article>
             );
@@ -95,6 +110,12 @@ const entries = await getCollection("caseStudies");
 </BaseLayout>
 
 <style>
+  .case-preview-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
   .case-preview-card-layout {
     display: grid;
     gap: 1rem;

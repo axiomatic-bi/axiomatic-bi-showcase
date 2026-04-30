@@ -1,0 +1,385 @@
+---
+import { getEntry } from "astro:content";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeader from "../../components/layout/PageHeader.astro";
+import ReproSteps from "../../components/content/ReproSteps.astro";
+import SectionHeading from "../../components/layout/SectionHeading.astro";
+import { withBase } from "../../utils/urls";
+import { fiForecasterLinks } from "../../utils/externalLinks";
+import { ExternalLink } from "lucide-react";
+
+const fiForecasterEntry = await getEntry("caseStudies", "fi-forecaster");
+
+const fiForecasterTransformationMermaid = `flowchart LR
+  input["User assumptions<br/>income, expenses, growth, rates"] --> python["Python forecast engine baseline"]
+  python --> fixtures["Parity fixtures"]
+  fixtures --> web["TypeScript forecast model"]
+  web --> view["View-model layer"]
+  view --> outputs["Charts, metrics, and FI date outputs"]`;
+
+const fiForecasterDataModelMermaid = `flowchart TD
+  inputs["Scenario inputs<br/>income, spending, assets, mortgage, rates"] --> monthly["Monthly projection engine"]
+  monthly --> fi["FI signal calculation<br/>FI date, years until FI, passive income"]
+  monthly --> vm["Presentation model<br/>cards, charts, comparison views"]`;
+
+if (!fiForecasterEntry) {
+  throw new Error("Missing case study entry: fi-forecaster");
+}
+
+const { Content } = await fiForecasterEntry.render();
+const atGlanceCards = fiForecasterEntry.data.atGlance;
+const dataModelSection = fiForecasterEntry.data.dataModel;
+---
+
+<BaseLayout
+  title="Financial Independence Forecaster"
+  description="Case study for the FI Forecaster migration from local prototype to published web app."
+  enableMermaid={true}
+>
+  <div class="full-bleed hero-scene">
+    <div class="band-inner">
+      <PageHeader
+        breadcrumbs={[
+          { label: "Home", href: withBase("/") },
+          { label: "Examples", href: withBase("/case-studies") },
+          { label: "FI Forecaster" }
+        ]}
+        title="Financial independence forecaster"
+        lede="This case study shows how a local financial forecasting prototype was migrated into a publishable web app while maintaining parity in calculation behaviour."
+      />
+      <div class="case-study-actions">
+        <a class="button button-primary" href={fiForecasterLinks.publishedApp} target="_blank" rel="noreferrer">
+          Open website <ExternalLink size={16} strokeWidth={2} />
+        </a>
+        <a class="button button-secondary" href={fiForecasterLinks.repository} target="_blank" rel="noreferrer">
+          View repository <ExternalLink size={16} strokeWidth={2} />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="full-bleed">
+    <section class="band-inner">
+      <p class="section-label">Quick overview</p>
+      <SectionHeading title="At a glance" />
+      <div class="glance-grid" role="list" aria-label="Case study highlights">
+        {atGlanceCards.map((card) => (
+          <article class="glance-card" role="listitem">
+            <h3>{card.title}</h3>
+            <p>{card.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <div>
+    <section class="band-inner">
+      <p class="section-label">Model design</p>
+      <SectionHeading title="Forecast logic model" />
+      <div class="data-model-content">
+        <p>
+          This section uses a conceptual model to show how user assumptions are transformed into forecast outputs.
+          It is the application equivalent of a traditional data model diagram.
+        </p>
+        <div class="data-model-intro-visual">
+          <div class="data-model-intro">
+            {dataModelSection.intro.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+            <h3>Model decisions</h3>
+            <ul>
+              {dataModelSection.keyModellingDecisions.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div class="mermaid">{fiForecasterDataModelMermaid}</div>
+        </div>
+
+        <div class="data-model-table-wrap">
+          <table class="data-model-table">
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Role</th>
+                <th>Resolution</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dataModelSection.tableStructure.map((item) => (
+                <tr>
+                  <td><code>{item.table}</code></td>
+                  <td>{item.role}</td>
+                  <td>{item.grain}</td>
+                  <td>{item.purpose}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Data quality and validation</h3>
+        <ul>
+          {dataModelSection.qualityAndConsistency.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <div class="full-bleed tonal-band">
+    <section class="band-inner">
+      <p class="section-label">Delivery architecture</p>
+      <SectionHeading title="Architecture" />
+      <div class="architecture-flow-layout">
+        <div class="architecture-flow-left">
+          <p>
+            The delivery flow keeps Python as the calculation baseline and uses fixture snapshots to validate
+            migration parity in the web implementation.
+          </p>
+          <p>
+            This improves confidence that published outputs match the reference model, while still enabling faster
+            iteration in the frontend.
+          </p>
+        </div>
+        <div class="architecture-flow-right">
+          <div class="mermaid">{fiForecasterTransformationMermaid}</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="full-bleed">
+    <section class="band-inner">
+      <p class="section-label">Outputs</p>
+      <SectionHeading title="Reporting outputs" />
+      <p>
+        The published app demonstrates how forecast assumptions translate into FI date estimates, passive income
+        projections, and long-horizon trend views.
+      </p>
+      <h3>Published web app</h3>
+      <p>
+        <a class="button button-secondary" href={fiForecasterLinks.publishedApp} target="_blank" rel="noreferrer">
+          Open FI Forecaster website <ExternalLink size={16} strokeWidth={2} />
+        </a>
+      </p>
+    </section>
+  </div>
+
+  <div>
+    <section class="band-inner">
+      <p class="section-label">Reproducibility</p>
+      <SectionHeading title="Run and verify locally" />
+      <ReproSteps
+        title="Local verification steps"
+        steps={fiForecasterEntry.data.reproducibility.map((item) => item.command)}
+        assumptions={fiForecasterEntry.data.assumptions}
+        limitations={fiForecasterEntry.data.limitations}
+      />
+    </section>
+  </div>
+
+  <div>
+    <section class="band-inner">
+      <p class="section-label">Technical delivery detail</p>
+      <SectionHeading title="Delivery intent, modelling, and implementation decisions" />
+      <div class="case-narrative-content">
+        <Content />
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .case-study-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0 0 1rem;
+  }
+
+  .glance-grid {
+    display: grid;
+    gap: 0.8rem;
+    margin-top: 0.55rem;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  }
+
+  .glance-card {
+    background: var(--surface-on-bleed);
+    border: 0;
+    box-shadow: var(--surface-on-bleed-shadow);
+    border-radius: var(--radius-md);
+    padding: 0.8rem 0.85rem;
+  }
+
+  .glance-card h3 {
+    margin: 0 0 0.35rem;
+    font-size: 0.98rem;
+  }
+
+  .glance-card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 680px) {
+    .case-study-actions {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .case-study-actions .button {
+      width: auto;
+      max-width: 100%;
+    }
+  }
+
+  .architecture-flow-layout {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+    margin-top: 0.6rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .architecture-flow-left,
+  .architecture-flow-right {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    min-width: 0;
+  }
+
+  .architecture-flow-left p {
+    margin: 0;
+  }
+
+  .data-model-content {
+    display: grid;
+    gap: 0.7rem;
+    margin-top: 0.5rem;
+  }
+
+  .data-model-intro-visual {
+    display: grid;
+    gap: 0.8rem;
+    align-items: start;
+  }
+
+  @media (min-width: 64rem) {
+    .data-model-intro-visual {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .data-model-intro p {
+    margin: 0 0 0.45rem;
+  }
+
+  .data-model-table-wrap {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--surface-on-bleed);
+    box-shadow: var(--surface-on-bleed-shadow);
+  }
+
+  .data-model-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 46rem;
+    background: transparent;
+  }
+
+  .data-model-table th,
+  .data-model-table td {
+    text-align: left;
+    padding: 0.72rem 0.85rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+
+  .data-model-table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-weight: 600;
+    font-size: 0.84rem;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    background: color-mix(in srgb, var(--surface, #111723) 76%, transparent);
+  }
+
+  .data-model-table tbody tr:nth-child(even) {
+    background: color-mix(in srgb, var(--surface-on-bleed) 88%, var(--surface, #111723));
+  }
+
+  .data-model-table tbody tr:hover {
+    background: color-mix(in srgb, var(--surface-on-bleed) 72%, var(--accent, #7e8dff) 8%);
+  }
+
+  .data-model-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .data-model-table td:first-child code {
+    display: inline-block;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    padding: 0.18rem 0.4rem;
+    border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface, #111723) 68%, transparent);
+    white-space: nowrap;
+  }
+
+  .data-model-content ul {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+
+  .data-model-content li + li {
+    margin-top: 0.3rem;
+  }
+
+  .data-model-intro {
+    --stack-gap: 0.95rem;
+  }
+
+  .data-model-intro > * + * {
+    margin-top: var(--stack-gap);
+  }
+
+  .case-narrative-content :global(h2) {
+    font-size: clamp(1.02rem, 1.7vw, 1.16rem);
+    margin-top: 1.1rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .case-narrative-content :global(h3) {
+    font-size: clamp(0.94rem, 1.5vw, 1.05rem);
+  }
+
+  .case-narrative-content :global(p) {
+    margin-bottom: 0.7rem;
+  }
+
+  @media (min-width: 64rem) {
+    .architecture-flow-layout {
+      grid-template-columns: 1fr;
+      gap: 1.1rem;
+    }
+  }
+</style>

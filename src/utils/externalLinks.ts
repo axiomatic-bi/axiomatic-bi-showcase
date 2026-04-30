@@ -9,3 +9,8 @@ export const fakeStoreLinks = {
   pbixAsset:
     "https://github.com/axiomatic-bi/axiomatic-bi-examples/tree/main/projects/fake-store/powerbi"
 } as const;
+
+export const fiForecasterLinks = {
+  publishedApp: "https://axiomatic-bi.github.io/financial-independence-forecaster/",
+  repository: "https://github.com/axiomatic-bi/financial-independence-forecaster"
+} as const;

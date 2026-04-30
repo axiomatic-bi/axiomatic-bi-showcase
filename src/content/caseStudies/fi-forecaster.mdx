@@ -1,0 +1,145 @@
+---
+title: Financial Independence Forecaster (FI Forecaster)
+previewItem:
+  summary: An interactive FIRE planning app that estimates financial independence timing under different household and property scenarios.
+  demonstrates: Product-focused financial modelling, scenario analysis, and explainable outputs delivered as a public web app.
+  included: Problem framing, model logic, validation approach, outcomes, and local run steps.
+sectionOrder:
+  - Problem
+  - Architecture
+  - Data model
+  - Transform logic
+  - Data quality/tests
+  - Results/insights
+  - Trade-offs/lessons
+capabilityMaturity:
+  ingestion: implemented
+  transformation: implemented
+  semantic_mcp: planned
+evidence:
+  - type: code
+    claim: End-to-end repository guide and migration structure
+    sourcePath: README.md
+    status: implemented
+  - type: code
+    claim: Python reference forecast engine used as the baseline during migration
+    sourcePath: src/financial_forecaster/forecast.py
+    status: implemented
+  - type: code
+    claim: Fixture generation for repeatable parity snapshots
+    sourcePath: scripts/generate_forecast_fixtures.py
+    status: implemented
+  - type: code
+    claim: Frontend parity checks and responsiveness tests
+    sourcePath: web/src/application/buildForecastViewModel.test.ts
+    status: implemented
+  - type: code
+    claim: Python unit tests for core financial calculations
+    sourcePath: tests/test_forecast.py
+    status: implemented
+  - type: diagram
+    claim: Planned semantic storytelling and architecture walkthrough assets
+    sourcePath: docs/migration/python-contract.md
+    status: planned
+atGlance:
+  - title: Problem
+    body: FIRE planning questions are hard to answer with static spreadsheets when assumptions change frequently.
+  - title: What was built
+    body: A browser-based forecasting app that lets users vary income, spending, assets, mortgage terms, and growth assumptions.
+  - title: Why it matters
+    body: Users can compare realistic life choices, such as property decisions, and see how those choices shift FI timing.
+  - title: Implementation focus
+    body: Clear assumptions, transparent calculations, and fast scenario recompute for iterative decision-making.
+dataModel:
+  intro:
+    - The app models household finances month by month so users can test how savings, investments, pension, and housing choices affect FI timing.
+    - "The model is scenario-driven: users set assumptions once, then the engine projects trajectories and FI signals across the selected forecast horizon."
+  tableStructure:
+    - table: forecast_input_contract
+      role: Input contract module
+      grain: One scenario payload per run
+      purpose: Captures assumptions for income, expenses, rates, contributions, inflation, and property or mortgage context.
+    - table: monthly_projection_series
+      role: Projection engine output
+      grain: One monthly state per step in the forecast horizon
+      purpose: Tracks ISA, non-ISA, pension, home equity, income, expenses, and savings over time.
+    - table: fi_signal_outputs
+      role: FI signal calculator
+      grain: One summary output per scenario run
+      purpose: Summarises FI date, years-until-FI, and passive-income indicators based on extraction-rate assumptions.
+    - table: chart_view_model
+      role: Presentation view model
+      grain: One chart or table-ready element
+      purpose: Shapes trend lines, comparison views, and metrics cards for the UI.
+  keyModellingDecisions:
+    - Monthly simulation is used so mortgage amortisation, contributions, and growth effects stay temporally consistent.
+    - FI status is evaluated from liquid investable assets (ISA and non-ISA) against projected expenses using a configurable extraction rate.
+    - Pension and home equity are projected for net-worth context but excluded from the core FI trigger to keep the signal conservative and comparable.
+  qualityAndConsistency:
+    - Deterministic calculations produce repeatable outputs for the same scenario inputs.
+    - Tests cover core financial rules including pension growth, mortgage progression, and output shape.
+    - UI-level checks verify that view models and summary metrics remain consistent when assumptions change.
+reproducibility:
+  - command: python -m venv .venv && .venv\Scripts\activate && pip install -e ".[dev]"
+    assumption: Python 3.10+ from repository root.
+  - command: python scripts/generate_forecast_fixtures.py
+    assumption: Optional step that refreshes deterministic fixture snapshots used in validation.
+  - command: cd web && npm install && npm run test
+    assumption: Node >=22.12.0; verifies model and UI-facing behaviour.
+  - command: cd web && npm run build
+    assumption: Produces the static app build for deployment.
+assumptions:
+  - Forecast outputs are nominal GBP values and depend entirely on user-provided assumptions.
+  - Scenario comparisons are deterministic and intended for planning exploration.
+  - GitHub Actions is configured as the Pages source for deployment.
+limitations:
+  - "This is a forecasting tool, not regulated financial advice."
+  - "FI timing is based on a simplified extraction-rate method and excludes taxes on withdrawals."
+  - "Outputs do not include probabilistic market simulation or stochastic stress testing."
+---
+
+This case study documents a financial independence planning app built to answer a practical question: when could a household reach FIRE under different real-life choices.
+The core use case is scenario comparison, including how property decisions can accelerate or delay the FI timeline.
+
+## Problem and decision context
+
+The project started from a personal planning need rather than a technology migration objective.
+I wanted a tool that could quickly answer "what happens if..." questions across savings rate, investment growth, pension contributions, and housing choices.
+
+- Typical scenario questions include:
+  - Should we buy a more expensive house now or later?
+  - How does mortgage size change years-until-FI?
+  - What is the trade-off between current spending and projected passive income at FI?
+
+## Architecture and model flow
+
+The app uses a deterministic projection engine and a browser UI optimised for rapid parameter changes.
+Inputs are translated into a monthly projection series, then summarised into FI signals and chart-ready outputs.
+
+- Core modelling and app evidence:
+  - Forecast logic: `src/financial_forecaster/forecast.py`
+  - Fixture generation and validation support: `scripts/generate_forecast_fixtures.py`
+  - UI-facing view model checks: `web/src/application/buildForecastViewModel.test.ts`
+  - Published app: `https://axiomatic-bi.github.io/financial-independence-forecaster/`
+
+## Transformation approach and validation
+
+Transformation here means turning raw assumptions into decision-ready indicators.
+The pipeline is: assumptions -> monthly simulation -> FI signal calculation -> chart and metric view models.
+
+- Validation approach:
+  - deterministic output checks for identical input scenarios
+  - tests for pension and mortgage rule behaviour
+  - checks that FI date, years-until-FI, and passive-income signals remain coherent under scenario changes
+
+## Results and trade-offs
+
+The app provides a practical planning surface for FIRE exploration, not just a technical demonstration.
+
+- Results:
+  - faster comparison of household scenarios than manual spreadsheet recalculation
+  - clearer visibility of how housing choices affect FI timing
+  - publicly shareable implementation with transparent assumptions
+- Trade-offs:
+  - deterministic modelling is intentionally simple and explainable
+  - outputs are sensitive to user assumptions and are not predictive guarantees
