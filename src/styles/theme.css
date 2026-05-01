@@ -58,6 +58,10 @@
         --space-14: 3.5rem;
         --space-16: 4rem;
         --section-gap: clamp(4.5rem, 7vw, 6.5rem);
+        --kpi-card-padding: var(--space-5);
+        --section-band-padding: clamp(4rem, 6vw, 5.5rem);
+        --section-band-padding-tablet: var(--space-12);
+        --section-band-padding-mobile: var(--space-10);
         --content-max-width: 1140px;
         --band-padding-top: clamp(3.5rem, 5.5vw, 4.5rem);
         --band-max-width: 1370px;

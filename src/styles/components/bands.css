@@ -8,7 +8,7 @@
 .band-inner {
   max-width: var(--band-max-width);
   margin: 0 auto;
-  padding-block: clamp(4rem, 6vw, 5.5rem);
+  padding-block: var(--section-band-padding);
   padding-inline: var(--space-5);
 }
 .band-inner-short {
